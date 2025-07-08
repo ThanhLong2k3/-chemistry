@@ -1,0 +1,42 @@
+
+.ant-menu {
+    border-inline-end: none !important;
+}
+
+.ant-dropdown-arrow {
+    &::before {
+        background: #ffffff !important;
+    }
+    transform: translateY(-99%) !important;
+}
+
+.ant-layout,
+.ant-menu{
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.ant-divider {
+    transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.ant-notification-notice-icon {
+    margin-top: 5px;
+}
+
+.ant-form-item-label {
+    text-align: left !important; 
+}
+
+.ant-notification-notice-message {
+    margin-bottom: 0 !important;
+}
+
+.ql-toolbar {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.ql-container {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

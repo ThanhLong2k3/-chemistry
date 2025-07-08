@@ -1,0 +1,18 @@
+.themeChanger {
+    display: flex;
+    gap: 10px;
+    line-height: 30px;
+    align-items: center;
+}
+  
+  .userAvatar {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatarImage {
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  

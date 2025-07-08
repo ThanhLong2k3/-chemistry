@@ -1,0 +1,279 @@
+// Header.module.scss
+.header {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 3px solid #d4af37; // Màu vàng truyền thống Việt Nam
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+}
+
+// Brand section
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #d4af37;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.logoIcon {
+  font-size: 24px;
+  color: #1e3c72;
+}
+
+.brandText {
+  .title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: #e6f7ff;
+    opacity: 0.9;
+  }
+}
+
+// Navigation section
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mainMenu {
+  border: none;
+  background: transparent;
+  
+  :global(.ant-menu-item) {
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 0 20px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 25px;
+    margin: 0 4px;
+    transition: all 0.3s ease;
+    
+    &::after {
+      display: none !important;
+    }
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      color: #d4af37 !important;
+      transform: translateY(-2px);
+    }
+    
+    &.ant-menu-item-selected {
+      background: #d4af37 !important;
+      color: #1e3c72 !important;
+      font-weight: 600;
+      
+      .anticon {
+        color: #1e3c72 !important;
+      }
+    }
+    
+    .anticon {
+      font-size: 16px;
+      color: #ffffff;
+      margin-right: 8px;
+    }
+  }
+}
+
+.moreMenu {
+  .moreButton {
+    color: #ffffff !important;
+    font-weight: 500;
+    height: 50px;
+    padding: 0 20px;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: #d4af37 !important;
+      color: #d4af37 !important;
+      transform: translateY(-2px);
+    }
+    
+    .anticon {
+      color: inherit;
+    }
+  }
+}
+
+.dropdownMenu {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: none;
+  min-width: 200px;
+  padding: 8px 0;
+  
+  :global(.ant-menu-item) {
+    border-radius: 8px;
+    margin: 4px 8px;
+    padding: 12px 16px;
+    height: auto;
+    line-height: 1.5;
+    color: #1e3c72;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: #f0f8ff !important;
+      color: #2a5298 !important;
+      transform: translateX(4px);
+    }
+    
+    .anticon {
+      color: #2a5298;
+      margin-right: 12px;
+      font-size: 16px;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 992px) {
+  .container {
+    padding: 0 16px;
+    height: auto;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  
+  .brand {
+    .title {
+      font-size: 20px;
+    }
+  }
+  
+  .navigation {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .mainMenu {
+    flex: 1;
+    justify-content: center;
+    
+    :global(.ant-menu-item) {
+      padding: 0 12px;
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+  }
+  
+  .brand {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .logoIcon {
+      font-size: 20px;
+    }
+    
+    .title {
+      font-size: 18px;
+    }
+    
+    .subtitle {
+      font-size: 12px;
+    }
+  }
+  
+  .navigation {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .mainMenu {
+    :global(.ant-menu-item) {
+      padding: 0 8px;
+      font-size: 13px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+  
+  .moreButton {
+    height: 40px !important;
+    font-size: 14px;
+  }
+}
+
+// Hiệu ứng đặc biệt cho các element truyền thống Việt Nam
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Hover effect cho toàn bộ header
+.header:hover {
+  .logo {
+    transform: rotate(5deg) scale(1.1);
+  }
+  
+  .title {
+    text-shadow: 0 2px 8px rgba(212, 175, 55, 0.5);
+  }
+}

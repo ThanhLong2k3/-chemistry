@@ -1,0 +1,404 @@
+/* Biến màu sắc */
+$primary-color: #7a52aa; // Màu tím chủ đạo từ banner
+$secondary-color: #6c757d; // Màu xám phụ trợ
+$text-color: #333; // Màu chữ chính
+$light-text-color: #ffffff; // Màu chữ sáng
+$background-color: #f8f9fa; // Màu nền tổng thể
+$card-background: #ffffff; // Màu nền card
+$border-color: #dee2e6; // Màu viền
+
+/* Mixin cho flexbox */
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.layout {
+  min-height: 100vh;
+  background-color: $background-color;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.content {
+  padding: 0; // Đặt padding bằng 0 để các section chiếm toàn bộ chiều rộng
+  min-height: 280px;
+  background-color: $background-color;
+  width: 100%;
+  // margin-top: 64px; // Có thể cần điều chỉnh margin-top nếu header fixed
+}
+
+  .heroSection {
+    text-align: left; // Căn chữ sang trái
+    width: 100%;
+    position: relative; // Để header có thể đặt trên
+    overflow: hidden; // Đảm bảo hình ảnh không tràn ra ngoài
+
+    .heroBanner {
+      width: 100%;
+      height: auto; // Cho phép chiều cao tự động theo tỷ lệ ảnh
+      // max-height: 400px; // Có thể bỏ nếu muốn ảnh cao hơn
+      object-fit: cover;
+      position: absolute; // Đặt ảnh nền
+      top: 0;
+      left: 0;
+      z-index: 1; // Để ảnh nằm dưới chữ
+      filter: brightness(0.9); // Làm mờ ảnh một chút nếu cần
+
+      // Đảm bảo ảnh bao phủ toàn bộ vùng heroSection
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .heroTextContent {
+        position: relative;
+        z-index: 2; // Đảm bảo chữ nằm trên ảnh
+        max-width: 1200px; // Giới hạn chiều rộng nội dung để dễ đọc
+        margin: 0 auto;
+        padding: 0 50px; // Padding ngang cho nội dung
+        color: $light-text-color; // Chữ màu trắng
+
+        .heroTitle {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: $light-text-color;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .heroParagraph {
+            font-size: 1.5em;
+            color: $light-text-color;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            max-width: 600px; // Giới hạn chiều rộng của slogan
+        }
+    }
+  }
+
+  .chapterSection {
+    padding: 200px;
+    color: $light-text-color;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    
+    // Nền hình ảnh cho từng chương
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+
+    .chapterContent {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px; // Giới hạn nội dung chương để dễ đọc trên màn hình lớn
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .chapterTitle {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-top: 40px;
+      color: $light-text-color;
+      font-size: 2.5em;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .lessonsRow {
+      justify-content: center;
+    }
+
+    .lessonCard {
+      background-color: $card-background;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .lessonImageContainer {
+        height: 180px;
+        overflow: hidden;
+        .lessonImage {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+      }
+
+      &:hover .lessonImage {
+        transform: scale(1.05);
+      }
+
+      .lessonMeta {
+        padding: 16px;
+        .ant-card-meta-title {
+          font-size: 1.1em;
+          font-weight: 600;
+          color: $text-color;
+          height: 3em;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+      }
+    }
+  }
+
+  .featuresSection {
+    text-align: center;
+    padding: 60px 0;
+    background-color: $light-text-color;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+
+    .sectionTitle {
+      color: $primary-color;
+      margin-bottom: 50px;
+      font-size: 2.2em;
+      font-weight: bold;
+    }
+
+    .featuresRow {
+      justify-content: center;
+    }
+
+    .featureCard {
+      background-color: $card-background;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .featureIconContainer {
+        @include flex-center;
+        height: 100px;
+        .featureIcon {
+          width: 60px;
+          height: 60px;
+          object-fit: contain;
+        }
+      }
+
+      .featureMeta {
+        padding: 16px;
+        .ant-card-meta-title {
+          font-size: 1.1em;
+          font-weight: 600;
+          color: $primary-color;
+          margin-bottom: 10px;
+        }
+        .ant-card-meta-description {
+          color: $secondary-color;
+          font-size: 0.95em;
+          min-height: 4em;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  .tocSection {
+    text-align: center;
+    margin-bottom: 40px;
+    width: 100%;
+    .tocImage {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+  }
+
+.footer {
+  background-color: $text-color;
+  color: $light-text-color;
+  text-align: center;
+  padding: 24px 50px;
+  width: 100%;
+
+  .footerContent {
+    max-width: 1200px; // Có thể giữ max-width cho nội dung footer để không quá rộng
+    margin: 0 auto;
+  }
+
+  .copyright {
+    color: $light-text-color;
+    margin-bottom: 0;
+  }
+
+  .footerLink {
+    color: $primary-color;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .header {
+    padding: 0 20px;
+    .menu {
+      display: none;
+    }
+    .headerActions {
+      margin-left: auto;
+    }
+  }
+
+  .content {
+    padding: 0; // Remove padding to allow hero section to be full width
+  }
+
+  .heroSection {
+    padding-top: 80px; // Adjust for smaller screens
+    padding-bottom: 80px;
+    .heroTextContent {
+        padding: 0 20px;
+        .heroTitle {
+            font-size: 2.8em;
+        }
+        .heroParagraph {
+            font-size: 1.2em;
+        }
+    }
+  }
+
+  .chapterSection {
+    padding: 40px 0;
+    .chapterTitle {
+      font-size: 2em;
+    }
+    .chapterContent {
+        padding: 0 20px;
+    }
+  }
+
+  .featuresSection {
+    padding: 40px 0;
+    .sectionTitle {
+      font-size: 1.8em;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    .logoText {
+      font-size: 20px;
+    }
+  }
+
+  .heroSection {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    .heroTextContent {
+        .heroTitle {
+            font-size: 2.2em;
+        }
+        .heroParagraph {
+            font-size: 1em;
+        }
+    }
+  }
+
+  .chapterSection {
+    .chapterTitle {
+      font-size: 1.8em;
+    }
+    .lessonCard {
+      .lessonMeta .ant-card-meta-title {
+        font-size: 1em;
+      }
+    }
+  }
+
+  .featuresSection {
+    .sectionTitle {
+      font-size: 1.6em;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    .headerContent {
+      flex-direction: column;
+      align-items: flex-start;
+      .logo {
+        margin-bottom: 10px;
+      }
+      .headerActions {
+        width: 100%;
+        justify-content: space-around;
+      }
+    }
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .heroSection {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    .heroTextContent {
+        padding: 0 15px;
+        .heroTitle {
+            font-size: 1.8em;
+        }
+        .heroParagraph {
+            font-size: 0.9em;
+        }
+    }
+  }
+
+  .chapterSection {
+    padding: 30px 0;
+    .chapterTitle {
+      font-size: 1.5em;
+    }
+  }
+
+  .featuresSection {
+    padding: 30px 0;
+    .sectionTitle {
+      font-size: 1.4em;
+    }
+  }
+}

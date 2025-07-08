@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    mem_limit: 4g
+    hostname: localhost  
+    ports:
+      - "80:80"  
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./uploads:/app/uploads  
+    restart: unless-stopped  

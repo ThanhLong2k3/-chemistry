@@ -1,0 +1,6 @@
+@mixin flex-variant($hor, $ver, $dir) {
+    display: flex;
+    justify-content: $hor;
+    align-items: $ver;
+    flex-direction: $dir;
+}

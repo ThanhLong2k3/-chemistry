@@ -1,0 +1,112 @@
+/* Màu sắc và biến */
+$primary-color: #4ec1ff; // Màu xanh nước biển (logo)
+$text-color: #1a1a1a; // Màu chữ đen nhẹ
+$menu-bg: #ffffff; // Nền trắng
+$hover-color: #1890ff; // Màu hover link/menu
+$selected-color: #0050b3;
+$border-color: #e0e0e0;
+
+/* Mixin linh hoạt */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header {
+  background-color: $menu-bg;
+  border-bottom: 1px solid $border-color;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .headerContent {
+    @include flex-between;
+    height: 64px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    @include flex-center;
+    gap: 10px;
+
+    .logoImage {
+      height: 40px;
+      width: auto;
+    }
+
+    .logoText {
+      font-size: 20px;
+      font-weight: 700;
+      color: $primary-color;
+    }
+  }
+.menu {
+  flex: 1;
+  margin-left: 32px;
+  background-color: transparent;
+  border-bottom: none;
+
+  :global(.ant-menu-item) {
+    color: $text-color !important;
+    font-weight: 500;
+    padding: 0 16px;
+    transition: color 0.2s;
+  }
+
+  :global(.ant-menu-item:hover) {
+    color: $hover-color !important;
+  }
+
+  :global(.ant-menu-item-selected) {
+    color: $selected-color !important;
+  }
+}
+
+
+  .headerActions {
+    @include flex-center;
+    gap: 12px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .header {
+    padding: 0 20px;
+
+    .menu {
+      display: none; // Có thể thay bằng Drawer hoặc Hamburger menu sau này
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    .logoText {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    .headerContent {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .headerActions {
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
+  }
+}

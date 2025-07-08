@@ -1,0 +1,256 @@
+// @font-face {
+//     font-family: 'Mona Sans';
+//     font-stretch: 75% 125%;
+//     font-weight: 200 900;
+//     src: url('../fonts/mona-sans/Mona-Sans-f258701679eace96725e03121950af40ae6e4ceef03b21242c66a3b7ae6ccbf4.woff2')
+//         format('woff2');
+// }
+
+
+@use './variables';
+@use './rules';
+@use './reset';
+
+@font-face {
+  font-family: 'Reddit Sans';
+  // src: url(../fonts/reddit-sans/RedditSans-VariableFont_wght.ttf);
+  src: url(../fonts/reddit-sans/RedditSans-VariableFont_wght.ttf);
+  font-style: normal;
+}
+// @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap');
+
+@import '~normalize.css';
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: 'Reddit Sans', sans-serif;
+
+  * {
+    // font-family: "Montserrat", sans-serif !important;
+    // font-family: 'SF Pro Display', sans-serif;
+    font-size: 1.4rem;
+  }
+
+  label,
+  ul,
+  li,
+  span {
+    font-weight: 600;
+  }
+}
+
+.scrollbar {
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #9da5b1;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 6px;
+    transition: cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+}
+
+/* Example CSS for transition effects */
+body {
+  transition: background-color 0.3s ease-in-out;
+}
+
+.layout-client {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.layout {
+  padding: 2.4rem;
+}
+
+.layout-vertical {
+  padding: 2.4rem 0;
+}
+
+.layout-horizontal {
+  padding: 0 2.4rem;
+}
+
+.area {
+  padding: 0 2.4rem;
+}
+
+.btn-delete {
+  margin-left: 0.5rem;
+  color: red;
+
+  &:not([disabled]) span {
+    color: red;
+  }
+
+  &:not([disabled])hover span {
+    color: red !important;
+  }
+
+  &:not([disabled]):hover {
+    border-color: red !important;
+  }
+}
+
+.btn-detail,
+.btn-gallery {
+  margin-left: 0.5rem;
+  color: orange;
+
+  &:not([disabled]) span {
+    color: orange;
+  }
+
+  &:not([disabled]):hover span {
+    color: orange !important;
+  }
+
+  &:not([disabled]):hover {
+    border-color: orange !important;
+  }
+}
+
+.text-secondary {
+  color: grey;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+// #content {
+//     position: relative;
+
+//     .ant-modal-mask,
+//     .ant-modal-wrap {
+//         position: absolute;
+//         z-index: 999999999  ;
+//     }
+// }
+
+/* HTML: <div class="loader"></div> */
+.dot-loader {
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+
+.dot-loader-sm {
+  width: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+
+@keyframes l5 {
+  0% {
+    box-shadow:
+      20px 0 #000,
+      -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow:
+      20px 0 #000,
+      -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow:
+      20px 0 #0002,
+      -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow:
+      20px 0 #0002,
+      -20px 0 #000;
+    background: #000;
+  }
+}
+
+.confirm-delete-icon {
+  svg {
+    width: 1.6em;
+    height: 1.6em;
+  }
+}
+
+.upload-container {
+  display: block !important;
+  height: 200px;
+  overflow: hidden;
+
+  .ant-upload-list {
+    justify-content: center;
+  }
+
+  .ant-upload,
+  .ant-upload-list-item,
+  .ant-upload-list-item-container {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  img {
+    object-fit: cover !important;
+  }
+}
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #006ef6;
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.text-success {
+  color: #16a34a;
+}
+
+.text-danger {
+  color: red;
+}
+
+:global(.ant-table-body)::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+:global(.ant-table-body)::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+:global(.ant-table-body)::-webkit-scrollbar-track {
+  background-color: transparent;
+}

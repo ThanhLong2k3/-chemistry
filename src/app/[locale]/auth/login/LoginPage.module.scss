@@ -1,0 +1,488 @@
+// LoginPage.module.scss - Navy Blue & White Professional Design
+
+.loginContainer {
+  height: 100vh;
+  display: flex;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+// Left Panel - Geometric Pattern
+.leftPanel {
+  flex: 1;
+  background: linear-gradient(135deg, #284973 0%, #1e3a5f 50%, #2d5082 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 60px 40px;
+}
+
+.trianglePattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  overflow: hidden;
+}
+
+.triangleGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  width: 120%;
+  height: 120%;
+  gap: 20px;
+  transform: rotate(15deg);
+  animation: floatPattern 20s ease-in-out infinite;
+}
+
+.triangle {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 70px solid rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, -50%);
+    animation: triangleFloat 8s ease-in-out infinite;
+  }
+  
+  &:nth-child(odd)::before {
+    border-bottom: 70px solid rgba(255, 255, 255, 0.6);
+    animation-delay: -2s;
+  }
+  
+  &:nth-child(3n)::before {
+    border-bottom: 70px solid rgba(255, 255, 255, 0.4);
+    animation-delay: -4s;
+  }
+  
+  &:nth-child(4n)::before {
+    transform: translate(-50%, -50%) rotate(180deg);
+    animation-delay: -6s;
+  }
+}
+
+@keyframes floatPattern {
+  0%, 100% { transform: rotate(15deg) translateY(0px); }
+  50% { transform: rotate(15deg) translateY(-20px); }
+}
+
+@keyframes triangleFloat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+// Brand Section
+.brandSection {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.brandIcon {
+  font-size: 64px !important;
+  color: white !important;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.brandText {
+  text-align: center;
+}
+
+.brandName {
+  font-size: 48px;
+  font-weight: 900;
+  color: white;
+  margin: 0;
+  letter-spacing: -2px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  line-height: 1;
+}
+
+.brandTagline {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 8px 0 0 0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 60px;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+  gap: 12px;
+}
+
+.featureIcon {
+  font-size: 32px;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+}
+
+.feature span {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+// Right Panel - Login Form
+.rightPanel {
+  flex: 1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(40, 73, 115, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(30, 58, 95, 0.03) 0%, transparent 50%);
+  }
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.welcomeTitle {
+  color: #1a202c !important;
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  margin: 0 0 12px 0 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.subtitle {
+  color: #718096 !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.errorAlert {
+  background: rgba(254, 226, 226, 1) !important;
+  border: 1px solid #feb2b2 !important;
+  border-radius: 12px !important;
+  margin-bottom: 24px !important;
+}
+
+// Form Styles
+.loginForm {
+  .ant-form-item {
+    margin-bottom: 24px !important;
+  }
+}
+
+.formItem {
+  margin-bottom: 24px !important;
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.inputLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  letter-spacing: 0.025em;
+}
+
+.input {
+  border-radius: 12px !important;
+  border: 2px solid #e5e7eb !important;
+  background: #ffffff !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    border-color: #d1d5db !important;
+  }
+  
+  &:focus {
+    border-color: #284973 !important;
+    box-shadow: 0 0 0 3px rgba(40, 73, 115, 0.1) !important;
+  }
+  
+  .ant-input {
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 15px !important;
+    color: #374151 !important;
+    background: transparent !important;
+    
+    &::placeholder {
+      color: #9ca3af !important;
+    }
+  }
+}
+
+.inputIcon {
+  color: #9ca3af !important;
+  font-size: 16px !important;
+}
+
+.formOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  
+  .ant-form-item {
+    margin: 0 !important;
+  }
+}
+
+.checkbox {
+  color: #374151 !important;
+  font-size: 14px !important;
+  
+  .ant-checkbox {
+    &-inner {
+      border-color: #d1d5db !important;
+      border-radius: 4px !important;
+    }
+    
+    &-checked .ant-checkbox-inner {
+      background-color: #284973 !important;
+      border-color: #284973 !important;
+    }
+    
+    &:hover .ant-checkbox-inner {
+      border-color: #284973 !important;
+    }
+  }
+}
+
+.forgotLink {
+  color: #284973 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  
+  &:hover {
+    color: #1e3a5f !important;
+    text-decoration: underline !important;
+  }
+}
+
+.loginButton {
+  width: 100% !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #284973 0%, #1e3a5f 100%) !important;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(40, 73, 115, 0.25) !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(40, 73, 115, 0.35) !important;
+    background: linear-gradient(135deg, #1e3a5f 0%, #233f6b 100%) !important;
+  }
+  
+  &:active {
+    transform: translateY(0) !important;
+  }
+  
+  &:focus {
+    background: linear-gradient(135deg, #284973 0%, #1e3a5f 100%) !important;
+  }
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 32px 0 24px 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e5e7eb;
+  }
+}
+
+.dividerText {
+  background: white;
+  color: #6b7280;
+  font-size: 14px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.socialButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.socialButton {
+  height: 48px !important;
+  border-radius: 12px !important;
+  border: 2px solid #e5e7eb !important;
+  background: white !important;
+  color: #374151 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    border-color: #284973 !important;
+    background: #f8fafc !important;
+    transform: translateY(-1px) !important;
+    color: #284973 !important;
+  }
+  
+  .anticon {
+    font-size: 18px !important;
+  }
+}
+
+.registerSection {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.registerText {
+  color: #6b7280 !important;
+  font-size: 15px !important;
+}
+
+.registerLink {
+  color: #284973 !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+  
+  &:hover {
+    color: #1e3a5f !important;
+    text-decoration: underline !important;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .leftPanel {
+    display: none;
+  }
+  
+  .rightPanel {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .rightPanel {
+    padding: 24px;
+  }
+  
+  .formContainer {
+    max-width: 100%;
+  }
+  
+  .welcomeTitle {
+    font-size: 28px !important;
+  }
+  
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .brandName {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .socialButtons {
+    flex-direction: column;
+  }
+  
+  .formOptions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
