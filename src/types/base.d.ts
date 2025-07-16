@@ -1,11 +1,11 @@
-export interface IBaseIn{
-  lu_user?:string;
-  created_user?:string;
+export interface IBaseIn {
+  lu_user?: string;
+  created_user?: string;
 }
 export interface IBaseSearch {
   page_index?: number;
   page_size?: number;
-  order_type?:string;
+  order_type?: string;
   search_content?: string | null;
   from_date?: string;
   to_date?: string;

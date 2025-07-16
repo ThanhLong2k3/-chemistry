@@ -12,7 +12,7 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 
 export async function POST(req: NextRequest) {
     try {
-    console.log("Post file new");
+        console.log("Post file new");
 
         const formData = await req.formData();
         const files = formData.getAll('files');
@@ -36,6 +36,6 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ urls: uploadedUrls });
     } catch (error) {
-           return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
 }

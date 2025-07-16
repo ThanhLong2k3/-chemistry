@@ -13,7 +13,7 @@ export const FOGOTPASS_PATH = `${BASE_PATH}/${AUTH_PATH}/forgotpass`;
 
 // path ADMIN
 export const ADMIN_PATH = 'admin';
-export const ADMIN_LOGIN_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_user`;
+export const ADMIN_LOGIN_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_account`;
 export const ADMIN_REGISTER_PATH = `${ADMIN_PATH}/l`;
 
 

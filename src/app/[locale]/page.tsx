@@ -36,7 +36,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const data:any = await authAPI.login(values.email, values.password);
+      const data: any = await authAPI.login(values.email, values.password);
 
       show({ result: data, messageDone: 'Đăng nhập thành công' });
       if (data === 0) {

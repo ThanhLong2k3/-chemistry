@@ -5,17 +5,21 @@ interface User {
   email: string;
   role: 'admin' | 'user';
 }
+
+//đã sửa
 interface LoginResponse {
-  errorCode: number;
+  success: boolean;
   message?: string;
-  user?: {
-    id: string;
+  account?: {
+    username: string;
+    name: string;
     email: string;
     role: string;
-    fullName: string;
+    image: string;
   };
   token?: string;
 }
+
 
 export const authAPI = {
   register: async (
@@ -37,54 +41,53 @@ export const authAPI = {
     }
   },
 
-  login: async (email: string, password: string): Promise<LoginResponse> => {
+
+
+
+  //đã sửa
+  login: async (username: string, password: string): Promise<LoginResponse> => {
     try {
-      if (!email || !password) {
+      if (!username || !password) {
         return {
-          errorCode: 5,
-          message: 'Email and password are required'
+          success: false,
+          message: 'Tên đăng nhập và mật khẩu là bắt buộc'
         };
       }
-  
-      const response = await fetch(`http://localhost:5000${API_URL}/auth/login`, {
+
+      const response = await fetch(`http://localhost:3000${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
-  
+
       const data = await response.json();
-  
+
+
       if (!response.ok) {
-        // Trả về errorCode từ backend hoặc status code nếu không có errorCode
         return {
-          errorCode: data.errorCode || response.status,
-          message: data.message || 'Login failed'
+          success: false,
+          message: data.message || 'Đăng nhập thất bại'
         };
       }
-  
-      // Lưu thông tin user vào localStorage khi đăng nhập thành công
-      localStorage.setItem('ID', data.user.id);
-      localStorage.setItem('ACCESS_TOKEN', data.token);
-      localStorage.setItem('ROLE', data.user.role);
-      localStorage.setItem('Email', data.user.email);
-      localStorage.setItem('FullName', data.user.fullName);
-  
       return {
-        errorCode: 0,
-        message: 'Login successful',
-        user: data.user,
-        token: data.token
+        success: true,
+        message: 'Đăng nhập thành công',
+        token: data.token       // Token trả về từ server
       };
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Lỗi API đăng nhập:', error);
       return {
-        errorCode: 8,
-        message: 'Internal server error'
+        success: false,
+        message: 'Lỗi kết nối đến máy chủ.'
       };
     }
   },
+
+
+
+
   getCurrentUser: async (): Promise<User> => {
     try {
       const data = await CallApi.getAll<User>('auth/me');

@@ -3,33 +3,18 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  Form,
-  Input,
-  Button,
-  Checkbox,
-  Alert,
-  Typography,
-} from 'antd';
-import {
-  UserOutlined,
-  LockOutlined,
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  GoogleOutlined,
-  FacebookOutlined,
-  ThunderboltOutlined,
-} from '@ant-design/icons';
-import { authAPI } from '@/libs/api/auth.api';
+import { Form, Input, Button, Checkbox, Alert, Typography, } from 'antd';
+import { UserOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, GoogleOutlined, FacebookOutlined, ThunderboltOutlined, } from '@ant-design/icons';
 import { RULES_FORM } from '@/utils/validator';
 import { useNotification } from '@/components/UI_shared/Notification';
 import styles from './LoginPage.module.scss';
-import { login } from '@/services/user.service';
-import { encrypt } from '@/libs/access';
-import { cookies } from 'next/headers';
+import { authAPI } from '@/libs/api/auth.api';
 import { FOGOTPASS_PATH, REGISTER_PATH } from '@/path';
+import { jwtDecode } from 'jwt-decode';
+import { IDecodedToken } from '@/types/decodedToken';
 
 const { Title, Text } = Typography;
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,28 +28,41 @@ export default function LoginPage() {
 
   const onFinish = async (values: any) => {
     setLoading(true);
-debugger;
     try {
-      const value={
-        UserName:values.userName,
-        PassWork:encrypt(values.password)
-      }
-      const data:any = await login(value);
-      if(!data.success)
-      {
-        show({ result: 1, messageError: data.message });
+      const response = await authAPI.login(values.username, values.password);
+
+      // Kiểm tra login có thành công và có trả về token không
+      if (!response.success || !response.token) {
+        show({ result: 1, messageError: response.message || 'Đăng nhập thất bại, vui lòng thử lại.' });
+        return;
       }
 
-      show({ result: 0, messageDone: 'Đăng nhập thành công' });
-      console.log("data",data);
-      localStorage.setItem('ROLE',data.role);
-      localStorage.setItem('USERNAME',data.username);
-      localStorage.setItem('ID_USER',data.id_user);
-      data.role==='user'? router.push('/vi/admin_user'):router.push('/vi/manage_user');
-      
+      const { token } = response;
+      let accountInfo: IDecodedToken;
+
+      try {
+        // Giải mã token để lấy thông tin người dùng
+        accountInfo = jwtDecode<IDecodedToken>(token);
+      } catch (e) {
+        console.error("Token không hợp lệ:", e);
+        show({ result: 1, messageError: 'Đã xảy ra lỗi khi xử lý phiên đăng nhập.' });
+        return;
+      }
+
+      // Lưu trữ token vào localStorage
+      localStorage.setItem('TOKEN', token);
+      show({ result: 0, messageDone: 'Đăng nhập thành công!' });
+
+      // Chuyển trang dựa trên role từ thông tin đã giải mã
+      if (accountInfo.role === 'student') {
+        router.push('/vi');
+      } else {
+        router.push('/vi/admin/manage_account');
+      }
+
     } catch (err: any) {
-      const errorCode = err.response?.data?.errorCode || 8;
-      show({ result: errorCode });
+      console.error("Lỗi ngoài dự kiến khi đăng nhập:", err);
+      show({ result: 1, messageError: 'Đã có lỗi kết nối, vui lòng thử lại.' });
     } finally {
       setLoading(false);
     }
@@ -81,16 +79,16 @@ debugger;
             ))}
           </div>
         </div>
-        
+
         <div className={styles.brandSection}>
           <div className={styles.logoContainer}>
             <ThunderboltOutlined className={styles.brandIcon} />
             <div className={styles.brandText}>
-              <h1 className={styles.brandName}>Gia phả Việt</h1>
-              <p className={styles.brandTagline}>Viện trí tuệ nhân vạo Việt Nam</p>
+              <h1 className={styles.brandName}>CHEMISTRY FORUM</h1>
+              <p className={styles.brandTagline}>Diễn đàn hoá học</p>
             </div>
           </div>
-            
+
           <div className={styles.featuresGrid}>
             <div className={styles.feature}>
               <div className={styles.featureIcon}>⚡</div>
@@ -116,7 +114,7 @@ debugger;
               Chào mừng trở lại!
             </Title>
             <Text className={styles.subtitle}>
-              Đăng nhập để tiếp tục với Gia phả việt
+              Đăng nhập để tiếp tục
             </Text>
           </div>
 
@@ -136,14 +134,14 @@ debugger;
             layout="vertical"
             className={styles.loginForm}
           >
-            <Form.Item 
-              name="userName" 
+            <Form.Item
+              name="username"
               rules={RULES_FORM.required}
               className={styles.formItem}
             >
               <div className={styles.inputContainer}>
                 <label className={styles.inputLabel}>Tên đăng nhập</label>
-                <Input 
+                <Input
                   prefix={<UserOutlined className={styles.inputIcon} />}
                   placeholder="Nhập tên đăng nhập của bạn"
                   className={styles.input}
@@ -200,20 +198,20 @@ debugger;
           </div>
 
           <div className={styles.socialButtons}>
-            <Button 
-              icon={<GoogleOutlined />} 
+            <Button
+              icon={<GoogleOutlined />}
               className={styles.socialButton}
               size="large"
             >
               Đăng nhập với Google
             </Button>
-            <Button 
-              icon={<FacebookOutlined />} 
+            {/* <Button
+              icon={<FacebookOutlined />}
               className={styles.socialButton}
               size="large"
             >
               Đăng nhập với Facebook
-            </Button>
+            </Button> */}
           </div>
 
           <div className={styles.registerSection}>

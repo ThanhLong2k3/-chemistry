@@ -65,11 +65,13 @@ export const themeOrangeConfig: ThemeConfig = {
 export const themeBlueConfig: ThemeConfig = {
   algorithm: [theme.defaultAlgorithm],
   token: {
-    colorPrimaryText: '#284973',
+    // colorPrimaryText: '#284973',  sửa dòng này
+    colorPrimaryText: '#121450',
     // colorBgElevated: "#284973",
     colorBgLayout: '#ffffff',
     colorBorder: '#e1e1e1',
-    colorPrimary: '#284973',
+    // colorPrimary: '#284973', và dòng này
+    colorPrimary: '#121450',
     borderRadius: 5,
     fontFamily: 'Reddit Sans, sans-serif',
   },
@@ -79,8 +81,8 @@ export const themeBlueConfig: ThemeConfig = {
       colorBgElevated: 'rgb(13,68,138)', // bg child menu when hover or active li parent
       colorText: '#ffffff',
       colorBorder: '#e1e1e1',
-      colorPrimary: '#8abbff',
-      controlItemBgActive: '#1a3357',
+      colorPrimary: '#000000ff',
+      controlItemBgActive: 'rgb(138,112,179)',
     },
     Typography: {
       colorLink: 'rgb(39, 108, 255)',

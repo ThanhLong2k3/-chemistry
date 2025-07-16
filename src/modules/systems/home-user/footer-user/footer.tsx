@@ -1,12 +1,12 @@
 "use client"
 import style from './footer.module.scss';
 import React from 'react';
-import { 
-  Layout, 
-  Row, 
-  Col, 
-  Typography, 
-  Space, 
+import {
+  Layout,
+  Row,
+  Col,
+  Typography,
+  Space,
   Steps,
   Divider
 } from 'antd';
@@ -19,7 +19,7 @@ import {
   YoutubeOutlined
 } from '@ant-design/icons';
 
-const {  Footer } = Layout;
+const { Footer } = Layout;
 const { Title, Paragraph, Text } = Typography;
 
 const Footer_User = () => {

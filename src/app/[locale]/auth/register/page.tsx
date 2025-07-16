@@ -15,7 +15,7 @@ import { authAPI } from '@/libs/api/auth.api';
 import { RULES_FORM } from '@/utils/validator';
 import { useNotification } from '@/components/UI_shared/Notification';
 import styles from './LoginPage.module.scss';
-import { createUser, login } from '@/services/user.service';
+import { createUser, login } from '@/services/account.service';
 import { encrypt } from '@/libs/access';
 import { LOGIN_PATH } from '@/path';
 
@@ -47,10 +47,10 @@ export default function LoginPage() {
         result: res.data.result,
         messageDone: 'Đăng ký thành công',
         messageError: 'Tài khoản hoặc Mật khẩu không đúng!',
-        messageErrorOfRighs:'Tài khoản hoặc Email đã tồn tại!'
+        messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại!'
       });
 
-      form.resetFields(); 
+      form.resetFields();
     } catch (err: any) {
       const errorCode = err.response?.data?.errorCode || 8;
       show({ result: errorCode });

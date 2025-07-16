@@ -3,7 +3,7 @@ import { ACCESS_TOKEN, BASE_URL, ROLE } from '@/constants/config';
 import storage from '@/utils/storage';
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:5000" ,
+  baseURL: "http://localhost:3000",
   timeout: 30000,
   withCredentials: true,
   headers: {

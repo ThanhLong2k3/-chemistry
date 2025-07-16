@@ -9,8 +9,6 @@ export async function db_Provider<T>(
 ) {
   try {
     const data: any = await executeQuery<T[]>(query, params);
-    console.log("provider", data?.[0] ?? []);
-    console.log("data provider", data);
 
     if (isModification) {
       const resultData = data[0]?.[0];

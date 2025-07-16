@@ -66,7 +66,7 @@ export const Modal = ({
           footer={null}
           okText={"Đồng ý"}
           cancelText={"Hủy"}
-          destroyOnClose
+          destroyOnHidden
           open={visible}
           onCancel={handleClose}
           transitionName=""
@@ -107,7 +107,7 @@ export const Modal = ({
                 key="close"
                 className="flex-center"
               >
-                <CloseOutlined className="lg"  />
+                <CloseOutlined className="lg" />
               </motion.span>
             }
           />

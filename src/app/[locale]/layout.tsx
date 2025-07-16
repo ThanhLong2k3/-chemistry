@@ -21,8 +21,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
 
-  const isAuthPage = pathname === BASE_PATH || pathname === REGISTER_PATH || pathname ===HOME_PATH || pathname ===LOGIN_PATH || pathname=== ADMIN_USER_PATH || 
-  pathname=== ADVISORY_BOARD_PATH || pathname=== PERIODIC_TABLE_PATH;
+  const isAuthPage = pathname === BASE_PATH || pathname === REGISTER_PATH || pathname === HOME_PATH || pathname === LOGIN_PATH || pathname === ADMIN_USER_PATH ||
+    pathname === ADVISORY_BOARD_PATH || pathname === PERIODIC_TABLE_PATH;
 
   const siderStyle: React.CSSProperties = {
     position: "fixed",
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const toggleButtonStyle: React.CSSProperties = {
     position: "fixed",
     top: "20px",
-    left: collapsed ? "60px" : "225px",
+    left: collapsed ? "60px" : "216px",
     zIndex: 1000,
     transition: "all 0.3s",
     background: "#fff",
@@ -63,7 +63,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <Layout style={{ minHeight: "100vh", overflow: "hidden" }}>
                 {!isAuthPage && (
                   <>
-                    <Sider collapsed={collapsed} width={240} collapsedWidth={60} style={siderStyle}>
+                    <Sider collapsed={collapsed} width={265} collapsedWidth={60} style={siderStyle}>
                       <SiderBar collapsed={collapsed} />
                     </Sider>
                     <div style={toggleButtonStyle} onClick={() => setCollapsed(!collapsed)}>
@@ -81,13 +81,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 >
                   <Content
                     style={{
-                      padding: isAuthPage ? 0 : "24px 24px 24px 48px",
+                      padding: isAuthPage ? 0 : "24px 24px 24px 65px",
                       minHeight: "100vh",
                     }}
                   >
 
                     {children}
-                   
+
                   </Content>
                 </Layout>
               </Layout>

@@ -36,7 +36,7 @@ const ThemeChanger = () => {
     if (e.key === 'logout') {
       console.log('Đăng xuất');
       await authAPI.logout();
-      push('/vi');
+      push('http://localhost:3000/vi/auth/login');
     } else if (e.key === 'settings') {
       push('/vi/resetPassword');
     }
@@ -78,7 +78,7 @@ const ThemeChanger = () => {
         onClick={() => setThemeColor(themeBrownConfig)}
         style={buttonStyle('#48433d')}
       />
-      
+
       <h1>/</h1>
       <Dropdown
         menu={{ items: menuItems, onClick: handleMenuClick }}

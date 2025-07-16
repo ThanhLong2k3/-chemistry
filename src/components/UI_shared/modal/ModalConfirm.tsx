@@ -38,11 +38,11 @@ export const ModalConfirm = ({
         {...props}
         title={
           <Space align="center" size={8}>
-            <ExclamationCircleFilled 
-              style={{ 
-                color: '#faad14', 
-                fontSize: '16px' 
-              }} 
+            <ExclamationCircleFilled
+              style={{
+                color: '#faad14',
+                fontSize: '16px'
+              }}
             />
             <Text strong style={{ fontSize: '16px' }}>
               {title}
@@ -54,12 +54,12 @@ export const ModalConfirm = ({
         onOk={onOk}
         confirmLoading={confirmLoading}
         centered
-        destroyOnClose
+        destroyOnHidden
         maskClosable={false}
         cancelText={"Hủy"}
         okText={"Đồng ý"}
         okButtonProps={{
-          style: { 
+          style: {
             boxShadow: 'none',
           }
         }}
@@ -82,9 +82,9 @@ export const ModalConfirm = ({
           },
         }}
       >
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
           alignItems: 'center',
           minHeight: '40px',
           padding: '8px 0'
