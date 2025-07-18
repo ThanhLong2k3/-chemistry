@@ -1,92 +1,74 @@
 'use client';
 
-import { Card, Col, Image, Layout, Menu, Row, Typography } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Flex,
+  Image,
+  Layout,
+  List,
+  Menu,
+  Row,
+  Typography,
+} from 'antd';
 import React from 'react';
 
 import styles from './ScienceForumHomepage.module.scss';
+import { BookOutlined } from '@ant-design/icons';
+import { Key } from 'lucide-react';
+import SliderShowSection from '@/modules/systems/manage-web/home-user/slider-show/SlideShow';
+import { useRouter } from 'next/navigation';
+import LessonDetail from '@/modules/systems/manage-web/components/lessonDetail/LessonDetail';
+import BlogItem from '@/modules/systems/manage-web/home-user/blog/blog';
+import { LESSON_DETAIL_PATH, LESSON_LIST_PATH } from '@/path';
 
-const {  Content, Footer } = Layout;
+
+const { Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 const { Meta } = Card;
 
 const ScienceForumHomepage: React.FC = () => {
-  
-  const chapterData = [
+  const router = useRouter();
+
+  const subjectData = [
     {
-      title: 'CHƯƠNG 1: NGUYÊN TỬ',
-      backgroundImage:
-        'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/img-2736.png',
+      id: 1,
+      name: 'Hóa học 10',
+      description:
+        'Khám phá cấu trúc nguyên tử, bảng tuần hoàn và phản ứng hoá học cơ bản. \n- Tìm hiểu về các nguyên tố hoá học và tính chất của chúng.\n- Nắm vững các khái niệm cơ bản về phản ứng hoá học và cân bằng phương trình.\n- Hiểu rõ về các loại liên kết hoá học và ảnh hưởng của chúng đến tính chất vật lý và hoá học của chất. \n - Làm quen với các phương pháp thí nghiệm cơ bản trong hoá học.',
+      image: 'https://img.loigiaihay.com/picture/2024/0123/1_5.png',
       lessons: [
-        {
-          title: 'BÀI 4: ÔN TẬP CHƯƠNG 1',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/nguyen-to-hoa-hoc-la-gi-1-1.jpg',
-        },
-        {
-          title: 'BÀI 3: CẤU TRÚC LỚP VỎ ELECTRON NGUYÊN TỬ',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/51-background-powerpoint-hoa-hoc-hinh-nen-hoa-hoc-full-hd-18.jpg',
-        },
-        {
-          title: 'BÀI 2: NGUYÊN TỐ HÓA HỌC',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/lien-ket-cong-hoa-tri-5.jpg',
-        },
-        {
-          title: 'BÀI 1: THÀNH PHẦN NGUYÊN TỬ',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/c3429ab5006bc6be47eb4b055562f7b0.jpg',
-        },
+        'Giới thiệu về môn học',
+        'Số học cơ bản',
+        'Đại số và phương trình',
+        'Ứng dụng trong thực tế',
       ],
     },
     {
-      title: 'CHƯƠNG 2: BẢNG TUẦN HOÀN',
-      backgroundImage:
-        'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/img-2734.png',
+      id: 2,
+      name: 'Hóa học 11',
+      description: 'Tìm hiểu liên kết hóa học, động học và nhiệt hóa học.',
+      image: 'https://img.loigiaihay.com/picture/2024/0123/1.png',
       lessons: [
-        {
-          title: 'BÀI 9: ÔN TẬP CHƯƠNG 2',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/51-background-powerpoint-hoa-hoc-hinh-nen-hoa-hoc-full-hd-18.jpg',
-        },
-        {
-          title: 'BÀI 5: CẤU TẠO CỦA BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HÓA HỌC',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/nguyen-to-moi.jpg',
-        },
-        {
-          title:
-            'BÀI 8: ĐỊNH LUẬT TUẦN HOÀN, Ý NGHĨA CỦA BẢNG TUẦN HOÀN NGUYÊN TỐ',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/12-06-2022-18-10-33-bang-tuan-hoan-cac-nguyen-to-hoa-hoc-0.jpg',
-        },
+        'Giới thiệu về môn học',
+        'Số học cơ bản',
+        'Đại số và phương trình',
+        'Ứng dụng trong thực tế',
       ],
     },
     {
-      title: 'CHƯƠNG 3: LIÊN KẾT HÓA HỌC',
-      backgroundImage:
-        'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/img-2730.png',
+      id: 3,
+      name: 'Hóa học 12',
+      description:
+        'Tổng hợp kiến thức nâng cao về hữu cơ, vô cơ và kỹ năng giải bài tập.',
+      image:
+        'https://docx.com.vn/storage/uploads/documents/4ffaff7d4e13f0a51d85f271216490c8/bg1.png',
       lessons: [
-        {
-          title: 'BÀI 14: ÔN TẬP CHƯƠNG 3',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/360-f-136556031-xam5sua0lutnnkk67tnrst8yhcnglchi.jpg',
-        },
-        {
-          title: 'BÀI 12: LIÊN KẾT CỘNG HÓA TRỊ',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/665309f1f88366img.jpg',
-        },
-        {
-          title: 'BÀI 11: LIÊN KẾT ION',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/cau-tao-hat-nhan-nguyen-tu.jpg',
-        },
-        {
-          title: 'BÀI 10: QUY TẮC OCTET',
-          image:
-            'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/c3429ab5006bc6be47eb4b055562f7b0.jpg',
-        },
+        'Giới thiệu về môn học',
+        'Số học cơ bản',
+        'Đại số và phương trình',
+        'Ứng dụng trong thực tế',
       ],
     },
   ];
@@ -107,7 +89,8 @@ const ScienceForumHomepage: React.FC = () => {
     {
       icon: 'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/free-circular-star-icon-isolated-sticker-badge-logo-design-elements-p8abj8.jpg',
       title: 'MIỄN PHÍ',
-      description: 'Truy cập hệ thống tài nguyên hoàn toàn miễn phí',
+      description:
+        'Truy cập hệ thống tài nguyên hoàn toàn miễn phí tư vấn tự động ',
     },
     {
       icon: 'https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/green-tick-icon-on-white-background-check-vector-19755588.jpg',
@@ -122,70 +105,26 @@ const ScienceForumHomepage: React.FC = () => {
         'Chỉ cần có điện thoại máy tính bảng, laptop hoặc TV kết nối Internet',
     },
   ];
-
+  const handleOpenLessonList=(id:number)=>{
+      router.push(`${LESSON_LIST_PATH}/${id}`);
+  }
+  const handleOpenLessonDetail=(id:number | string)=>{
+      router.push(`${LESSON_DETAIL_PATH}/${id}`);
+  }
   return (
     <Layout className={styles.layout}>
-      
-
       <Content className={styles.content}>
-       
+        <SliderShowSection />
 
-        {/* Chapter Sections */}
-        {chapterData.map((chapter, index) => (
-          <div
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
-            className={styles.chapterSection}
-            style={{
-              backgroundImage: `url(${chapter.backgroundImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            <div className={styles.chapterContent}>
-              <Title level={2} className={styles.chapterTitle}>
-                {chapter.title}
-              </Title>
-              <Row gutter={[24, 24]} className={styles.lessonsRow}>
-                {chapter.lessons.map((lesson, lessonIndex) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <Col xs={24} sm={12} md={8} lg={6} key={lessonIndex}>
-                    <Card
-                      hoverable
-                      cover={
-                        <div className={styles.lessonImageContainer}>
-                          <Image
-                            src={lesson.image}
-                            alt={lesson.title}
-                            className={styles.lessonImage}
-                            preview={false}
-                          />
-                        </div>
-                      }
-                      className={styles.lessonCard}
-                    >
-                      <Meta
-                        title={lesson.title}
-                        className={styles.lessonMeta}
-                      />
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </div>
-          </div>
-        ))}
-
-        {/* Features Section */}
         <div className={styles.featuresSection}>
-          <Title level={2} className={styles.sectionTitle}>
-            TRẮC NGHIỆM THÔNG MINH
-          </Title>
-          <Row gutter={[32, 32]} className={styles.featuresRow}>
-            {features.map((feature, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Col xs={24} sm={12} md={8} lg={4} key={index}>
+          <div className={styles.featuresContent}>
+            <Title level={2} className={styles.sectionTitle}>
+              {`TẠI SAO CHỌN " VUI HỌC HÓA "`}
+            </Title>
+            <div className={styles.featuresRow}>
+              {features.map((feature, index) => (
                 <Card
+                  key={index}
                   hoverable
                   className={styles.featureCard}
                   cover={
@@ -205,11 +144,75 @@ const ScienceForumHomepage: React.FC = () => {
                     className={styles.featureMeta}
                   />
                 </Card>
-              </Col>
-            ))}
-          </Row>
+              ))}
+            </div>
+          </div>
         </div>
-        
+        {subjectData.map((subject,index) => (
+          <div className={`${styles.subjectsection} ${ index % 2 === 0 ? styles.even_background : styles.odd_background}`} key={index }>
+            <div className={styles.subjectconten}>
+              {/* Title Section - Centered at top */}
+              <Title level={1} className={styles.sectionTitle}>
+                {subject.name}
+              </Title>
+
+              {/* Main Content Area */}
+              <div className={styles.subject_main_content}>
+                {/* Image Section */}
+                <div className={styles.subject_image_section}>
+                  <div className={styles.image_container}>
+                    <Image
+                      src={subject.image}
+                      alt={subject.name}
+                      className={styles.subjectImage}
+                      preview={false}
+                    />
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className={styles.subject_content_section}>
+                  <div className={styles.content_body}>
+                    {subject.description.split('\n').map((line, index) => (
+                      <Paragraph
+                        key={index}
+                        className={styles.subjectDescription}
+                      >
+                        {line}
+                      </Paragraph>
+                    ))}
+                  </div>
+
+                
+                </div>
+
+                {/* Lesson List Section */}
+                <div className={styles.subject_lesson_section}>
+                  <div className={styles.lesson_title}>Danh sách bài học</div>
+
+                  <List
+                    className={styles.lessonList}
+                    size="small"
+                    dataSource={subject.lessons}
+                    renderItem={(lesson, index) => (
+                      <List.Item className={styles.lessonItem} onClick={()=>handleOpenLessonDetail(lesson)}>
+                        <BookOutlined className={styles.lessonIcon} />
+                        <div className={styles.lesson_content} >
+                          <strong>Bài {index + 1}:</strong>&nbsp;{lesson}
+                        </div>
+                      </List.Item>
+                    )}
+                  />
+                    <Button type="primary" className={styles.subjectButton} onClick={()=>handleOpenLessonList(subject.id)}>
+                    Xem bài học
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <BlogItem />
       </Content>
     </Layout>
   );

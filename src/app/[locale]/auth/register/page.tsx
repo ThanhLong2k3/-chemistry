@@ -15,7 +15,7 @@ import { authAPI } from '@/libs/api/auth.api';
 import { RULES_FORM } from '@/utils/validator';
 import { useNotification } from '@/components/UI_shared/Notification';
 import styles from './LoginPage.module.scss';
-import { createUser, login } from '@/services/account.service';
+// import { createUser, login } from '@/services/account.service';
 import { encrypt } from '@/libs/access';
 import { LOGIN_PATH } from '@/path';
 
@@ -32,31 +32,31 @@ export default function LoginPage() {
     document.title = 'Đăng Ký';
   }, []);
   const onFinish = async (values: any) => {
-    setLoading(true);
-    try {
-      const payload = {
-        id: '',
-        username: values.userName,
-        email: values.email,
-        password: encrypt(values.password),
-      };
+    // setLoading(true);
+    // try {
+    //   const payload = {
+    //     id: '',
+    //     username: values.userName,
+    //     email: values.email,
+    //     password: encrypt(values.password),
+    //   };
 
-      const res: any = await createUser(payload);
+    //   const res: any = await createUser(payload);
 
-      show({
-        result: res.data.result,
-        messageDone: 'Đăng ký thành công',
-        messageError: 'Tài khoản hoặc Mật khẩu không đúng!',
-        messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại!'
-      });
+    //   show({
+    //     result: res.data.result,
+    //     messageDone: 'Đăng ký thành công',
+    //     messageError: 'Tài khoản hoặc Mật khẩu không đúng!',
+    //     messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại!'
+    //   });
 
-      form.resetFields();
-    } catch (err: any) {
-      const errorCode = err.response?.data?.errorCode || 8;
-      show({ result: errorCode });
-    } finally {
-      setLoading(false);
-    }
+    //   form.resetFields();
+    // } catch (err: any) {
+    //   const errorCode = err.response?.data?.errorCode || 8;
+    //   show({ result: errorCode });
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (

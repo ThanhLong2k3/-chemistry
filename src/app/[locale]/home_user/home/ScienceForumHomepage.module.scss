@@ -1,404 +1,577 @@
-/* Biến màu sắc */
-$primary-color: #7a52aa; // Màu tím chủ đạo từ banner
-$secondary-color: #6c757d; // Màu xám phụ trợ
-$text-color: #333; // Màu chữ chính
-$light-text-color: #ffffff; // Màu chữ sáng
-$background-color: #f8f9fa; // Màu nền tổng thể
-$card-background: #ffffff; // Màu nền card
-$border-color: #dee2e6; // Màu viền
+/* Biến màu */
+$primary-color: #7a52aa;
+$secondary-color: #6c757d;
+$text-color: #333;
+$light-text-color: #ffffff;
+$background-color: #f8f9fa;
+$card-background: #ffffff;
 
-/* Mixin cho flexbox */
+/* Mixin */
 @mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-@mixin flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+/* Layout */
 .layout {
   min-height: 100vh;
   background-color: $background-color;
-  width: 100%;
   overflow-x: hidden;
 }
 
 .content {
-  padding: 0; // Đặt padding bằng 0 để các section chiếm toàn bộ chiều rộng
-  min-height: 280px;
-  background-color: $background-color;
+  padding: 0;
   width: 100%;
-  // margin-top: 64px; // Có thể cần điều chỉnh margin-top nếu header fixed
+  background-color: $background-color;
 }
 
-  .heroSection {
-    text-align: left; // Căn chữ sang trái
-    width: 100%;
-    position: relative; // Để header có thể đặt trên
-    overflow: hidden; // Đảm bảo hình ảnh không tràn ra ngoài
+/* --- Features Section --- */
+.featuresSection {
+  width: 100%;
+  background-color: $background-color;
+  padding: 24px;
+  padding-bottom: 60px;
 
-    .heroBanner {
-      width: 100%;
-      height: auto; // Cho phép chiều cao tự động theo tỷ lệ ảnh
-      // max-height: 400px; // Có thể bỏ nếu muốn ảnh cao hơn
-      object-fit: cover;
-      position: absolute; // Đặt ảnh nền
-      top: 0;
-      left: 0;
-      z-index: 1; // Để ảnh nằm dưới chữ
-      filter: brightness(0.9); // Làm mờ ảnh một chút nếu cần
-
-      // Đảm bảo ảnh bao phủ toàn bộ vùng heroSection
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    .heroTextContent {
-        position: relative;
-        z-index: 2; // Đảm bảo chữ nằm trên ảnh
-        max-width: 1200px; // Giới hạn chiều rộng nội dung để dễ đọc
-        margin: 0 auto;
-        padding: 0 50px; // Padding ngang cho nội dung
-        color: $light-text-color; // Chữ màu trắng
-
-        .heroTitle {
-            font-size: 3.5em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: $light-text-color;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-        }
-
-        .heroParagraph {
-            font-size: 1.5em;
-            color: $light-text-color;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            max-width: 600px; // Giới hạn chiều rộng của slogan
-        }
-    }
-  }
-
-  .chapterSection {
-    padding: 200px;
-    color: $light-text-color;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-    
-    // Nền hình ảnh cho từng chương
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 1;
-    }
-
-    .chapterContent {
-      position: relative;
-      z-index: 2;
-      max-width: 1200px; // Giới hạn nội dung chương để dễ đọc trên màn hình lớn
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .chapterTitle {
-      text-align: center;
-      margin-bottom: 40px;
-      padding-top: 40px;
-      color: $light-text-color;
-      font-size: 2.5em;
-      font-weight: bold;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .lessonsRow {
-      justify-content: center;
-    }
-
-    .lessonCard {
-      background-color: $card-background;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      }
-
-      .lessonImageContainer {
-        height: 180px;
-        overflow: hidden;
-        .lessonImage {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-      }
-
-      &:hover .lessonImage {
-        transform: scale(1.05);
-      }
-
-      .lessonMeta {
-        padding: 16px;
-        .ant-card-meta-title {
-          font-size: 1.1em;
-          font-weight: 600;
-          color: $text-color;
-          height: 3em;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-        }
-      }
-    }
-  }
-
-  .featuresSection {
+  .featuresContent {
+    width: 80%;
+    margin: 0 auto;
     text-align: center;
-    padding: 60px 0;
-    background-color: $light-text-color;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .sectionTitle {
+    text-transform: uppercase;
+    color: $primary-color;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    font-size: 2.2em;
+    font-weight: bold;
+  }
+
+  .featuresRow {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .featureCard {
+    background-color: $card-background;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    width: 18%;
+    min-height: 280px; /* Cố định chiều cao tối thiểu */
+    display: flex;
+    flex-direction: column;
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .featureIconContainer {
+      @include flex-center;
+      height: 100px;
+      flex-shrink: 0;
+
+      .featureIcon {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+      }
+    }
+
+    .featureMeta {
+      padding: 16px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .ant-card-meta-title {
+        font-size: 1.1em;
+        font-weight: 600;
+        color: $primary-color;
+        margin-bottom: 10px;
+      }
+
+      .ant-card-meta-description {
+        color: $secondary-color;
+        font-size: 0.95em;
+        min-height: 4em;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .featuresSection {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+
+    .featuresContent {
+      width: 90%;
+    }
 
     .sectionTitle {
-      color: $primary-color;
-      margin-bottom: 50px;
-      font-size: 2.2em;
-      font-weight: bold;
+      font-size: 2em;
     }
 
     .featuresRow {
+      flex-wrap: wrap;
+      gap: 20px;
       justify-content: center;
     }
 
     .featureCard {
-      background-color: $card-background;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      height: 100%;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-      }
-
-      .featureIconContainer {
-        @include flex-center;
-        height: 100px;
-        .featureIcon {
-          width: 60px;
-          height: 60px;
-          object-fit: contain;
-        }
-      }
-
-      .featureMeta {
-        padding: 16px;
-        .ant-card-meta-title {
-          font-size: 1.1em;
-          font-weight: 600;
-          color: $primary-color;
-          margin-bottom: 10px;
-        }
-        .ant-card-meta-description {
-          color: $secondary-color;
-          font-size: 0.95em;
-          min-height: 4em;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
-    }
-  }
-
-  .tocSection {
-    text-align: center;
-    margin-bottom: 40px;
-    width: 100%;
-    .tocImage {
-      width: 100%;
-      max-height: 300px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-  }
-
-.footer {
-  background-color: $text-color;
-  color: $light-text-color;
-  text-align: center;
-  padding: 24px 50px;
-  width: 100%;
-
-  .footerContent {
-    max-width: 1200px; // Có thể giữ max-width cho nội dung footer để không quá rộng
-    margin: 0 auto;
-  }
-
-  .copyright {
-    color: $light-text-color;
-    margin-bottom: 0;
-  }
-
-  .footerLink {
-    color: $primary-color;
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 992px) {
-  .header {
-    padding: 0 20px;
-    .menu {
-      display: none;
-    }
-    .headerActions {
-      margin-left: auto;
-    }
-  }
-
-  .content {
-    padding: 0; // Remove padding to allow hero section to be full width
-  }
-
-  .heroSection {
-    padding-top: 80px; // Adjust for smaller screens
-    padding-bottom: 80px;
-    .heroTextContent {
-        padding: 0 20px;
-        .heroTitle {
-            font-size: 2.8em;
-        }
-        .heroParagraph {
-            font-size: 1.2em;
-        }
-    }
-  }
-
-  .chapterSection {
-    padding: 40px 0;
-    .chapterTitle {
-      font-size: 2em;
-    }
-    .chapterContent {
-        padding: 0 20px;
-    }
-  }
-
-  .featuresSection {
-    padding: 40px 0;
-    .sectionTitle {
-      font-size: 1.8em;
+      width: 30%;
+      min-width: 200px;
+      min-height: 260px; /* Giảm nhẹ chiều cao cho tablet */
     }
   }
 }
 
 @media (max-width: 768px) {
-  .header {
-    .logoText {
-      font-size: 20px;
-    }
-  }
-
-  .heroSection {
-    padding-top: 60px;
-    padding-bottom: 60px;
-    .heroTextContent {
-        .heroTitle {
-            font-size: 2.2em;
-        }
-        .heroParagraph {
-            font-size: 1em;
-        }
-    }
-  }
-
-  .chapterSection {
-    .chapterTitle {
-      font-size: 1.8em;
-    }
-    .lessonCard {
-      .lessonMeta .ant-card-meta-title {
-        font-size: 1em;
-      }
-    }
-  }
-
   .featuresSection {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 30px;
+
     .sectionTitle {
-      font-size: 1.6em;
+      font-size: 1.8em;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .featureCard {
+      width: 45%;
+      min-width: 180px;
+      min-height: 240px; /* Giảm chiều cao cho mobile */
+
+      .featureIconContainer {
+        height: 80px;
+
+        .featureIcon {
+          width: 50px;
+          height: 50px;
+        }
+      }
+
+      .featureMeta {
+        padding: 12px;
+
+        .ant-card-meta-title {
+          font-size: 1em;
+        }
+
+        .ant-card-meta-description {
+          font-size: 0.9em;
+        }
+      }
     }
   }
 }
 
 @media (max-width: 576px) {
-  .header {
-    .headerContent {
-      flex-direction: column;
-      align-items: flex-start;
-      .logo {
-        margin-bottom: 10px;
-      }
-      .headerActions {
-        width: 100%;
-        justify-content: space-around;
-      }
-    }
-  }
-
-  .content {
-    padding: 0;
-  }
-
-  .heroSection {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    .heroTextContent {
-        padding: 0 15px;
-        .heroTitle {
-            font-size: 1.8em;
-        }
-        .heroParagraph {
-            font-size: 0.9em;
-        }
-    }
-  }
-
-  .chapterSection {
-    padding: 30px 0;
-    .chapterTitle {
-      font-size: 1.5em;
-    }
-  }
-
   .featuresSection {
-    padding: 30px 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+
     .sectionTitle {
-      font-size: 1.4em;
+      font-size: 1.6em;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .featureCard {
+      width: 100%;
+      max-width: 300px;
+      min-height: 220px; /* Chiều cao nhỏ hơn cho mobile nhỏ */
+
+      .featureIconContainer {
+        height: 70px;
+
+        .featureIcon {
+          width: 45px;
+          height: 45px;
+        }
+      }
+
+      .featureMeta {
+        padding: 10px;
+
+        .ant-card-meta-title {
+          font-size: 0.95em;
+        }
+
+        .ant-card-meta-description {
+          font-size: 0.85em;
+        }
+      }
+    }
+  }
+}
+/* Biến màu */
+$primary-color: #7a52aa;
+$secondary-color: #6c757d;
+$text-color: #333;
+$light-text-color: #ffffff;
+$background-color: #f8f9fa;
+$card-background: #ffffff;
+
+/* Mixin */
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Subject Section --- */
+.subjectsection {
+  height: 820px;
+  width: 100%;
+  background-size: cover;
+  padding: 60px 0;
+  padding-left: 24px;
+  padding-right: 24px;
+  display: flex;
+  align-items: center;
+  // Background cho index chẵn (0, 2, 4, ...)
+  &.even_background {
+    background-image: url('/Slider/brgxanh.png');
+    background-color: #e3f2fd; // fallback color
+  }
+
+  // Background cho index lẻ (1, 3, 5, ...)
+  &.odd_background {
+    background-image: url('/Slider/bgrtim.png'); // thay đổi đường dẫn theo ý bạn
+    background-color: #fff3e0; // fallback color
+  }
+  .subjectconten {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 30px;
+  }
+
+  .sectionTitle {
+    color: $primary-color;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  // Main content wrapper
+  .subject_main_content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    height: calc(100% - 100px);
+  }
+
+  // Image Section - 30% width
+  .subject_image_section {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    .image_container {
+      width: 100%;
+      height: 85%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .subjectImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  // Content Section - 40% width
+  .subject_content_section {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+
+    .content_body {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .subjectDescription {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+        text-align: justify;
+        margin-bottom: 0;
+      }
+    }
+
+    .subjectButton {
+      font-size: 16px;
+      height: 50px;
+      padding: 12px 24px;
+      border-radius: 10px; /* Bo góc mượt hơn thay vì 20% */
+      border: 1px solid #ffffff;
+      background: linear-gradient(
+        90deg,
+        #067ad1,
+        #4a90e2
+      ); /* Gradient màu xanh dương */
+      color: #ffffff; /* Chữ trắng để tương phản tốt hơn */
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+
+      &:hover {
+        background: linear-gradient(
+          90deg,
+          #031cfd,
+          #3374ff
+        ); /* Gradient tối hơn khi hover */
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(26, 1, 163, 0.3); /* Tăng độ bóng */
+        border-color: #ffffff;
+      }
+    }
+  }
+
+  // Lesson List Section - 30% width
+  .subject_lesson_section {
+    width: 29%;
+    height: 90%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+
+    .lesson_title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      text-align: center;
+      padding-bottom: 10px;
+    }
+
+    .lessonList {
+      border-radius: 12px;
+      padding: 15px;
+      height: 100%;
+      overflow-y: auto;
+
+      .lessonItem {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #333;
+        background-color: #fff;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        border: 1px solid #e8e8e8;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: #f5f5f5;
+          border-color: #7a52aa;
+          transform: translateX(5px);
+          cursor: pointer;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .lessonIcon {
+          color: #7a52aa;
+          font-size: 16px;
+          flex-shrink: 0;
+        }
+
+        .lesson_content {
+          flex: 1;
+
+          strong {
+            color: #7a52aa;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .subjectsection {
+    height: auto;
+    padding: 40px 20px;
+
+    .subjectconten {
+      width: 90%;
+      gap: 20px;
+    }
+
+    .sectionTitle {
+      font-size: 2em;
+    }
+
+    .subject_main_content {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+      gap: 30px; /* Tăng gap để tránh ảnh đè chữ */
+    }
+
+    .subject_image_section {
+      width: 100%;
+      max-width: 250px; /* Giảm từ 500px để không quá to */
+      height: 300px; /* Giảm từ 350px để cân đối */
+      margin-bottom: 20px; /* Thêm khoảng cách dưới ảnh */
+      padding: 10px;
+
+      .image_container {
+        height: 100%;
+      }
+    }
+
+    .subject_content_section {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      padding: 10px;
+      text-align: center;
+
+      .content_body {
+        gap: 10px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 20px;
+        .subjectDescription {
+          font-size: 15px;
+        }
+      }
+
+      .subjectButton {
+        align-self: center;
+        width: 100%;
+        max-width: 200px;
+      }
+    }
+
+    .subject_lesson_section {
+      display: none; /* Ẩn mục lục trên màn hình nhỏ hơn 1024px */
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .subjectsection {
+    padding: 30px 15px;
+
+    .subjectconten {
+      width: 100%;
+      gap: 15px;
+    }
+
+    .sectionTitle {
+      font-size: 1.8em;
+    }
+
+    .subject_image_section {
+      max-width: 250px; /* Giảm từ 400px */
+      height: 300px; /* Giảm từ 300px */
+      margin-bottom: 15px; /* Giảm khoảng cách */
+    }
+
+    .subject_content_section {
+      max-width: 500px;
+
+      .content_body {
+        .subjectDescription {
+          font-size: 14px;
+        }
+      }
+
+      .subjectButton {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+    }
+
+    .subject_lesson_section {
+      display: none; /* Tiếp tục ẩn mục lục */
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .subjectsection {
+    padding: 20px 10px;
+
+    .sectionTitle {
+      font-size: 1.6em;
+    }
+
+    .subject_image_section {
+      max-width: 150px; /* Giảm từ 320px */
+      height: 200px; /* Giữ nguyên */
+      margin-bottom: 10px; /* Giảm khoảng cách */
+    }
+
+    .subject_content_section {
+      max-width: 400px;
+
+      .content_body {
+        .subjectDescription {
+          font-size: 13px;
+        }
+      }
+
+      .subjectButton {
+        font-size: 13px;
+        padding: 8px 16px;
+      }
+    }
+
+    .subject_lesson_section {
+      display: none; /* Tiếp tục ẩn mục lục */
     }
   }
 }
