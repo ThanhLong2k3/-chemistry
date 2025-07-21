@@ -5,6 +5,9 @@ export const ADVISORY_BOARD_PATH = `${HOME_BASE_PATH}/advisoryboard`;
 export const PERIODIC_TABLE_PATH = `${HOME_BASE_PATH}/periodictable`;
 export const LESSON_LIST_PATH = `${HOME_BASE_PATH}/lessonlist`;
 export const LESSON_DETAIL_PATH = `${HOME_BASE_PATH}/lessondetail`;
+export const REVIEW_FILE_PDF_PATH = `${HOME_BASE_PATH}/reviewfilepdf`;
+
+
 // PATH AUTH
 export const AUTH_PATH = 'auth';
 export const REGISTER_PATH = `${BASE_PATH}/${AUTH_PATH}/register`;
