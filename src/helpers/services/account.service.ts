@@ -12,9 +12,11 @@ import {
 
 import { IBaseSearch } from '@/types/base';
 import { isDisposableEmail } from '@/services/utils.services';
-import { decrypt, encrypt } from '@/libs/access';
+import { decrypt } from '@/libs/access';
+import { getPermissionsByRole } from '../repositories/permission.repository';
 
-const BCRYPT_ROUNDS = parseInt('10');
+const BCRYPT_ROUNDS = parseInt('10'); //số vòng lặp mà thư viện bcryptjs sử dụng khi mã hoá mật khẩu
+
 
 export const createAccountService = async (model: IAccount) => {
   try {
@@ -27,15 +29,15 @@ export const createAccountService = async (model: IAccount) => {
     const isInvalidEmail = await isDisposableEmail(model.email);
     if (isInvalidEmail) throw new Error('Địa chỉ email không được hỗ trợ');
 
-    const decryptedPassword = decrypt(model.password);
-    if (!decryptedPassword) throw new Error('Mật khẩu không hợp lệ');
+    // const decryptedPassword = decrypt(model.password);
+    // if (!decryptedPassword) throw new Error('Mật khẩu không hợp lệ');
 
-    const hashedPassword = await bcrypt.hash(decryptedPassword, BCRYPT_ROUNDS);
+    // const hashedPassword = await bcrypt.hash(decryptedPassword, BCRYPT_ROUNDS);
 
     // Save
     const result = await createAccount({
       ...model,
-      password: hashedPassword,
+      // password: hashedPassword,
     });
 
     return result;
@@ -88,6 +90,8 @@ export const deleteAccountService = async (username: string, deletedBy: string) 
   }
 };
 
+
+
 export const login = async (username: string, rawPassword: string) => {
   try {
     const account = await authenticate(username);
@@ -96,10 +100,23 @@ export const login = async (username: string, rawPassword: string) => {
 
     const user = account[0];
     const isMatch = await bcrypt.compare(rawPassword, user.password);
+    // if (!isMatch) return null;
 
-    if (!isMatch) return null;
+    // 1. Gọi hàm mới để lấy tất cả thông tin phân quyền
+    const allPermissionsInfo = await getPermissionsByRole(user.role_id);
 
-    return user;
+    // 2. Dùng .map() để lọc ra mảng chỉ chứa các `permission_code`
+    const permissions = allPermissionsInfo.map((p: any) => p.permission_code);
+
+    // 3. Tạo object mới để trả về client
+    const userWithPermissions = {
+      ...user,
+      password: '', // Xóa password hash
+      permissions: permissions, // Mảng mã quyền
+    };
+
+    return userWithPermissions;
+
   } catch (error) {
     console.error("❌ Login error", error);
     return null;

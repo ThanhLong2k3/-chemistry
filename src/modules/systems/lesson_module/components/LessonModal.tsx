@@ -10,10 +10,10 @@ import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { searchChapter } from '@/services/chapter.service';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import axios from 'axios';
 import { IChapter } from '@/types/chapter';
 import { NewuploadFiles } from '@/libs/api/upload.api';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });

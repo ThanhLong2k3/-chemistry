@@ -9,12 +9,10 @@ import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
-import { searchSubject } from '@/services/subject.service';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import axios from 'axios';
-import { ISubject } from '@/types/subject';
 import { image } from 'd3';
 import { NewuploadFiles } from '@/libs/api/upload.api';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -34,40 +32,12 @@ export const AdvisoryMemberModal = ({
   const [form] = Form.useForm();
   const { show } = useNotification();
   const [description, setDescription] = useState('');
-  const [subjects, setSubjects] = useState<ISubject[]>([]);
 
   // 1. Sử dụng Form.useWatch để theo dõi giá trị của trường 'image'
   const imageFileList = Form.useWatch('image', form);
 
   // 2. Kiểm tra xem có ảnh hay không. `hasImage` sẽ là true nếu có file, và false nếu không có.
   const hasImage = imageFileList && imageFileList.length > 0;
-
-
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const res = await searchSubject({ page_index: 1, page_size: 100 });
-        if (res.success) {
-          setSubjects(res.data);
-        }
-      } catch (err) {
-        console.error('Lỗi khi tải môn học:', err);
-      }
-    };
-
-    if (isOpen) {
-      fetchSubjects();
-
-      if (isCreate) {
-        form.resetFields();
-        setDescription('');
-      } else if (row) {
-        form.setFieldsValue(row);
-        setDescription(row.description || '');
-      }
-    }
-  }, [isOpen]);
-
 
   useEffect(() => {
     if (isOpen) {
@@ -228,17 +198,11 @@ export const AdvisoryMemberModal = ({
               </Form.Item>
 
               <Form.Item
-                name="subject_id"
+                name="subject"
                 label="Môn học phụ trách"
                 rules={RULES_FORM.required}
               >
-                <Select placeholder="Chọn môn học" allowClear showSearch optionFilterProp="children">
-                  {subjects.map((subject) => (
-                    <Select.Option key={subject.id} value={subject.id}>
-                      {subject.name}
-                    </Select.Option>
-                  ))}
-                </Select>
+                <Input />
               </Form.Item>
 
               <Form.Item

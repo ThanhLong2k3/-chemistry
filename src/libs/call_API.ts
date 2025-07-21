@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { apiClient } from './api';
 
-export const API_URL = '/api';  
+export const API_URL = '/api';
 
 export const CallApi = {
   getAll: async <T>(nameApi: string): Promise<T[]> => {
     try {
-      const response = await apiClient.get<T[]>(`${API_URL}/${nameApi}`);
+      const response = await axios.get<T[]>(`${API_URL}/${nameApi}`);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -21,7 +20,7 @@ export const CallApi = {
 
   create: async <T>(nameApi: string, data: unknown): Promise<T> => {
     try {
-      const response = await apiClient.post<T>(`${API_URL}/${nameApi}`, data);
+      const response = await axios.post<T>(`${API_URL}/${nameApi}`, data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -36,7 +35,7 @@ export const CallApi = {
 
   update: async <T>(nameApi: string, data: unknown): Promise<T> => {
     try {
-      const response = await apiClient.patch<T>(`${API_URL}/${nameApi}`, data);
+      const response = await axios.patch<T>(`${API_URL}/${nameApi}`, data);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -51,7 +50,7 @@ export const CallApi = {
 
   delete: async <T>(nameApi: string, id: number | string): Promise<T> => {
     try {
-      const response = await apiClient.delete<T>(`${API_URL}/${nameApi}`, {
+      const response = await axios.delete<T>(`${API_URL}/${nameApi}`, {
         params: { id },
       });
       return response.data;
@@ -65,9 +64,9 @@ export const CallApi = {
       throw error;
     }
   },
-  deleteCustomerLink: async (nameApi: string , data:any) => {
+  deleteCustomerLink: async (nameApi: string, data: any) => {
     try {
-      const response = await apiClient.delete(`${API_URL}/${nameApi}`,{data} );
+      const response = await axios.delete(`${API_URL}/${nameApi}`, { data });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

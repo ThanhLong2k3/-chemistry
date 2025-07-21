@@ -1,12 +1,16 @@
-import { Card, Flex, type TableColumnsType, Table, Input, Tag } from 'antd';
+import { Card, Flex, type TableColumnsType, Table, Input, Tag, Select } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { searchLesson } from '@/services/lesson.service';
 import { ILesson } from '@/types/lesson';
 import { LessonModal } from './LessonModal';
 import { LessonDelete } from './LessonDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { ISubject } from '@/types/subject';
+import { IChapter } from '@/types/chapter';
+import { searchSubject } from '@/services/subject.service';
+import { searchChapter } from '@/services/chapter.service';
 
 export const LessonTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -17,9 +21,60 @@ export const LessonTable = () => {
   const [total, settotal] = useState<number>(10);
   const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
 
+  const [subjects, setSubjects] = useState<ISubject[]>([]);
+  const [chapters, setChapters] = useState<IChapter[]>([]);
+
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
+  const [searchNameChapter, setSearchNameChapter] = useState<string | null>(null);
+
+  const [loadingSubjects, setLoadingSubjects] = useState(false);
+  const [loadingChapters, setLoadingChapters] = useState(false);
+
+  // Lấy danh sách Môn học (chỉ một lần)
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      setLoadingSubjects(true);
+      try {
+        const res = await searchSubject({ page_index: 1, page_size: 1000 });
+        if (res.success) setSubjects(res.data);
+      } catch (err) {
+        console.error('Lỗi khi tải môn học:', err);
+      } finally {
+        setLoadingSubjects(false);
+      }
+    };
+    fetchSubjects();
+  }, []);
+
+  // Lấy danh sách Chương mỗi khi Môn học được chọn thay đổi
+  useEffect(() => {
+    const fetchChapters = async () => {
+      if (!selectedSubject) return;
+
+      setLoadingChapters(true);
+      try {
+        const res = await searchChapter({
+          page_index: 1,
+          page_size: 10,
+          search_content_1: searchNameChapter,
+          search_content_2: selectedSubject,
+        });
+        if (res.success) setChapters(res.data);
+      } catch (err) {
+        console.error('Lỗi khi tải chương:', err);
+      } finally {
+        setLoadingChapters(false);
+      }
+    };
+
+    fetchChapters();
+  }, [searchNameChapter, selectedSubject]);
+
+
   useEffect(() => {
     getAllLesson();
-  }, [pageIndex, pageSize, ordertype, nameLesson]);
+  }, [pageIndex, pageSize, ordertype, nameLesson, selectedSubject, selectedChapter]);
 
   useEffect(() => {
     const account = getAccountLogin();
@@ -32,13 +87,20 @@ export const LessonTable = () => {
         page_index: pageIndex,
         page_size: pageSize,
         order_type: ordertype,
-        search_content: nameLesson,
+        search_content_1: nameLesson,
+        search_content_2: selectedChapter,
+        search_content_3: selectedSubject
       });
-      settotal(data.data[0]?.TotalRecords);
+      settotal(data.data.length > 0 ? data.data[0].TotalRecords : 0);
       setListLesson(data.data || []);
     } catch (err) {
       console.error('Failed to fetch Lesson list:', err);
     }
+  };
+
+  const handleSubjectChange = (value: string | undefined) => {
+    setSelectedSubject(value || null);
+    setSelectedChapter(null); // Reset lựa chọn chương khi đổi môn
   };
 
   const columns: TableColumnsType<ILesson> = [
@@ -106,6 +168,41 @@ export const LessonTable = () => {
   return (
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
+        {/* SELECT MÔN HỌC */}
+        <Select
+          placeholder="Chọn môn học"
+          style={{ width: 300 }}
+          onChange={handleSubjectChange}
+          allowClear
+          loading={loadingSubjects}
+          value={selectedSubject}
+        >
+          {subjects.map(subject => (
+            <Select.Option key={subject.id} value={subject.name}>
+              {subject.name}
+            </Select.Option>
+          ))}
+        </Select>
+
+        {/* SELECT CHƯƠNG */}
+        <Select
+          placeholder="Chọn chương"
+          style={{ width: 1000 }}
+          onChange={(value) => setSelectedChapter(value || null)}
+          onSearch={(value) => setSearchNameChapter(value || null)}
+          showSearch
+          allowClear
+          loading={loadingChapters}
+          disabled={!selectedSubject} // Chỉ bật khi đã chọn môn
+          value={selectedChapter}
+        >
+          {chapters.map(chapter => (
+            <Select.Option key={chapter.id} value={chapter.name}>
+              {chapter.name}
+            </Select.Option>
+          ))}
+        </Select>
+
         <Input
           placeholder="Tìm kiếm bài học..."
           value={nameLesson ?? ''}

@@ -6,7 +6,7 @@ export const createMenu = async (model: IMenu): Promise<any> => {
   try {
     console.log('model', model);
     const des = model.description ? model.description : null;
-    const par=model.parent_id?model.parent_id:null;
+    const par = model.parent_id ? model.parent_id : null;
     const sql = 'CALL AddMenu(?,?,?,?,?,?,?)';
     return await db_Provider(
       sql,
@@ -59,7 +59,7 @@ export const deleteMenus = async (menuId: string): Promise<any> => {
 export const searchMenus = async (model: IBaseSearch): Promise<any> => {
   try {
     const sql = 'CALL GetMenusByPageOrder(?,?,?,?)';
-    const menu_namme=model.search_content?model.search_content:undefined;
+    const menu_namme = model.search_content ? model.search_content : undefined;
     const results = await db_Provider(sql, [
       model.page_index ?? 0,
       model.page_size ?? 0,

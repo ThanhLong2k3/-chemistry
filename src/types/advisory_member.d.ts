@@ -5,7 +5,7 @@ export interface IAdvisoryMember {
     teacher_name: string;
     image: string;
     qualification: string | null;
-    subject_id: string;
+    subject: string;
     in_charge: string | null;
     workplace: string | null;
     years_of_experience: int | null;

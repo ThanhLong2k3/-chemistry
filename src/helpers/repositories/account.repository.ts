@@ -7,6 +7,7 @@ import { IAccount } from '@/types/account';
 export const createAccount = async (model: IAccount): Promise<any> => {
   try {
     const sql = 'CALL add_account(?,?,?,?,?,?,?)';
+
     return await db_Provider(
       sql,
       [
@@ -14,9 +15,9 @@ export const createAccount = async (model: IAccount): Promise<any> => {
         model.password,
         model.image ?? null,
         model.name,
-        model.role,
+        model.role_id,
         model.email,
-        model.updated_by
+        model.created_by
       ],
       true
     );
@@ -28,14 +29,16 @@ export const createAccount = async (model: IAccount): Promise<any> => {
 // Cập nhật tài khoản
 export const updateAccount = async (model: IAccount): Promise<any> => {
   try {
-    const sql = 'CALL update_account(?,?,?,?,?,?)';
+    const sql = 'CALL update_account(?,?,?,?,?,?,?,?)';
     return await db_Provider(
       sql,
       [
+        model.old_username,
         model.username,
         model.password,
         model.image,
         model.name,
+        model.role_id,
         model.email,
         model.updated_by
       ],
@@ -61,13 +64,15 @@ export const deleteAccount = async (username: string, deletedBy: string): Promis
 // Tìm kiếm tài khoản có phân trang
 export const searchAccounts = async (model: IBaseSearch): Promise<any> => {
   try {
-    const sql = 'CALL get_accounts(?,?,?,?)'; // 
-    const searchContent = model.search_content || null;
+    const sql = 'CALL get_accounts(?,?,?,?,?)'; // 
+    const name = model.search_content_1 || null;
+    const roleName = model.search_content_2 || null;
     const results = await db_Provider(sql, [
-      model.page_index ?? 0,
+      model.page_index ?? 1,
       model.page_size ?? 10,
       model.order_type ?? 'ASC',
-      searchContent,
+      name,
+      roleName
     ]);
     return results;
   } catch (error: any) {
@@ -84,3 +89,4 @@ export const authenticate = async (username: string): Promise<any> => {
     throw new Error(error.message);
   }
 };
+

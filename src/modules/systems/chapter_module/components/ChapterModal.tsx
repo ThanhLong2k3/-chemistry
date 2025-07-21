@@ -11,8 +11,8 @@ import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import axios from 'axios';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -37,7 +37,7 @@ export const ChapterModal = ({
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const res = await searchSubject({ page_index: 1, page_size: 100 });
+        const res = await searchSubject({ page_index: 1, page_size: 10 });
         if (res.success) {
           setSubjects(res.data);
         }

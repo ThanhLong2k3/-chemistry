@@ -11,12 +11,7 @@ const baseURL =
 const prefix = `${baseURL}/api/account`;
 
 export const createAccount = async (request: IAccount): Promise<ResponseProps> => {
-  const token = localStorage.getItem('TOKEN');
-  const response = await axios.post(`${prefix}/create`, request, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  const response = await axios.post(`${prefix}/create`, request);
   return response.data;
 };
 

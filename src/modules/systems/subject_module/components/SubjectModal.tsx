@@ -9,9 +9,9 @@ import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css'; // CSS mặc định
 import dynamic from 'next/dynamic';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import axios from 'axios';
 import { NewuploadFiles } from '@/libs/api/upload.api';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -110,8 +110,6 @@ export const SubjectModal = ({
           });
         }
       } else if (row?.id) {
-        console.log({ ...values, id: row.id, updated_by: currentAccount.username });
-
         const responseData: any = await updateSubject({ ...values, id: row.id, updated_by: currentAccount.username, image: imageUrl });
 
         if (responseData.success) {

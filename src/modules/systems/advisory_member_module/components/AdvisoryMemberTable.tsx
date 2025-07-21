@@ -5,8 +5,8 @@ import { searchAdvisoryMember } from '@/services/advisory_member.service';
 import { IAdvisoryMember } from '@/types/advisory_member';
 import { AdvisoryMemberModal } from './AdvisoryMemberModal';
 import { AdvisoryMemberDelete } from './AdvisoryMemberDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 export const AdvisoryMemberTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -32,7 +32,7 @@ export const AdvisoryMemberTable = () => {
         page_index: pageIndex,
         page_size: pageSize,
         order_type: ordertype,
-        search_content: nameAdvisoryMember,
+        search_content_1: nameAdvisoryMember,
       });
       settotal(data.data[0]?.TotalRecords);
       setListAdvisoryMember(data.data || []);

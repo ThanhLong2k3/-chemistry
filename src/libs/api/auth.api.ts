@@ -1,10 +1,10 @@
 import { CallApi } from '@/libs/call_API';
 import { API_URL } from '@/libs/call_API';
-interface User {
-  id: number;
-  email: string;
-  role: 'admin' | 'user';
-}
+// interface User {
+//   id: number;
+//   email: string;
+//   role: 'admin' | 'user';
+// }
 
 //đã sửa
 interface LoginResponse {
@@ -14,7 +14,7 @@ interface LoginResponse {
     username: string;
     name: string;
     email: string;
-    role: string;
+    role_id: string;
     image: string;
   };
   token?: string;
@@ -88,18 +88,19 @@ export const authAPI = {
 
 
 
-  getCurrentUser: async (): Promise<User> => {
-    try {
-      const data = await CallApi.getAll<User>('auth/me');
-      return data[0];
-    } catch (error) {
-      throw new Error(
-        `Lấy thông tin user thất bại: ${error instanceof Error ? error.message : 'Không xác định'}`,
-      );
-    }
-  },
+  //   getCurrentUser: async (): Promise<User> => {
+  //     try {
+  //       const data = await CallApi.getAll<User>('auth/me');
+  //       return data[0];
+  //     } catch (error) {
+  //       throw new Error(
+  //         `Lấy thông tin user thất bại: ${error instanceof Error ? error.message : 'Không xác định'}`,
+  //       );
+  //     }
+  //   },
 
   logout: () => {
     localStorage.clear();
+    window.location.href = '/vi/auth/login';
   },
 };

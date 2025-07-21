@@ -23,10 +23,11 @@ export async function POST(request: Request) {
         const token = jwt.sign(
             {
                 username: account.username,
-                role: account.role,
+                role_id: account.role_id,
                 email: account.email,
                 name: account.name,
                 image: account.image,
+                permissions: account.permissions
             },
             JWT_SECRET,
             { expiresIn: '1h' }

@@ -5,8 +5,8 @@ import { searchSubject } from '@/services/subject.service';
 import { ISubject } from '@/types/subject';
 import { SubjectModal } from './SubjectModal';
 import { SubjectDelete } from './SubjectDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 
 export const SubjectTable = () => {
@@ -34,7 +34,7 @@ export const SubjectTable = () => {
         page_index: pageIndex,
         page_size: pageSize,
         order_type: ordertype,
-        search_content: nameSubject,
+        search_content_1: nameSubject,
       });
       settotal(data.data[0]?.TotalRecords);
       setListSubject(data.data || []);
@@ -69,25 +69,25 @@ export const SubjectTable = () => {
         />
       ),
     },
-    {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      width: 150,
-      render: (html: string) => (
-        <div
-          dangerouslySetInnerHTML={{ __html: html }}
-          style={{
-            maxWidth: '150px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis', //khi bị tràn, thay vì ẩn hoàn toàn thì hiển thị ....
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            whiteSpace: 'normal',
-          }}
-        />
-      ),
-    },
+    // {
+    //   title: 'Mô tả',
+    //   dataIndex: 'description',
+    //   width: 150,
+    //   render: (html: string) => (
+    //     <div
+    //       dangerouslySetInnerHTML={{ __html: html }}
+    //       style={{
+    //         maxWidth: '150px',
+    //         overflow: 'hidden',
+    //         textOverflow: 'ellipsis', //khi bị tràn, thay vì ẩn hoàn toàn thì hiển thị ....
+    //         display: '-webkit-box',
+    //         WebkitLineClamp: 2,
+    //         WebkitBoxOrient: 'vertical',
+    //         whiteSpace: 'normal',
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       title: 'Sách giáo khoa',
       width: 100,

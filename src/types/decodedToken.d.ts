@@ -1,8 +1,9 @@
 // 2. Interface cho payload của token
 export interface IDecodedToken {
   username: string;
-  role: 'admin' | 'teacher' | 'collaborator' | 'student';
+  role: string;
   email: string;
   name: string;
   image: string;
+  permissions: string[];
 }

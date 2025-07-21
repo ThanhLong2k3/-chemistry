@@ -12,6 +12,7 @@ import { authAPI } from '@/libs/api/auth.api';
 import { FOGOTPASS_PATH, REGISTER_PATH } from '@/path';
 import { jwtDecode } from 'jwt-decode';
 import { IDecodedToken } from '@/types/decodedToken';
+import { usePermissions } from '@/contexts/PermissionContext';
 
 const { Title, Text } = Typography;
 
@@ -21,6 +22,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { show } = useNotification();
+  const { refreshPermissions } = usePermissions();
 
   useEffect(() => {
     document.title = "Đăng nhập";
@@ -52,6 +54,8 @@ export default function LoginPage() {
       // Lưu trữ token vào localStorage
       localStorage.setItem('TOKEN', token);
       show({ result: 0, messageDone: 'Đăng nhập thành công!' });
+
+      refreshPermissions();
 
       // Chuyển trang dựa trên role từ thông tin đã giải mã
       if (accountInfo.role === 'student') {

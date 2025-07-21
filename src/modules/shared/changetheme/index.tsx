@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import styles from '@/modules/shared/header/Header.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { authAPI } from '@/libs/api/auth.api';
+import { usePermissions } from '@/contexts/PermissionContext';
 
 const ThemeChanger = () => {
   const { push } = useRouter();
@@ -24,6 +25,7 @@ const ThemeChanger = () => {
   const { setThemeColor } = useColorState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>('');
+  const { refreshPermissions } = usePermissions();
   useEffect(() => {
     getUser();
   }, []);
@@ -35,12 +37,21 @@ const ThemeChanger = () => {
   const handleMenuClick = async (e: { key: string }) => {
     if (e.key === 'logout') {
       console.log('Đăng xuất');
+      // 1. Gọi API logout (nếu cần thiết, ví dụ để blacklist token)
       await authAPI.logout();
-      push('http://localhost:3000/vi/auth/login');
+
+      // 2. Xóa token khỏi localStorage (hàm logout của bạn có thể đã làm việc này)
+      localStorage.removeItem('TOKEN');
+
+      // 3. (QUAN TRỌNG) Cập nhật lại state quyền (lúc này sẽ thành rỗng)
+      refreshPermissions();
+
+      // 4. Điều hướng về trang login
+      push('/vi/auth/login'); // Dùng push của Next Router
+
     } else if (e.key === 'settings') {
       push('/vi/resetPassword');
     }
-    setIsMenuOpen(false);
   };
 
   const menuItems = [
