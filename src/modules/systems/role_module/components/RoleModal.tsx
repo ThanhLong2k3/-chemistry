@@ -9,7 +9,6 @@ import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
-import { searchSubject } from '@/services/subject.service';
 import axios from 'axios';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 

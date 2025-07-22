@@ -4,10 +4,14 @@ import Header_Children from "@/components/UI_shared/Children_Head";
 import { ChapterTable } from "./components/ChapterTable";
 import { usePermissions } from "@/contexts/PermissionContext";
 import { Alert } from "antd";
+import { useEffect } from "react";
 
 
 export const ManageChapter = () => {
     const { hasPermission } = usePermissions();
+    useEffect(() => {
+        document.title = "Quản lý chương";
+    }, []);
 
     return (
         <>

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { IDecodedToken } from '@/types/decodedToken';
-import { jwtDecode } from 'jwt-decode';
 import { checkPermission } from '../repositories/permission.repository';
 
 const JWT_SECRET = process.env.JWT_SECRET;

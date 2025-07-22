@@ -4,10 +4,14 @@ import Header_Children from "@/components/UI_shared/Children_Head";
 import { LessonTable } from "./components/LessonTable";
 import { usePermissions } from "@/contexts/PermissionContext";
 import { Alert } from "antd";
+import { useEffect } from "react";
 
 
 export const ManageLesson = () => {
     const { hasPermission } = usePermissions();
+    useEffect(() => {
+        document.title = "Quản lý bài học";
+    }, []);
 
     return (
         <>

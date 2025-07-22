@@ -5,9 +5,13 @@ import { RoleTable } from "./components/RoleTable";
 import { usePermissions } from "@/contexts/PermissionContext";
 import { Alert, Row, Col } from "antd";
 import { PermissionAssignment } from "./components/PermissionAssignment"; // <-- Import component mới
+import { useEffect } from "react";
 
 export const ManageRole = () => {
     const { hasPermission } = usePermissions();
+    useEffect(() => {
+        document.title = "Phân quyền hệ thống";
+    }, []);
 
     return (
         <>

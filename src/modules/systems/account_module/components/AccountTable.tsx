@@ -40,7 +40,7 @@ export const AccountTable = () => {
         const responseMessage = axiosError.response?.data?.message;
 
         if (axiosError.response?.status === 401) {
-          showSessionExpiredModal('/vi/auth/login');
+          showSessionExpiredModal();
           return;
         } else {
           errorMessage = responseMessage || axiosError.message;

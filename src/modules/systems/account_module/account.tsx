@@ -4,9 +4,13 @@ import Header_Children from "@/components/UI_shared/Children_Head";
 import { AccountTable } from "./components/AccountTable";
 import { usePermissions } from "@/contexts/PermissionContext";
 import { Alert } from "antd";
+import { useEffect } from "react";
 
 export const ManageAccount = () => {
   const { hasPermission } = usePermissions();
+  useEffect(() => {
+    document.title = "Quản lý tài khoản";
+  }, []);
 
   return (
     <>

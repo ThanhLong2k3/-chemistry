@@ -11,6 +11,8 @@ import { ISubject } from '@/types/subject';
 import { IChapter } from '@/types/chapter';
 import { searchSubject } from '@/services/subject.service';
 import { searchChapter } from '@/services/chapter.service';
+import { showSessionExpiredModal } from '@/utils/session-handler';
+import axios from 'axios';
 
 export const LessonTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -93,8 +95,23 @@ export const LessonTable = () => {
       });
       settotal(data.data.length > 0 ? data.data[0].TotalRecords : 0);
       setListLesson(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch Lesson list:', err);
+    } catch (error) {
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
     }
   };
 

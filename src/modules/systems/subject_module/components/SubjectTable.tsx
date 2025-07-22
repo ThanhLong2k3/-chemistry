@@ -7,6 +7,8 @@ import { SubjectModal } from './SubjectModal';
 import { SubjectDelete } from './SubjectDelete';
 import { IDecodedToken } from '@/types/decodedToken';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import axios from 'axios';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
 export const SubjectTable = () => {
@@ -38,8 +40,23 @@ export const SubjectTable = () => {
       });
       settotal(data.data[0]?.TotalRecords);
       setListSubject(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch Subject list:', err);
+    } catch (error) {
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
     }
   };
 

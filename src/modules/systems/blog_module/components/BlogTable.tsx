@@ -9,6 +9,8 @@ import { IDecodedToken } from '@/types/decodedToken';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { IAccount } from '@/types/account';
 import { searchAccount } from '@/services/account.service';
+import axios from 'axios';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
 export const BlogTable = () => {
@@ -61,8 +63,23 @@ export const BlogTable = () => {
       });
       settotal(data.data[0]?.TotalRecords);
       setListBlog(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch Blog list:', err);
+    } catch (error) {
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
     }
   };
 

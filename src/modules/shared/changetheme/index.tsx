@@ -18,44 +18,50 @@ import styles from '@/modules/shared/header/Header.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { authAPI } from '@/libs/api/auth.api';
 import { usePermissions } from '@/contexts/PermissionContext';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { IDecodedToken } from '@/types/decodedToken';
+
 
 const ThemeChanger = () => {
   const { push } = useRouter();
   const pathname = usePathname();
   const { setThemeColor } = useColorState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>('');
   const { refreshPermissions } = usePermissions();
+  // Sửa lại state để lưu thông tin tài khoản
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+
   useEffect(() => {
-    getUser();
-  }, []);
-  const getUser = async () => {
-    const name = localStorage.getItem('FullName');
-    setUser(name);
-  };
+    const account = getAccountLogin();
+    if (!account) {
+      // Điều hướng về trang đăng nhập nếu chưa login
+      push('/vi/auth/login');
+    } else {
+      // Nếu đã đăng nhập, lưu thông tin vào state
+      setCurrentAccount(account);
+    }
+  }, [push]);
 
-  const handleMenuClick = async (e: { key: string }) => {
+  const handleMenuClick = (e: { key: string }) => {
     if (e.key === 'logout') {
-      console.log('Đăng xuất');
-      // 1. Gọi API logout (nếu cần thiết, ví dụ để blacklist token)
-      await authAPI.logout();
-
-      // 2. Xóa token khỏi localStorage (hàm logout của bạn có thể đã làm việc này)
-      localStorage.removeItem('TOKEN');
-
-      // 3. (QUAN TRỌNG) Cập nhật lại state quyền (lúc này sẽ thành rỗng)
+      authAPI.logout();
+      //cập nhật lại state quyền thành rỗng
       refreshPermissions();
 
-      // 4. Điều hướng về trang login
-      push('/vi/auth/login'); // Dùng push của Next Router
+      //điều hướng về trang login
+      push('/vi/auth/login');
 
     } else if (e.key === 'settings') {
-      push('/vi/resetPassword');
+      push('/vi/auth/resetPassword');
     }
   };
 
+  if (!currentAccount) {
+    return;
+  }
+
   const menuItems = [
-    { key: 'user', icon: <UserOutlined />, label: user },
+    { key: 'user', icon: <UserOutlined />, label: currentAccount.name },
     {
       key: 'settings',
       icon: <SettingOutlined />,
@@ -99,8 +105,8 @@ const ThemeChanger = () => {
       >
         <div className={styles.rightContent}>
           <Image
-            src="/image/logo.png"
-            alt="Logo"
+            src={currentAccount.image}
+            alt="Avatar"
             width={40}
             height={40}
             className="h-12 object-contain"
@@ -125,6 +131,7 @@ const imageStyle = {
   marginLeft: '10px',
   borderRadius: '50%',
   border: '1px black solid',
+  objectFit: 'cover'
 };
 
 export default ThemeChanger;

@@ -96,11 +96,15 @@ export const login = async (username: string, rawPassword: string) => {
   try {
     const account = await authenticate(username);
 
-    if (!account || !account[0]) return null;
+    if (!account || !account[0]) {
+      return { error: "Tên đăng nhập không tồn tại." };
+    }
 
     const user = account[0];
     const isMatch = await bcrypt.compare(rawPassword, user.password);
-    if (!isMatch) return null;
+    if (!isMatch) {
+      return { error: "Mật khẩu không chính xác." };
+    }
 
     // 1. Gọi hàm mới để lấy tất cả thông tin phân quyền
     const allPermissionsInfo = await getPermissionsByRole(user.role_id);

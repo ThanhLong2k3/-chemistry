@@ -7,13 +7,13 @@ import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 interface IPermissionContext {
     permissions: string[];
     hasPermission: (code: string) => boolean;
-    refreshPermissions: () => void; // <-- THÊM: Hàm để kích hoạt việc cập nhật
+    refreshPermissions: () => void;
 }
 
 const PermissionContext = createContext<IPermissionContext>({
     permissions: [],
     hasPermission: () => false,
-    refreshPermissions: () => { }, // <-- THÊM: Giá trị mặc định
+    refreshPermissions: () => { },
 });
 
 export const usePermissions = () => useContext(PermissionContext);

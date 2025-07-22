@@ -15,10 +15,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ errorCode: 5, success: false }, { status: 400 });
         }
 
-        const account = await login(username, password);
-        if (!account) {
-            return NextResponse.json({ errorCode: 7, success: false }, { status: 401 }); // Đăng nhập thất bại
+        //kết quả là một object chứ lỗi HOẶC chứa thông tin tài khoản chính xác
+        const loginResult = await login(username, password);
+
+        if (loginResult.error) {
+            //trả về status 401 với thông báo lỗi cụ thể
+            return NextResponse.json({ success: false, message: loginResult.error }, { status: 401 });
         }
+        const account = loginResult;
 
         const token = jwt.sign(
             {
