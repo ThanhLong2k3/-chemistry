@@ -10,8 +10,6 @@ import {
 import { IBaseSearch } from '@/types/base';
 import { getPermissionsByRole, updatePermissionsForRole } from '../repositories/permission.repository';
 
-const BCRYPT_ROUNDS = parseInt('10');
-
 export const createRoleService = async (model: IRole) => {
     try {
         // Validate input
