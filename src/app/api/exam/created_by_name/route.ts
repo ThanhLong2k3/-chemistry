@@ -1,13 +1,13 @@
 import { verifyAuth } from '@/helpers/auth/auth.helper';
-import { getBlogAuthorsService } from '@/helpers/services/blog.service';
+import { getExamCreatedByNameService } from '@/helpers/services/exam.service';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const authResult = await verifyAuth(request, 'BLOG_MANAGE');
+        const authResult = await verifyAuth(request, 'EXAM_MANAGE');
         if (authResult.error) return authResult.error;
 
-        const authors = await getBlogAuthorsService();
+        const authors = await getExamCreatedByNameService();
 
         return NextResponse.json({
             success: true,

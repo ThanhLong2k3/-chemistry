@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -106,30 +107,29 @@ export const RoleModal = ({
       getAll();
       close();
     } catch (error) {
-      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
-      // 1. Kiểm tra xem đây có phải là lỗi từ Axios không
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
       if (axios.isAxiosError(error)) {
-        // 2. Lấy thông báo lỗi từ response của backend (nếu có)
-        const responseMessage = error.response?.data?.message;
-        // 3. Xử lý cụ thể cho từng mã lỗi
-        if (error.response?.status === 403) {
-          // Lỗi 403: Không có quyền
-          errorMessage = responseMessage || 'Bạn không có quyền thực hiện hành động này.';
-        } else if (error.response?.status === 401) {
-          // Lỗi 401: Chưa xác thực hoặc token hết hạn
-          errorMessage = responseMessage || 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.';
+        const axiosError = error; // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
         } else {
-          // Các lỗi khác (500, 404, ...)
-          errorMessage = responseMessage || 'Lỗi từ máy chủ, vui lòng thử lại sau.';
+          errorMessage = responseMessage || axiosError.message;
         }
       }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      // Chỉ hiển thị notification cho các lỗi không phải 401
       show({
         result: 1,
         messageError: errorMessage,
       });
-    } finally {
-      close();
-    };
+    }
   };
 
   return (

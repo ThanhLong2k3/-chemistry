@@ -3,6 +3,7 @@ import { IBlog } from '@/types/blog';
 import {
     createBlog,
     deleteBlog,
+    getBlogAuthors,
     searchBlogs,
     updateBlog,
 } from '../repositories/blog.repository';
@@ -52,7 +53,6 @@ export const deleteBlogService = async (id: string, deletedBy: string) => {
     }
 };
 
-import { getBlogAuthors } from '../repositories/blog.repository';
 
 export const getBlogAuthorsService = async () => {
     try {

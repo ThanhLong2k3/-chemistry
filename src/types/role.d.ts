@@ -1,5 +1,3 @@
-import { DateTimeFormatOptions } from "next-intl";
-
 export interface IRole {
     id: string;
     name: string;

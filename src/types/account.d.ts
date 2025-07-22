@@ -1,5 +1,3 @@
-import { DateTimeFormatOptions } from "next-intl";
-
 export interface IAccount {
   old_username: string;
   username: string;

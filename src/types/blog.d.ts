@@ -1,5 +1,3 @@
-import { DateTimeFormatOptions } from "next-intl";
-
 export interface IBlog {
     id: string;
     image: string;

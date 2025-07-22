@@ -1,8 +1,8 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
 import { Button, Col, Form, Input, Modal, Row, Select, Upload } from 'antd';
 import { useEffect, useState } from 'react';
-import { createChapter, updateChapter } from '@/services/chapter.service';
-import { IChapter } from '@/types/chapter';
+import { createExam, updateExam } from '@/services/exam.service';
+import { IExam } from '@/types/exam';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
@@ -16,15 +16,16 @@ import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface Props {
   isCreate?: boolean;
-  row?: IChapter;
+  row?: IExam;
   getAll: () => void;
 }
 
-export const ChapterModal = ({
+export const ExamModal = ({
   isCreate = false,
   row,
   getAll,
@@ -90,7 +91,7 @@ export const ChapterModal = ({
       const values = await form.validateFields();
 
       if (isCreate) {
-        const responseData: any = await createChapter({
+        const responseData: any = await createExam({
           id: uuidv4(),
           ...values,
           created_by: currentAccount.username,
@@ -100,25 +101,25 @@ export const ChapterModal = ({
         if (responseData.success) {
           show({
             result: 0,
-            messageDone: 'Thêm chương thành công!',
+            messageDone: 'Thêm bài kiểm tra thành công!',
           });
         } else {
           show({
             result: 1,
-            messageError: responseData.message || 'Thêm chương thất bại.',
+            messageError: responseData.message || 'Thêm bài kiểm tra thất bại.',
           });
         }
       } else if (row?.id) {
-        const responseData: any = await updateChapter({ ...values, id: row.id, updated_by: currentAccount.username });
+        const responseData: any = await updateExam({ ...values, id: row.id, updated_by: currentAccount.username });
         if (responseData.success) {
           show({
             result: 0,
-            messageDone: 'Cập nhật chương thành công!',
+            messageDone: 'Cập nhật bài kiểm tra thành công!',
           });
         } else {
           show({
             result: 1,
-            messageError: responseData.message || 'Cập nhật chương thất bại.',
+            messageError: responseData.message || 'Cập nhật bài kiểm tra thất bại.',
           });
         }
       }
@@ -153,12 +154,12 @@ export const ChapterModal = ({
   return (
     <>
       <Button type={isCreate ? 'primary' : 'default'} onClick={open} icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}>
-        {isCreate ? 'Thêm chương' : 'Sửa'}
+        {isCreate ? 'Thêm bài kiểm tra' : 'Sửa'}
       </Button>
       <Modal
         title={
           <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
-            {isCreate ? 'Thêm chương' : 'Sửa chương'}
+            {isCreate ? 'Thêm bài kiểm tra' : 'Sửa bài kiểm tra'}
           </div>
         }
         open={isOpen}
@@ -174,7 +175,7 @@ export const ChapterModal = ({
             <Col span={12}>
               <Form.Item
                 name="name"
-                label="Tên chương"
+                label="Tên bài kiểm tra"
                 rules={RULES_FORM.required}
               >
                 <Input />
@@ -196,6 +197,14 @@ export const ChapterModal = ({
               </Form.Item>
             </Col>
           </Row>
+
+          <Form.Item
+            name="file"
+            label="Link đề kiểm tra"
+            rules={RULES_FORM.required}
+          >
+            <Input />
+          </Form.Item>
 
           <Form.Item
             name="description"

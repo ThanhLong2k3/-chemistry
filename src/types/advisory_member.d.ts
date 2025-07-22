@@ -1,5 +1,3 @@
-import { DateTimeFormatOptions } from "next-intl";
-
 export interface IAdvisoryMember {
     id: string;
     teacher_name: string;
