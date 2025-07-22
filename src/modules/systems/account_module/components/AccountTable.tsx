@@ -115,7 +115,7 @@ export const AccountTable = () => {
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         <Input
-          placeholder="Nhập tên"
+          placeholder="Nhập người dùng để tìm kiếm..."
           value={name ?? ''}
           onChange={(e) => setName(e.target.value)}
           allowClear

@@ -145,6 +145,15 @@ export const SubjectTable = () => {
         ),
     },
     {
+      title: 'Đề kiểm tra',
+      width: 120,
+      render: (_, record) => (
+        <a href={`manage_exam?subject=${encodeURIComponent(record.name)}`}>
+          Xem danh sách
+        </a>
+      )
+    },
+    {
       title: 'Thao tác',
       width: 120,
       align: 'center',

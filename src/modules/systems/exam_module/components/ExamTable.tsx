@@ -13,9 +13,13 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { IAccount } from '@/types/account';
 import { getExamCreatedByName } from '@/services/exam.service';
+import { useSearchParams } from 'next/navigation';
 
 
 export const ExamTable = () => {
+  const searchParams = useSearchParams();
+  const subjectFromUrl = searchParams.get('subject');
+
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [ordertype, setOrderType] = useState<string>('ASC');
@@ -24,7 +28,9 @@ export const ExamTable = () => {
   const [total, settotal] = useState<number>(10);
   const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
   const [subjects, setSubjects] = useState<ISubject[]>([]);
-  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  // Nếu có param 'subject' trên URL, dùng nó làm giá trị khởi tạo.
+  // Nếu không, giá trị khởi tạo là null.
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(subjectFromUrl);
   const [loadingSubjects, setLoadingSubjects] = useState(false);
   const [createdByName, setCreatedByName] = useState<IAccount[]>([]);
   const [selectedCreatedByName, setSelectedCreatedByName] = useState<string | null>(null);
