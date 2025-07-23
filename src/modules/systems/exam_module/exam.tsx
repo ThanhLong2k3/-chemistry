@@ -10,7 +10,7 @@ import { useEffect } from "react";
 export const ManageExam = () => {
     const { hasPermission } = usePermissions();
     useEffect(() => {
-        document.title = "Quản lý chương";
+        document.title = "Quản lý đề kiểm tra";
     }, []);
 
     return (

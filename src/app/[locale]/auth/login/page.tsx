@@ -57,12 +57,12 @@ export default function LoginPage() {
 
       refreshPermissions();
 
-      // Chuyển trang dựa trên role từ thông tin đã giải mã
-      if (accountInfo.role === 'student') {
-        router.push('/vi');
-      } else {
-        router.push('/vi/admin/manage_account');
-      }
+      // // Chuyển trang dựa trên role từ thông tin đã giải mã
+      // if (accountInfo.role === 'student') {
+      //   router.push('/vi');
+      // } else {
+      //   router.push('/vi/admin/manage_account');
+      // }
 
     } catch (err: any) {
       console.error("Lỗi ngoài dự kiến khi đăng nhập:", err);

@@ -122,12 +122,12 @@ export const ExamTable = () => {
     },
     {
       title: 'Tên bài kiểm tra',
-      width: 200,
+      width: 150,
       dataIndex: 'name',
     },
     {
       title: 'Tên môn học',
-      width: 80,
+      width: 150,
       dataIndex: 'subject_name',
     },
     {

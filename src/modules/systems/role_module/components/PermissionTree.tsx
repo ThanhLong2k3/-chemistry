@@ -2,7 +2,6 @@
 
 import { Tree, Alert, Empty, Spin } from 'antd';
 import { useEffect, useState, useMemo } from 'react';
-import axios from 'axios';
 import React from 'react';
 import { searchDecentralizationFromClient } from '@/services/decentralization.service';
 import { getPermissionsForRole } from '@/services/role.service';
