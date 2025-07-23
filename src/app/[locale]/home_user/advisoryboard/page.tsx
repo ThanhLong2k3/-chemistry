@@ -104,7 +104,7 @@ const AdvisoryBoard: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.header}>
           <Title level={2} className={styles.title}>
-            Ban Tư Vấn
+            BAN TƯ VẤN
           </Title>
           <Text className={styles.subtitle}>
             Danh sách các thành viên ban tư vấn với kinh nghiệm và chuyên môn
