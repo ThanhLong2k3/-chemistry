@@ -6,9 +6,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import { FaAngleDown } from 'react-icons/fa';
 import styles from './LanguagesSwitcher.module.scss';
 import { ENIcon, VNIcon } from '@/assets/svg/index';
-import { LanguageSwitcherProps } from '@/models/language-switcher';
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { LanguageSwitcherProps } from '@/types/language-switcher';
 
 const LanguagesSwitcher = () => {
   const t = useTranslations('global');
@@ -60,7 +60,7 @@ const LanguagesSwitcher = () => {
             {
               (
                 languages.find(
-                  (item) => item?.key === locale,
+                  (item) => item?.key === locale
                 ) as LanguageSwitcherProps
               )?.icon
             }
@@ -68,7 +68,7 @@ const LanguagesSwitcher = () => {
               {
                 (
                   languages.find(
-                    (item) => item?.key === locale,
+                    (item) => item?.key === locale
                   ) as LanguageSwitcherProps
                 )?.label
               }

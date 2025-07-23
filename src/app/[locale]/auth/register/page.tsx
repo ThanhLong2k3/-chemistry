@@ -27,36 +27,36 @@
 //   const { show } = useNotification();
 //   const [form] = Form.useForm();
 
-//   useEffect(() => {
-//     document.title = 'Đăng Ký';
-//   }, []);
-//   const onFinish = async (values: any) => {
-//     setLoading(true);
-//     try {
-//       const payload = {
-//         id: '',
-//         username: values.userName,
-//         email: values.email,
-//         password: encrypt(values.password),
-//       };
+// useEffect(() => {
+//   document.title = 'Đăng Ký';
+// }, []);
+// const onFinish = async (values: any) => {
+//   setLoading(true);
+//   try {
+//     const payload = {
+//       id: '',
+//       username: values.userName,
+//       email: values.email,
+//       password: encrypt(values.password),
+//     };
 
-//       const res: any = await createUser(payload);
+//     const res: any = await createUser(payload);
 
-//       show({
-//         result: res.data.result,
-//         messageDone: 'Đăng ký thành công',
-//         messageError: 'Tài khoản hoặc Mật khẩu không đúng!',
-//         messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại!'
-//       });
+//     show({
+//       result: res.data.result,
+//       messageDone: 'Đăng ký thành công',
+//       messageError: 'Tài khoản hoặc Mật khẩu không đúng!',
+//       messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại!'
+//     });
 
-//       form.resetFields();
-//     } catch (err: any) {
-//       const errorCode = err.response?.data?.errorCode || 8;
-//       show({ result: errorCode });
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+//     form.resetFields();
+//   } catch (err: any) {
+//     const errorCode = err.response?.data?.errorCode || 8;
+//     show({ result: errorCode });
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
 //   return (
 //     <div className={styles.loginContainer}>

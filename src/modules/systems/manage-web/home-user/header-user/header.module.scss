@@ -1,0 +1,230 @@
+/* ==== MÀU SẮC & BIẾN ==== */
+$primary-color: #4ec1ff;
+$text-color: #1a1a1a;
+$menu-bg: #ffffff;
+$hover-color: #1890ff;
+$selected-color: #0050b3;
+$border-color: #e0e0e0;
+
+/* ==== MIXIN ==== */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ==== HEADER CHÍNH ==== */
+.header {
+  background-color: $menu-bg;
+  border-bottom: 1px solid $border-color;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  padding: 0 24px;
+
+  .headerContent {
+    @include flex-between;
+    height: 64px;
+    max-width: 80%;
+    margin:  auto;
+  }
+
+  .logo {
+    @include flex-center;
+    gap: 10px;
+
+    .logoImage {
+      height: 40px;
+      width: auto;
+    }
+
+    .logoText {
+      font-size: 20px;
+      font-weight: 700;
+      color: $primary-color;
+    }
+  }
+
+  .menu {
+    flex: 1;
+    background-color: transparent;
+    border-bottom: none;
+
+    :global(.ant-menu-item),
+    :global(.ant-menu-submenu) {
+      color: $text-color !important;
+      font-weight: 500;
+      padding: 0 16px;
+      transition: color 0.2s;
+    }
+
+    :global(.ant-menu-item:hover),
+    :global(.ant-menu-submenu:hover) {
+      color: $hover-color !important;
+    }
+
+    :global(.ant-menu-item-selected),
+    :global(.ant-menu-submenu-selected) {
+      color: $selected-color !important;
+    }
+
+    :global(.ant-menu-submenu-title) {
+      color: $text-color !important;
+    }
+
+    :global(.ant-menu-submenu-popup) {
+      background-color: #fff !important;
+      border: 1px solid $border-color;
+    }
+
+    :global(.ant-menu-submenu-popup .ant-menu-item) {
+      color: $text-color !important;
+      background-color: #fff !important;
+
+      &:hover {
+        background-color: #f5f5f5 !important;
+        color: $hover-color !important;
+      }
+    }
+  }
+
+  .headerActions {
+    @include flex-center;
+    gap: 12px;
+  }
+}
+
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: $text-color;
+}
+
+/* ==== MEDIA QUERY FULL DEVICE RANGE ==== */
+
+/* MOBILE MINI: iPhone SE, 320–375px */
+@media (max-width: 375px) {
+  .header {
+    display: flex;
+    .logoText {
+      font-size: 16px;
+    }
+
+    .headerContent {
+      gap: 8px;
+      width: 100%;
+      margin: 0px;
+      max-width: 100%;
+      .headerActions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .hamburger {
+    font-size: 20px;
+  }
+}
+
+/* MOBILE PHỔ BIẾN: 376px – 575px */
+@media (max-width: 575px) {
+  .header {
+    padding: 0 12px;
+    .logoText {
+      font-size: 17px;
+    }
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+  }
+}
+
+/* TABLET ĐỨNG: 576px – 767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .header {
+    padding: 0 16px;
+    .logoText {
+      font-size: 18px;
+    }
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+  }
+}
+
+/* TABLET NGANG: 768px – 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .header {
+    padding: 0 20px;
+    .logoText {
+      font-size: 19px;
+    }
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+  }
+}
+
+/* LAPTOP NHỎ: 992px – 1199px */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .headerContent {
+    max-width: 90%;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+  }
+  .logoText {
+    font-size: 20px;
+  }
+}
+
+/* DESKTOP: 1200px – 1439px */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .headerContent {
+    max-width: 100% !important;
+  }
+
+  .logoText {
+    font-size: 21px;
+  }
+}
+
+/* 4K, TV: ≥ 1440px */
+@media (min-width: 1440px) {
+  .headerContent {
+    max-width: 75%;
+  }
+
+  .logoText {
+    font-size: 22px;
+  }
+}
