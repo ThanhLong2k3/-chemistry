@@ -9,8 +9,6 @@ import {
 
 import { IBaseSearch } from '@/types/base';
 
-const BCRYPT_ROUNDS = parseInt('10');
-
 export const createChapterService = async (model: IChapter) => {
     try {
         // Validate input

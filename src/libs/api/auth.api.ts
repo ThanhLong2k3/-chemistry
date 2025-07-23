@@ -1,10 +1,4 @@
-import { CallApi } from '@/libs/call_API';
-import { API_URL } from '@/libs/call_API';
-interface User {
-  id: number;
-  email: string;
-  role: 'admin' | 'user';
-}
+const API_URL = '/api';
 
 //đã sửa
 interface LoginResponse {
@@ -14,7 +8,7 @@ interface LoginResponse {
     username: string;
     name: string;
     email: string;
-    role: string;
+    role_id: string;
     image: string;
   };
   token?: string;
@@ -22,24 +16,24 @@ interface LoginResponse {
 
 
 export const authAPI = {
-  register: async (
-    email: string,
-    password: string,
-    fullName: string,
-  ): Promise<number> => {
-    try {
-      const data = await CallApi.create<number>('auth/register', {
-        email,
-        password,
-        fullName,
-      });
-      return data;
-    } catch (error) {
-      throw new Error(
-        `Đăng ký thất bại: ${error instanceof Error ? error.message : 'Không xác định'}`,
-      );
-    }
-  },
+  // register: async (
+  //   email: string,
+  //   password: string,
+  //   fullName: string,
+  // ): Promise<number> => {
+  //   try {
+  //     const data = await CallApi.create<number>('auth/register', {
+  //       email,
+  //       password,
+  //       fullName,
+  //     });
+  //     return data;
+  //   } catch (error) {
+  //     throw new Error(
+  //       `Đăng ký thất bại: ${error instanceof Error ? error.message : 'Không xác định'}`,
+  //     );
+  //   }
+  // },
 
 
 
@@ -87,19 +81,8 @@ export const authAPI = {
 
 
 
-
-  getCurrentUser: async (): Promise<User> => {
-    try {
-      const data = await CallApi.getAll<User>('auth/me');
-      return data[0];
-    } catch (error) {
-      throw new Error(
-        `Lấy thông tin user thất bại: ${error instanceof Error ? error.message : 'Không xác định'}`,
-      );
-    }
-  },
-
   logout: () => {
     localStorage.clear();
+    window.location.href = '/vi/auth/login';
   },
 };

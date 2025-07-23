@@ -59,13 +59,17 @@ export const deleteLesson = async (id: string, deletedBy: string): Promise<any> 
 // Tìm kiếm môn học có phân trang
 export const searchLessons = async (model: IBaseSearch): Promise<any> => {
     try {
-        const sql = 'CALL get_lessons(?,?,?,?)';
-        const searchContent = model.search_content || null;
+        const sql = 'CALL get_lessons(?,?,?,?,?,?)';
+        const searchLessonName = model.search_content_1 || null;
+        const searchChapterName = model.search_content_2 || null;
+        const searchSubjectName = model.search_content_3 || null;
         const results = await db_Provider(sql, [
-            model.page_index ?? 0,
+            model.page_index ?? 1,
             model.page_size ?? 10,
             model.order_type ?? 'ASC',
-            searchContent,
+            searchLessonName,
+            searchChapterName,
+            searchSubjectName
         ]);
         return results;
     } catch (error: any) {

@@ -6,7 +6,9 @@ export interface IBaseSearch {
   page_index?: number;
   page_size?: number;
   order_type?: string;
-  search_content?: string | null;
+  search_content_1?: string | null;
+  search_content_2?: string | null;
+  search_content_3?: string | null;
   from_date?: string;
   to_date?: string;
   year?: number;

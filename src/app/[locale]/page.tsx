@@ -39,9 +39,6 @@ export default function LoginPage() {
       const data: any = await authAPI.login(values.email, values.password);
 
       show({ result: data, messageDone: 'Đăng nhập thành công' });
-      if (data === 0) {
-        router.push('/vi/dashboard');
-      }
     } catch (err: any) {
       const errorCode = err.response?.data?.errorCode || 8;
       show({ result: errorCode });

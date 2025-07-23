@@ -5,19 +5,22 @@ import { searchAccount } from '@/services/account.service';
 import { IAccount } from '@/types/account';
 import { AccountModal } from './AccountModal';
 import { AccountDelete } from './AccountDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import axios from 'axios';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
 export const AccountTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [ordertype, setOrderType] = useState<string>('ASC');
-  const [UserName, setUserName] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
   const [listAccount, setListAccount] = useState<IAccount[]>([]);
   const [total, settotal] = useState<number>(10);
+
   useEffect(() => {
     getAllAccount();
-  }, [pageIndex, pageSize, ordertype, UserName]);
+  }, [pageIndex, pageSize, ordertype, name]);
 
   const getAllAccount = async () => {
     try {
@@ -25,12 +28,27 @@ export const AccountTable = () => {
         page_index: pageIndex,
         page_size: pageSize,
         order_type: ordertype,
-        search_content: UserName,
+        search_content_1: name,
       });
       settotal(data.data[0]?.TotalRecords);
       setListAccount(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch Account list:', err);
+    } catch (error) {
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
     }
   };
 
@@ -76,7 +94,7 @@ export const AccountTable = () => {
     {
       title: 'Quyền',
       width: 70,
-      dataIndex: 'role',
+      dataIndex: 'role_name',
     },
     {
       title: 'Thao tác',
@@ -97,9 +115,9 @@ export const AccountTable = () => {
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         <Input
-          placeholder="Nhập tên"
-          value={UserName ?? ''}
-          onChange={(e) => setUserName(e.target.value)}
+          placeholder="Nhập người dùng để tìm kiếm..."
+          value={name ?? ''}
+          onChange={(e) => setName(e.target.value)}
           allowClear
         />
         <AccountModal isCreate getAll={getAllAccount} />

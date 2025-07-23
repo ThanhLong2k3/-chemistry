@@ -5,8 +5,10 @@ import { searchAdvisoryMember } from '@/services/advisory_member.service';
 import { IAdvisoryMember } from '@/types/advisory_member';
 import { AdvisoryMemberModal } from './AdvisoryMemberModal';
 import { AdvisoryMemberDelete } from './AdvisoryMemberDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import axios from 'axios';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 export const AdvisoryMemberTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -32,12 +34,27 @@ export const AdvisoryMemberTable = () => {
         page_index: pageIndex,
         page_size: pageSize,
         order_type: ordertype,
-        search_content: nameAdvisoryMember,
+        search_content_1: nameAdvisoryMember,
       });
       settotal(data.data[0]?.TotalRecords);
       setListAdvisoryMember(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch AdvisoryMember list:', err);
+    } catch (error) {
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
     }
   };
 
@@ -58,6 +75,7 @@ export const AdvisoryMemberTable = () => {
       title: 'Ảnh đại diện',
       width: 70,
       dataIndex: 'image',
+      align: 'center',
       render: (imageUrl) => (
         <img
           src={imageUrl}
@@ -89,7 +107,14 @@ export const AdvisoryMemberTable = () => {
     {
       title: 'Số năm kinh nghiệm',
       width: 90,
+      align: 'center',
       dataIndex: 'years_of_experience',
+      render: (years) => {
+        if (years) {
+          return `${years} năm`;
+        }
+        return '-';
+      },
     },
     {
       title: 'Thao tác',

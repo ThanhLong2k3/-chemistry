@@ -1,5 +1,3 @@
-import { DateTimeFormatOptions } from "next-intl";
-
 export interface IChapter {
     id: string;
     name: string;

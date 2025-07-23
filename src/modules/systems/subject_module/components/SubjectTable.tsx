@@ -5,8 +5,10 @@ import { searchSubject } from '@/services/subject.service';
 import { ISubject } from '@/types/subject';
 import { SubjectModal } from './SubjectModal';
 import { SubjectDelete } from './SubjectDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import axios from 'axios';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
 export const SubjectTable = () => {
@@ -34,12 +36,27 @@ export const SubjectTable = () => {
         page_index: pageIndex,
         page_size: pageSize,
         order_type: ordertype,
-        search_content: nameSubject,
+        search_content_1: nameSubject,
       });
       settotal(data.data[0]?.TotalRecords);
       setListSubject(data.data || []);
-    } catch (err) {
-      console.error('Failed to fetch Subject list:', err);
+    } catch (error) {
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
     }
   };
 
@@ -69,25 +86,25 @@ export const SubjectTable = () => {
         />
       ),
     },
-    {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      width: 150,
-      render: (html: string) => (
-        <div
-          dangerouslySetInnerHTML={{ __html: html }}
-          style={{
-            maxWidth: '150px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis', //khi bị tràn, thay vì ẩn hoàn toàn thì hiển thị ....
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            whiteSpace: 'normal',
-          }}
-        />
-      ),
-    },
+    // {
+    //   title: 'Mô tả',
+    //   dataIndex: 'description',
+    //   width: 150,
+    //   render: (html: string) => (
+    //     <div
+    //       dangerouslySetInnerHTML={{ __html: html }}
+    //       style={{
+    //         maxWidth: '150px',
+    //         overflow: 'hidden',
+    //         textOverflow: 'ellipsis', //khi bị tràn, thay vì ẩn hoàn toàn thì hiển thị ....
+    //         display: '-webkit-box',
+    //         WebkitLineClamp: 2,
+    //         WebkitBoxOrient: 'vertical',
+    //         whiteSpace: 'normal',
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       title: 'Sách giáo khoa',
       width: 100,
@@ -126,6 +143,15 @@ export const SubjectTable = () => {
         ) : (
           <div>không có</div>
         ),
+    },
+    {
+      title: 'Đề kiểm tra',
+      width: 120,
+      render: (_, record) => (
+        <a href={`manage_exam?subject=${encodeURIComponent(record.name)}`}>
+          Xem danh sách
+        </a>
+      )
     },
     {
       title: 'Thao tác',

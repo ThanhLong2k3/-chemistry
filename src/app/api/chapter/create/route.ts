@@ -5,10 +5,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     try {
         //xác thực token
-        const authResult = await verifyAuth(request, ['admin', 'teacher']);
+        const authResult = await verifyAuth(request, 'CHAPTER_MANAGE'); // Truyền vào mã phân quyền
+
         if (authResult.error) {
             return authResult.error;
         }
+
         const model = await request.json();
         const result = await createChapterService(model);
         return NextResponse.json({

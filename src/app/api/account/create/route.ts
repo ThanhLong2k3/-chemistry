@@ -5,18 +5,16 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    //xác thực token
-    const authResult = await verifyAuth(request, ['admin']);
-    if (authResult.error) {
-      return authResult.error;
-    }
+    // const authResult = await verifyAuth(request, 'ACCOUNT_MANAGE'); // Truyền vào mã phân quyền
+
+    // if (authResult.error) {
+    //   return authResult.error;
+    // }
 
     const model = await request.json();
     const result = await createAccountService(model);
-    return NextResponse.json({
-      success: true,
-      data: result
-    }, { status: 200 });
+    return NextResponse.json({ success: true, data: result }, { status: 200 });
+
   } catch (error: any) {
     console.error("API Error in POST /api/account/create:", error);
     return NextResponse.json(

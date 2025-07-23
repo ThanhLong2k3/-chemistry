@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { IDecodedToken } from '@/types/decodedToken';
-import { jwtDecode } from 'jwt-decode';
+import { checkPermission } from '../repositories/permission.repository';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Interface này định nghĩa cấu trúc payload trong token của bạn
 interface AuthPayload {
     username: string;
-    role: 'admin' | 'teacher' | 'collaborator' | 'student';
+    role_id: string;
     email: string;
     image: string;
     name: string;
@@ -16,14 +15,13 @@ interface AuthPayload {
 }
 
 /**
- * Xác thực token từ request và kiểm tra quyền truy cập.
+ * Xác thực token từ request và kiểm tra quyền truy cập động trong CSDL.
  * @param request - Đối tượng NextRequest.
- *- @param requiredRoles - (Tùy chọn) Một mảng các quyền được phép truy cập.
+ * @param requiredPermissionCode - (Bắt buộc) Mã phân quyền duy nhất cần có để truy cập API này.
  * @returns Trả về một object chứa { error: NextResponse } nếu xác thực thất bại, 
- *          hoặc { payload: AuthPayload } nếu thành công.
+ *          hoặc { user: AuthPayload } nếu thành công. (Đổi tên 'payload' thành 'user' cho rõ nghĩa)
  */
-export async function verifyAuth(request: NextRequest, requiredRoles?: Array<'admin' | 'teacher' | 'collaborator' | 'student'>) {
-    // Kiểm tra xem JWT_SECRET đã được thiết lập chưa
+export async function verifyAuth(request: NextRequest, requiredPermissionCode?: string) {
     if (!JWT_SECRET) {
         console.error('Lỗi cấu hình: JWT_SECRET chưa được thiết lập.');
         return {
@@ -34,14 +32,12 @@ export async function verifyAuth(request: NextRequest, requiredRoles?: Array<'ad
         };
     }
 
-    // 1. Lấy token từ header
     const authHeader = request.headers.get('Authorization');
-
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return {
             error: NextResponse.json(
                 { success: false, message: 'Yêu cầu không được xác thực. Vui lòng đăng nhập.' },
-                { status: 401 } // Unauthorized
+                { status: 401 }
             )
         };
     }
@@ -49,12 +45,15 @@ export async function verifyAuth(request: NextRequest, requiredRoles?: Array<'ad
     const token = authHeader.split(' ')[1];
 
     try {
-        // 2. Xác thực token
-        const payload = jwt.verify(token, JWT_SECRET) as AuthPayload;
+        // 1. Xác thực token, không thay đổi
+        const user = jwt.verify(token, JWT_SECRET) as AuthPayload;
 
-        // 3. (Quan trọng) Kiểm tra quyền nếu được yêu cầu
-        if (requiredRoles && requiredRoles.length > 0) {
-            if (!requiredRoles.includes(payload.role)) { // Kiểm tra xem role của user có nằm trong danh sách được phép không
+        // 2. (QUAN TRỌNG) Kiểm tra quyền động nếu được yêu cầu
+        if (requiredPermissionCode) {
+            // Gọi hàm checkPermission từ CSDL
+            const hasPermission = await checkPermission(user.role_id, requiredPermissionCode);
+
+            if (!hasPermission) {
                 return {
                     error: NextResponse.json(
                         { success: false, message: 'Bạn không có quyền thực hiện hành động này.' },
@@ -64,35 +63,16 @@ export async function verifyAuth(request: NextRequest, requiredRoles?: Array<'ad
             }
         }
 
-        // Nếu mọi thứ ổn, trả về payload đã được giải mã
-        return { payload };
+        // Nếu mọi thứ ổn, trả về thông tin người dùng
+        return { user };
 
     } catch (error) {
-        // Lỗi thường gặp nhất ở đây là TokenExpiredError (token hết hạn)
         return {
             error: NextResponse.json(
                 { success: false, message: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn.' },
-                { status: 401 } // Unauthorized
+                { status: 401 }
             )
         };
     }
 }
 
-//lấy ra thông tin của tài khoản đang đăng nhập
-export const getAccountLogin = () => {
-    try {
-        const token = localStorage.getItem('TOKEN');
-
-        if (!token) {
-            return null;
-        }
-        const accountInfo = jwtDecode<IDecodedToken>(token);
-        return accountInfo;
-
-    } catch (error) {
-        console.error("Lỗi giải mã token:", error);
-        // Xóa token hỏng khỏi localStorage để tránh lỗi lặp lại
-        localStorage.removeItem('TOKEN');
-        return null;
-    }
-}

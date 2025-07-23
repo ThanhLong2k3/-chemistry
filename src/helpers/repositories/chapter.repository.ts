@@ -53,16 +53,18 @@ export const deleteChapter = async (id: string, deletedBy: string): Promise<any>
     }
 };
 
-// Tìm kiếm môn học có phân trang
+// Tìm kiếm chương có phân trang
 export const searchChapters = async (model: IBaseSearch): Promise<any> => {
     try {
-        const sql = 'CALL get_chapters(?,?,?,?)';
-        const searchContent = model.search_content || null;
+        const sql = 'CALL get_chapters(?,?,?,?,?)';
+        const searchChapterName = model.search_content_1 || null;
+        const searchSubjectName = model.search_content_2 || null;
         const results = await db_Provider(sql, [
-            model.page_index ?? 0,
+            model.page_index ?? 1,
             model.page_size ?? 10,
             model.order_type ?? 'ASC',
-            searchContent,
+            searchChapterName,
+            searchSubjectName
         ]);
         return results;
     } catch (error: any) {
