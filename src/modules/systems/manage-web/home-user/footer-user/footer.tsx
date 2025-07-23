@@ -49,7 +49,7 @@ const Footer_User = () => {
               <Space>
                 <MailOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
                 <Text style={{ color: '#9ca3af' }}>
-                  chemistryforumdgh@gmail.com
+                 contact@vuihochoa.edu.vn
                 </Text>
               </Space>
               <Space>

@@ -10,7 +10,7 @@ import { App as AntApp } from "antd"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
-import { ADMIN_USER_PATH, ADVISORY_BOARD_PATH, BASE_PATH, HOME_PATH, LESSON_DETAIL_PATH, LESSON_LIST_PATH, LOGIN_PATH, PERIODIC_TABLE_PATH, REGISTER_PATH } from "@/path"
+import { ADMIN_USER_PATH, ADVISORY_BOARD_PATH, BASE_PATH, HOME_PATH, LESSON_DETAIL_PATH, LESSON_LIST_PATH, LOGIN_PATH, PERIODIC_TABLE_PATH, REGISTER_PATH, REVIEW_FILE_PDF_PATH } from "@/path"
 
 const { Sider, Content } = Layout
 
@@ -23,9 +23,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const [collapsed, setCollapsed] = useState(false)
   const isLessonListPage = pathname.startsWith(LESSON_LIST_PATH);
   const isLessonDetailPage = pathname.startsWith(LESSON_DETAIL_PATH);
+  const isOpenPDFPage = pathname.startsWith(REVIEW_FILE_PDF_PATH);
 
   const isAuthPage = pathname === BASE_PATH || pathname === REGISTER_PATH || pathname ===HOME_PATH || pathname ===LOGIN_PATH || pathname=== ADMIN_USER_PATH || 
-  pathname=== ADVISORY_BOARD_PATH || pathname=== PERIODIC_TABLE_PATH ||  isLessonListPage || isLessonDetailPage;
+  pathname=== ADVISORY_BOARD_PATH || pathname=== PERIODIC_TABLE_PATH ||  isLessonListPage || isLessonDetailPage || isOpenPDFPage;
 
   const siderStyle: React.CSSProperties = {
     position: "fixed",

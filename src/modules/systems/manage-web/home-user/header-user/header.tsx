@@ -27,7 +27,11 @@ const Header_User = () => {
     { key: ADVISORY_BOARD_PATH, icon: <UserOutlined />, label: 'BAN TƯ VẤN' },
     { key: 'facebook-link', icon: <FacebookOutlined />, label: 'HOẠT ĐỘNG' },
     { key: 'blog', icon: <FileTextOutlined />, label: 'BLOG' },
-    { key: PERIODIC_TABLE_PATH, icon: <ExperimentOutlined />, label: 'BẢNG TUẦN HOÀN' },
+    {
+      key: PERIODIC_TABLE_PATH,
+      icon: <ExperimentOutlined />,
+      label: 'BẢNG TUẦN HOÀN',
+    },
     {
       key: 'hoa-10',
       icon: <BookOutlined />,
@@ -84,10 +88,6 @@ const Header_User = () => {
           />
         </div>
 
-        {/* Nút hamburger hiển thị ở mobile */}
-        <MenuOutlined className={styles.hamburger} onClick={() => setDrawerVisible(true)} />
-
-        {/* Menu ngang cho desktop */}
         <Menu
           theme="light"
           mode="horizontal"
@@ -97,7 +97,12 @@ const Header_User = () => {
         />
 
         {/* Button đăng nhập */}
-        <Button type="primary">Đăng nhập</Button>
+        <a href="/vi/auth/login"><Button type="primary" >Đăng nhập</Button></a>
+
+        <MenuOutlined
+          className={styles.hamburger}
+          onClick={() => setDrawerVisible(true)}
+        />
       </div>
 
       {/* Drawer menu cho mobile */}

@@ -119,7 +119,7 @@ const ScienceForumHomepage: React.FC = () => {
         <div className={styles.featuresSection}>
           <div className={styles.featuresContent}>
             <Title level={2} className={styles.sectionTitle}>
-              {`TẠI SAO CHỌN " VUI HỌC HÓA "`}
+              {`TẠI SAO CHỌN "VUI HỌC HÓA" ?`}
             </Title>
             <div className={styles.featuresRow}>
               {features.map((feature, index) => (
@@ -148,6 +148,7 @@ const ScienceForumHomepage: React.FC = () => {
             </div>
           </div>
         </div>
+
         {subjectData.map((subject,index) => (
           <div className={`${styles.subjectsection} ${ index % 2 === 0 ? styles.even_background : styles.odd_background}`} key={index }>
             <div className={styles.subjectconten}>

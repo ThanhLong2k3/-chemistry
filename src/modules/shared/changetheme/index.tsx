@@ -36,7 +36,7 @@ const ThemeChanger = () => {
     if (e.key === 'logout') {
       console.log('Đăng xuất');
       await authAPI.logout();
-      push('http://localhost:3000/vi/auth/login');
+      push('https://vuihochoa.edu.vn/vi/auth/login');
     } else if (e.key === 'settings') {
       push('/vi/resetPassword');
     }

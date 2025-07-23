@@ -10,7 +10,6 @@ const BlogItem = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Dữ liệu mẫu cho các blog với thông tin chi tiết hơn
   const blogData = [
     {
       id: 1,
@@ -78,7 +77,7 @@ const BlogItem = () => {
       if (atEnd) {
         scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        scrollRef.current.scrollBy({ left: 380, behavior: 'smooth' });
+        scrollRef.current.scrollBy({ left: 320, behavior: 'smooth' });
       }
 
       setTimeout(checkScrollButtons, 300);
