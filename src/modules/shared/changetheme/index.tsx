@@ -17,34 +17,66 @@ import { useEffect, useState } from 'react';
 import styles from '@/modules/shared/header/Header.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { authAPI } from '@/libs/api/auth.api';
+import { usePermissions } from '@/contexts/PermissionContext';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { IDecodedToken } from '@/types/decodedToken';
+
+const buttonStyle = (color: string) => ({
+  backgroundColor: color,
+  borderRadius: '50%',
+  height: '15px',
+  width: '15px',
+  border: '1px black solid',
+  cursor: 'pointer',
+});
+
+const imageStyle = {
+  marginLeft: '10px',
+  borderRadius: '50%',
+  border: '1px black solid',
+};
+
 
 const ThemeChanger = () => {
   const { push } = useRouter();
   const pathname = usePathname();
   const { setThemeColor } = useColorState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>('');
+  const { refreshPermissions } = usePermissions();
+  // Sửa lại state để lưu thông tin tài khoản
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+
   useEffect(() => {
-    getUser();
-  }, []);
-  const getUser = async () => {
-    const name = localStorage.getItem('FullName');
-    setUser(name);
+    const account = getAccountLogin();
+    if (!account) {
+      // Điều hướng về trang đăng nhập nếu chưa login
+      push('/vi/auth/login');
+    } else {
+      // Nếu đã đăng nhập, lưu thông tin vào state
+      setCurrentAccount(account);
+    }
+  }, [push]);
+
+  const handleMenuClick = (e: { key: string }) => {
+    if (e.key === 'logout') {
+      authAPI.logout();
+      //cập nhật lại state quyền thành rỗng
+      refreshPermissions();
+
+      //điều hướng về trang login
+      push('/vi/auth/login');
+
+    } else if (e.key === 'settings') {
+      push('/vi/auth/resetPassword');
+    }
   };
 
-  const handleMenuClick = async (e: { key: string }) => {
-    if (e.key === 'logout') {
-      console.log('Đăng xuất');
-      await authAPI.logout();
-      push('http://localhost:3000/vi/auth/login');
-    } else if (e.key === 'settings') {
-      push('/vi/resetPassword');
-    }
-    setIsMenuOpen(false);
-  };
+  if (!currentAccount) {
+    return;
+  }
 
   const menuItems = [
-    { key: 'user', icon: <UserOutlined />, label: user },
+    { key: 'user', icon: <UserOutlined />, label: currentAccount.name },
     {
       key: 'settings',
       icon: <SettingOutlined />,
@@ -88,8 +120,8 @@ const ThemeChanger = () => {
       >
         <div className={styles.rightContent}>
           <Image
-            src="/image/logo.png"
-            alt="Logo"
+            src={currentAccount.image}
+            alt="Avatar"
             width={40}
             height={40}
             className="h-12 object-contain"
@@ -99,21 +131,6 @@ const ThemeChanger = () => {
       </Dropdown>
     </div>
   );
-};
-
-const buttonStyle = (color: string) => ({
-  backgroundColor: color,
-  borderRadius: '50%',
-  height: '15px',
-  width: '15px',
-  border: '1px black solid',
-  cursor: 'pointer',
-});
-
-const imageStyle = {
-  marginLeft: '10px',
-  borderRadius: '50%',
-  border: '1px black solid',
 };
 
 export default ThemeChanger;

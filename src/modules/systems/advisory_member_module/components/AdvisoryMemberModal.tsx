@@ -9,12 +9,11 @@ import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
-import { searchSubject } from '@/services/subject.service';
-import { getAccountLogin } from '@/helpers/auth/auth.helper';
 import axios from 'axios';
-import { ISubject } from '@/types/subject';
 import { image } from 'd3';
 import { NewuploadFiles } from '@/libs/api/upload.api';
+import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -34,40 +33,12 @@ export const AdvisoryMemberModal = ({
   const [form] = Form.useForm();
   const { show } = useNotification();
   const [description, setDescription] = useState('');
-  const [subjects, setSubjects] = useState<ISubject[]>([]);
 
   // 1. Sử dụng Form.useWatch để theo dõi giá trị của trường 'image'
   const imageFileList = Form.useWatch('image', form);
 
   // 2. Kiểm tra xem có ảnh hay không. `hasImage` sẽ là true nếu có file, và false nếu không có.
   const hasImage = imageFileList && imageFileList.length > 0;
-
-
-  useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const res = await searchSubject({ page_index: 1, page_size: 100 });
-        if (res.success) {
-          setSubjects(res.data);
-        }
-      } catch (err) {
-        console.error('Lỗi khi tải môn học:', err);
-      }
-    };
-
-    if (isOpen) {
-      fetchSubjects();
-
-      if (isCreate) {
-        form.resetFields();
-        setDescription('');
-      } else if (row) {
-        form.setFieldsValue(row);
-        setDescription(row.description || '');
-      }
-    }
-  }, [isOpen]);
-
 
   useEffect(() => {
     if (isOpen) {
@@ -157,30 +128,29 @@ export const AdvisoryMemberModal = ({
       getAll();
       close();
     } catch (error) {
-      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
-      // 1. Kiểm tra xem đây có phải là lỗi từ Axios không
+      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+
       if (axios.isAxiosError(error)) {
-        // 2. Lấy thông báo lỗi từ response của backend (nếu có)
-        const responseMessage = error.response?.data?.message;
-        // 3. Xử lý cụ thể cho từng mã lỗi
-        if (error.response?.status === 403) {
-          // Lỗi 403: Không có quyền
-          errorMessage = responseMessage || 'Bạn không có quyền thực hiện hành động này.';
-        } else if (error.response?.status === 401) {
-          // Lỗi 401: Chưa xác thực hoặc token hết hạn
-          errorMessage = responseMessage || 'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.';
+        const axiosError = error; // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
         } else {
-          // Các lỗi khác (500, 404, ...)
-          errorMessage = responseMessage || 'Lỗi từ máy chủ, vui lòng thử lại sau.';
+          errorMessage = responseMessage || axiosError.message;
         }
       }
+      else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      // Chỉ hiển thị notification cho các lỗi không phải 401
       show({
         result: 1,
         messageError: errorMessage,
       });
-    } finally {
-      close();
-    };
+    }
   };
 
   return (
@@ -228,17 +198,11 @@ export const AdvisoryMemberModal = ({
               </Form.Item>
 
               <Form.Item
-                name="subject_id"
+                name="subject"
                 label="Môn học phụ trách"
                 rules={RULES_FORM.required}
               >
-                <Select placeholder="Chọn môn học" allowClear showSearch optionFilterProp="children">
-                  {subjects.map((subject) => (
-                    <Select.Option key={subject.id} value={subject.id}>
-                      {subject.name}
-                    </Select.Option>
-                  ))}
-                </Select>
+                <Input />
               </Form.Item>
 
               <Form.Item

@@ -6,10 +6,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     try {
         //xác thực token
-        const authResult = await verifyAuth(request, ['admin', 'teacher']);
+        const authResult = await verifyAuth(request, 'LESSON_MANAGE'); // Truyền vào mã phân quyền
+
         if (authResult.error) {
             return authResult.error;
         }
+
         const { id, deleted_by } = await request.json();
         const result = await deleteLessonService(id, deleted_by);
 

@@ -64,12 +64,12 @@ export const deleteSubject = async (id: string, deletedBy: string): Promise<any>
 export const searchSubjects = async (model: IBaseSearch): Promise<any> => {
     try {
         const sql = 'CALL get_subjects(?,?,?,?)';
-        const searchContent = model.search_content || null;
+        const searchSubjectName = model.search_content_1 || null;
         const results = await db_Provider(sql, [
-            model.page_index ?? 0,
+            model.page_index ?? 1,
             model.page_size ?? 10,
             model.order_type ?? 'ASC',
-            searchContent,
+            searchSubjectName
         ]);
         return results;
     } catch (error: any) {

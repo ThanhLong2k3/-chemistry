@@ -1,8 +1,9 @@
-import PdfBookViewer from "./components/PdfBookViewer";
+// import PdfBookViewer from "./components/PdfBookViewer";
 
 const ReviewPdf = () => {
     return (
-        <PdfBookViewer/>
+        // <PdfBookViewer/>
+        <></>
     );
 }
 export default ReviewPdf;

@@ -33,7 +33,7 @@ const routeMap: Record<string, string> = {
   '4': '/vi/admin/manage_subject',
   sub3: '/vi/admin/manage_advisory_member',
   sub4: '/vi/admin/manage_blog',
-  '5': '/vi/admin/manage_group_user',
+  '5': '/vi/admin/manage_role',
   '6': '/vi/admin/manage_account',
 };
 

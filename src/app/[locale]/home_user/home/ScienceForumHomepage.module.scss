@@ -61,8 +61,10 @@ $card-background: #ffffff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
     width: 18%;
-    min-height: 280px; /* Cố định chiều cao tối thiểu */
+    height: 280px; 
     display: flex;
+    overflow: hidden;
+
     flex-direction: column;
     &:hover {
       transform: translateY(-5px);
@@ -91,6 +93,7 @@ $card-background: #ffffff;
       .ant-card-meta-title {
         font-size: 1.1em;
         font-weight: 600;
+        text-align: center;
         color: $primary-color;
         margin-bottom: 10px;
       }
@@ -133,7 +136,7 @@ $card-background: #ffffff;
     .featureCard {
       width: 30%;
       min-width: 200px;
-      min-height: 260px; /* Giảm nhẹ chiều cao cho tablet */
+      height: 260px; /* Giảm nhẹ chiều cao cho tablet */
     }
   }
 }
@@ -153,7 +156,7 @@ $card-background: #ffffff;
     .featureCard {
       width: 45%;
       min-width: 180px;
-      min-height: 240px; /* Giảm chiều cao cho mobile */
+      height: 240px; /* Giảm chiều cao cho mobile */
 
       .featureIconContainer {
         height: 80px;
@@ -194,7 +197,7 @@ $card-background: #ffffff;
     .featureCard {
       width: 100%;
       max-width: 300px;
-      min-height: 220px; /* Chiều cao nhỏ hơn cho mobile nhỏ */
+      height: 220px; 
 
       .featureIconContainer {
         height: 70px;
@@ -277,7 +280,6 @@ $card-background: #ffffff;
     display: flex;
     align-items: center;
     gap: 30px;
-    height: calc(100% - 100px);
   }
 
   // Image Section - 30% width
@@ -374,7 +376,7 @@ $card-background: #ffffff;
     height: 90%;
     background-color: white;
     border-radius: 20px;
-    padding: 20px;
+    padding: 10px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -383,14 +385,11 @@ $card-background: #ffffff;
       font-size: 20px;
       font-weight: 600;
       color: #333;
-      margin-bottom: 15px;
       text-align: center;
       padding-bottom: 10px;
     }
 
     .lessonList {
-      border-radius: 12px;
-      padding: 15px;
       height: 100%;
       overflow-y: auto;
 
@@ -399,6 +398,7 @@ $card-background: #ffffff;
         align-items: center;
         gap: 12px;
         font-size: 14px;
+        overflow: hidden;
         color: #333;
         background-color: #fff;
         padding: 12px;
@@ -410,7 +410,7 @@ $card-background: #ffffff;
         &:hover {
           background-color: #f5f5f5;
           border-color: #7a52aa;
-          transform: translateX(5px);
+          transform: translateX(2px);
           cursor: pointer;
         }
 
@@ -426,7 +426,8 @@ $card-background: #ffffff;
 
         .lesson_content {
           flex: 1;
-
+          white-space: nowrap;       
+          text-overflow: ellipsis; 
           strong {
             color: #7a52aa;
             font-weight: 600;
@@ -437,141 +438,333 @@ $card-background: #ffffff;
   }
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
+// /* Responsive Design */
+// @media (max-width: 1024px) {
+//   .subjectsection {
+//     height: auto;
+//     padding: 40px 20px;
+
+//     .subjectconten {
+//       width: 90%;
+//       gap: 20px;
+//     }
+
+//     .sectionTitle {
+//       font-size: 2em;
+//     }
+
+//     .subject_main_content {
+//       flex-direction: column;
+//       align-items: center;
+//       height: auto;
+//       gap: 30px; /* Tăng gap để tránh ảnh đè chữ */
+//     }
+
+//     .subject_image_section {
+//       width: 100%;
+//       max-width: 250px; /* Giảm từ 500px để không quá to */
+//       height: 300px; /* Giảm từ 350px để cân đối */
+//       margin-bottom: 20px; /* Thêm khoảng cách dưới ảnh */
+//       padding: 10px;
+
+//       .image_container {
+//         height: 100%;
+//       }
+//     }
+
+//     .subject_content_section {
+//       width: 100%;
+//       max-width: 600px;
+//       height: auto;
+//       padding: 10px;
+//       text-align: center;
+
+//       .content_body {
+//         gap: 10px;
+//         background-color: #ffffff;
+//         padding: 20px;
+//         border-radius: 20px;
+//         .subjectDescription {
+//           font-size: 15px;
+//         }
+//       }
+
+//       .subjectButton {
+//         align-self: center;
+//         width: 100%;
+//         max-width: 200px;
+//       }
+//     }
+
+//     .subject_lesson_section {
+//       display: none; 
+//     }
+//   }
+// }
+
+// @media (max-width: 768px) {
+//   .subjectsection {
+//     padding: 30px 15px;
+
+//     .subjectconten {
+//       width: 100%;
+//       gap: 15px;
+//     }
+
+//     .sectionTitle {
+//       font-size: 1.8em;
+//     }
+
+//     .subject_image_section {
+//       max-width: 250px; /* Giảm từ 400px */
+//       height: 300px; /* Giảm từ 300px */
+//       margin-bottom: 15px; /* Giảm khoảng cách */
+//     }
+
+//     .subject_content_section {
+//       max-width: 500px;
+
+//       .content_body {
+//         .subjectDescription {
+//           font-size: 14px;
+//         }
+//       }
+
+//       .subjectButton {
+//         font-size: 14px;
+//         padding: 10px 20px;
+//       }
+//     }
+
+//     .subject_lesson_section {
+//       display: none; /* Tiếp tục ẩn mục lục */
+//     }
+//   }
+// }
+
+// @media (max-width: 576px) {
+//   .subjectsection {
+//     padding: 20px 10px;
+
+//     .sectionTitle {
+//       font-size: 1.6em;
+//     }
+
+//     .subject_image_section {
+//       max-width: 150px; /* Giảm từ 320px */
+//       height: 200px; /* Giữ nguyên */
+//       margin-bottom: 10px; /* Giảm khoảng cách */
+//     }
+
+//     .subject_content_section {
+//       max-width: 400px;
+
+//       .content_body {
+//         .subjectDescription {
+//           font-size: 13px;
+//         }
+//       }
+
+//       .subjectButton {
+//         font-size: 13px;
+//         padding: 8px 16px;
+//       }
+//     }
+
+//     .subject_lesson_section {
+//       display: none; /* Tiếp tục ẩn mục lục */
+//     }
+//   }
+// }
+
+
+
+//      MỚI================================================
+/* ==== MAX-WIDTH: 375px ==== */
+@media (max-width: 375px) {
   .subjectsection {
+    flex-direction: column;
+    height: auto;
+    padding: 30px 12px;
+
+    .subjectconten {
+      width: 100%;
+      gap: 24px;
+    }
+    .subject_content_section{
+      display: none;
+    }
+    .subject_main_content {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .subject_image_section,
+    .subject_content_section,
+    .subject_lesson_section {
+      width: 100%;
+      height: auto;
+    }
+
+    .subject_lesson_section {
+      padding: 16px;
+    }
+  }
+}
+
+/* ==== MAX-WIDTH: 575px ==== */
+@media (max-width: 575px) {
+  .subjectsection {
+    flex-direction: column;
+    height: auto;
+    padding: 36px 16px;
+
+    .subjectconten {
+      width: 100%;
+    }
+  .subject_content_section{
+      display: none;
+    }
+    .subject_main_content {
+      flex-direction: column;
+    }
+
+    .subject_image_section,
+    .subject_content_section,
+    .subject_lesson_section {
+      width: 100%;
+      height: auto;
+    }
+
+    .subject_lesson_section {
+      padding: 18px;
+    }
+  }
+}
+
+/* ==== 576px – 767px ==== */
+@media (min-width: 576px) and (max-width: 767px) {
+  .subjectsection {
+    flex-direction: column;
     height: auto;
     padding: 40px 20px;
 
     .subjectconten {
-      width: 90%;
-      gap: 20px;
+      width: 95%;
+    }
+.subject_content_section{
+      display: none;
+    }
+    .subject_main_content {
+      flex-direction: column;
+      gap: 24px;
     }
 
-    .sectionTitle {
-      font-size: 2em;
+    .subject_image_section,
+    .subject_content_section,
+    .subject_lesson_section {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+/* ==== 768px – 991px ==== */
+@media (min-width: 768px) and (max-width: 991px) {
+  .subjectsection {
+    height: auto;
+    padding: 50px 24px;
+
+    .subjectconten {
+      width: 90%;
+    }
+    .subject_content_section{
+      display: none;
+    }
+    .subject_main_content {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .subject_image_section,
+    .subject_content_section,
+    .subject_lesson_section {
+      width: 100%;
+    }
+  }
+}
+
+/* ==== 992px – 1199px ==== */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .subjectsection {
+    height: auto;
+    padding: 60px 32px;
+
+    .subjectconten {
+      width: 88%;
     }
 
     .subject_main_content {
-      flex-direction: column;
-      align-items: center;
-      height: auto;
-      gap: 30px; /* Tăng gap để tránh ảnh đè chữ */
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 24px;
     }
 
     .subject_image_section {
-      width: 100%;
-      max-width: 250px; /* Giảm từ 500px để không quá to */
-      height: 300px; /* Giảm từ 350px để cân đối */
-      margin-bottom: 20px; /* Thêm khoảng cách dưới ảnh */
-      padding: 10px;
-
-      .image_container {
-        height: 100%;
-      }
+      width: 40%;
     }
 
     .subject_content_section {
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      padding: 10px;
-      text-align: center;
-
-      .content_body {
-        gap: 10px;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 20px;
-        .subjectDescription {
-          font-size: 15px;
-        }
-      }
-
-      .subjectButton {
-        align-self: center;
-        width: 100%;
-        max-width: 200px;
-      }
+      width: 50%;
     }
 
     .subject_lesson_section {
-      display: none; /* Ẩn mục lục trên màn hình nhỏ hơn 1024px */
+      width: 100%;
+      margin-top: 24px;
     }
   }
 }
 
-@media (max-width: 768px) {
+/* ==== 1200px – 1439px ==== */
+@media (min-width: 1200px) and (max-width: 1439px) {
   .subjectsection {
-    padding: 30px 15px;
+    height: auto;
 
     .subjectconten {
-      width: 100%;
-      gap: 15px;
+      width: 85%;
     }
-
-    .sectionTitle {
-      font-size: 1.8em;
-    }
-
+    
     .subject_image_section {
-      max-width: 250px; /* Giảm từ 400px */
-      height: 300px; /* Giảm từ 300px */
-      margin-bottom: 15px; /* Giảm khoảng cách */
+      width: 30%;
     }
 
     .subject_content_section {
-      max-width: 500px;
-
-      .content_body {
-        .subjectDescription {
-          font-size: 14px;
-        }
-      }
-
-      .subjectButton {
-        font-size: 14px;
-        padding: 10px 20px;
-      }
+      width: 40%;
     }
 
     .subject_lesson_section {
-      display: none; /* Tiếp tục ẩn mục lục */
+      width: 28%;
     }
   }
 }
 
-@media (max-width: 576px) {
+/* ==== >=1440px ==== */
+@media (min-width: 1440px) {
   .subjectsection {
-    padding: 20px 10px;
-
-    .sectionTitle {
-      font-size: 1.6em;
+    .subjectconten {
+      width: 80%;
     }
 
     .subject_image_section {
-      max-width: 150px; /* Giảm từ 320px */
-      height: 200px; /* Giữ nguyên */
-      margin-bottom: 10px; /* Giảm khoảng cách */
+      width: 30%;
     }
 
     .subject_content_section {
-      max-width: 400px;
-
-      .content_body {
-        .subjectDescription {
-          font-size: 13px;
-        }
-      }
-
-      .subjectButton {
-        font-size: 13px;
-        padding: 8px 16px;
-      }
+      width: 40%;
     }
 
     .subject_lesson_section {
-      display: none; /* Tiếp tục ẩn mục lục */
+      width: 29%;
     }
   }
 }

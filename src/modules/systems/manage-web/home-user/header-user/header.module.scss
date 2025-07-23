@@ -27,6 +27,7 @@ $border-color: #e0e0e0;
   width: 100%;
   top: 0;
   z-index: 1000;
+  padding: 0 24px;
 
   .headerContent {
     @include flex-between;
@@ -53,7 +54,6 @@ $border-color: #e0e0e0;
 
   .menu {
     flex: 1;
-    margin-left: 32px;
     background-color: transparent;
     border-bottom: none;
 
@@ -113,14 +113,16 @@ $border-color: #e0e0e0;
 /* MOBILE MINI: iPhone SE, 320–375px */
 @media (max-width: 375px) {
   .header {
+    display: flex;
     .logoText {
       font-size: 16px;
     }
 
     .headerContent {
-      flex-direction: column;
       gap: 8px;
-
+      width: 100%;
+      margin: 0px;
+      max-width: 100%;
       .headerActions {
         width: 100%;
         justify-content: space-between;
@@ -193,6 +195,13 @@ $border-color: #e0e0e0;
     max-width: 90%;
   }
 
+  .hamburger {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+  }
   .logoText {
     font-size: 20px;
   }
@@ -201,7 +210,7 @@ $border-color: #e0e0e0;
 /* DESKTOP: 1200px – 1439px */
 @media (min-width: 1200px) and (max-width: 1439px) {
   .headerContent {
-    max-width: 85%;
+    max-width: 100% !important;
   }
 
   .logoText {

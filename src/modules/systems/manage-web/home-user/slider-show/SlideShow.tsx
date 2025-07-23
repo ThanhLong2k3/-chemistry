@@ -3,7 +3,7 @@
 import React from 'react';
 import SliderLib from 'react-slick';
 const Slider = SliderLib as unknown as React.ComponentType<any>;
-import { Card } from 'antd';
+import { Card, Typography } from 'antd';
 import styles from './sliderShowSection.module.scss';
 
 const images = [
@@ -11,6 +11,7 @@ const images = [
   'https://www.shutterstock.com/image-vector/chemistry-dark-blue-word-concept-260nw-2505113625.jpg',
   'https://standoutinternational.net/upload/filemanager/ho%C3%A1cc.jpg',
 ];
+const { Title } = Typography;
 
 const SliderShowSection = () => {
   const settings = {
@@ -20,7 +21,7 @@ const SliderShowSection = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 1000,
+    autoplaySpeed: 3000,
   };
 
   return (
@@ -43,12 +44,14 @@ const SliderShowSection = () => {
       {/* About */}
       <div className={styles.aboutSection}>
         <Card bordered={true} className={styles.aboutCard}>
+          <Title level={2} className={styles.sectionTitle}>
+            {`VỀ CHÚNG TÔI`}
+          </Title>
           <div className={styles.aboutContent}>
             <div className={styles.aboutImage}>
               <img src="/about1.jpg" alt="About chemistry" />
             </div>
             <div className={styles.aboutText}>
-              <h2>Về chúng tôi</h2>
               <p>
                 Diễn đàn hóa hóa ( Chemistry Forum ) là nền tảng thiết lập nhằm
                 cung cấp tư liệu dưới nhiều hình thức đa dạng dành cho học sinh

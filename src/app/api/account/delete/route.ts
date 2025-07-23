@@ -6,11 +6,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     //xác thực token
-    const authResult = await verifyAuth(request, ['admin']);
+    const authResult = await verifyAuth(request, 'ACCOUNT_MANAGE');
     if (authResult.error) {
       return authResult.error;
     }
-
     const { username, deleted_by } = await request.json();
     const result = await deleteAccountService(username, deleted_by);
 

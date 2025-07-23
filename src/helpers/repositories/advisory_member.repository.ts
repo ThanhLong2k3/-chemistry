@@ -14,7 +14,7 @@ export const createAdvisoryMember = async (model: IAdvisoryMember): Promise<any>
                 model.teacher_name,
                 model.image,
                 model.qualification ?? null,
-                model.subject_id,
+                model.subject,
                 model.in_charge ?? null,
                 model.workplace ?? null,
                 model.years_of_experience ?? null,
@@ -39,7 +39,7 @@ export const updateAdvisoryMember = async (model: IAdvisoryMember): Promise<any>
                 model.teacher_name,
                 model.image,
                 model.qualification ?? null,
-                model.subject_id,
+                model.subject,
                 model.in_charge ?? null,
                 model.workplace ?? null,
                 model.years_of_experience ?? null,
@@ -68,9 +68,9 @@ export const deleteAdvisoryMember = async (id: string, deletedBy: string): Promi
 export const searchAdvisoryMembers = async (model: IBaseSearch): Promise<any> => {
     try {
         const sql = 'CALL get_advisory_members(?,?,?,?)';
-        const searchContent = model.search_content || null;
+        const searchContent = model.search_content_1 || null;
         const results = await db_Provider(sql, [
-            model.page_index ?? 0,
+            model.page_index ?? 1,
             model.page_size ?? 10,
             model.order_type ?? 'ASC',
             searchContent,

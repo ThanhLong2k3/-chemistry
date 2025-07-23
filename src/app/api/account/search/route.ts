@@ -4,7 +4,7 @@ import { verifyAuth } from '@/helpers/auth/auth.helper';
 
 export async function POST(request: NextRequest) {
   try {
-    const authResult = await verifyAuth(request, ['admin']);
+    const authResult = await verifyAuth(request, 'ACCOUNT_MANAGE');
     if (authResult.error) {
       return authResult.error;
     }

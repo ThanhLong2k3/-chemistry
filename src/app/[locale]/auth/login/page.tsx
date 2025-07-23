@@ -12,6 +12,7 @@ import { authAPI } from '@/libs/api/auth.api';
 import { FOGOTPASS_PATH, REGISTER_PATH } from '@/path';
 import { jwtDecode } from 'jwt-decode';
 import { IDecodedToken } from '@/types/decodedToken';
+import { usePermissions } from '@/contexts/PermissionContext';
 
 const { Title, Text } = Typography;
 
@@ -21,6 +22,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { show } = useNotification();
+  const { refreshPermissions } = usePermissions();
 
   useEffect(() => {
     document.title = "Đăng nhập";
@@ -53,12 +55,14 @@ export default function LoginPage() {
       localStorage.setItem('TOKEN', token);
       show({ result: 0, messageDone: 'Đăng nhập thành công!' });
 
-      // Chuyển trang dựa trên role từ thông tin đã giải mã
-      if (accountInfo.role === 'student') {
-        router.push('/vi');
-      } else {
-        router.push('/vi/admin/manage_account');
-      }
+      refreshPermissions();
+
+      // // Chuyển trang dựa trên role từ thông tin đã giải mã
+      // if (accountInfo.role === 'student') {
+      //   router.push('/vi');
+      // } else {
+      //   router.push('/vi/admin/manage_account');
+      // }
 
     } catch (err: any) {
       console.error("Lỗi ngoài dự kiến khi đăng nhập:", err);
