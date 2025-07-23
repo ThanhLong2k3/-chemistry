@@ -401,7 +401,7 @@ $card-background: #ffffff;
         overflow: hidden;
         color: #333;
         background-color: #fff;
-        padding: 12px;
+        margin: 12px;
         margin-bottom: 8px;
         border-radius: 8px;
         border: 1px solid #e8e8e8;
@@ -427,6 +427,7 @@ $card-background: #ffffff;
         .lesson_content {
           flex: 1;
           white-space: nowrap;       
+          overflow: hidden;
           text-overflow: ellipsis; 
           strong {
             color: #7a52aa;

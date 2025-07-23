@@ -61,7 +61,7 @@ export default function LoginPage() {
       // if (accountInfo.role === 'student') {
       //   router.push('/vi');
       // } else {
-      //   router.push('/vi/admin/manage_account');
+        router.push('/vi/admin/manage_account');
       // }
 
     } catch (err: any) {

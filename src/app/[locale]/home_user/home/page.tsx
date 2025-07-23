@@ -12,17 +12,19 @@ import {
   Row,
   Typography,
 } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import parse from 'html-react-parser';
 
 import styles from './ScienceForumHomepage.module.scss';
 import { BookOutlined } from '@ant-design/icons';
-import { Key } from 'lucide-react';
 import SliderShowSection from '@/modules/systems/manage-web/home-user/slider-show/SlideShow';
 import { useRouter } from 'next/navigation';
-import LessonDetail from '@/modules/systems/manage-web/components/lessonDetail/LessonDetail';
 import BlogItem from '@/modules/systems/manage-web/home-user/blog/blog';
 import { LESSON_DETAIL_PATH, LESSON_LIST_PATH } from '@/path';
-
+import { ISubject_Home } from '@/types/home';
+import { Home_Api } from '@/libs/api/home.api';
+import { searchBlog } from '@/services/blog.service';
+import { IBlog } from '@/types/blog';
 
 const { Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
@@ -30,48 +32,39 @@ const { Meta } = Card;
 
 const ScienceForumHomepage: React.FC = () => {
   const router = useRouter();
+  const [subjectData, setSubjectData] = useState<ISubject_Home[]>([]);
+  const [blogData, setBlogData] = useState<IBlog[]>([]);
 
-  const subjectData = [
-    {
-      id: 1,
-      name: 'Hóa học 10',
-      description:
-        'Khám phá cấu trúc nguyên tử, bảng tuần hoàn và phản ứng hoá học cơ bản. \n- Tìm hiểu về các nguyên tố hoá học và tính chất của chúng.\n- Nắm vững các khái niệm cơ bản về phản ứng hoá học và cân bằng phương trình.\n- Hiểu rõ về các loại liên kết hoá học và ảnh hưởng của chúng đến tính chất vật lý và hoá học của chất. \n - Làm quen với các phương pháp thí nghiệm cơ bản trong hoá học.',
-      image: 'https://img.loigiaihay.com/picture/2024/0123/1_5.png',
-      lessons: [
-        'Giới thiệu về môn học',
-        'Số học cơ bản',
-        'Đại số và phương trình',
-        'Ứng dụng trong thực tế',
-      ],
-    },
-    {
-      id: 2,
-      name: 'Hóa học 11',
-      description: 'Tìm hiểu liên kết hóa học, động học và nhiệt hóa học.',
-      image: 'https://img.loigiaihay.com/picture/2024/0123/1.png',
-      lessons: [
-        'Giới thiệu về môn học',
-        'Số học cơ bản',
-        'Đại số và phương trình',
-        'Ứng dụng trong thực tế',
-      ],
-    },
-    {
-      id: 3,
-      name: 'Hóa học 12',
-      description:
-        'Tổng hợp kiến thức nâng cao về hữu cơ, vô cơ và kỹ năng giải bài tập.',
-      image:
-        'https://docx.com.vn/storage/uploads/documents/4ffaff7d4e13f0a51d85f271216490c8/bg1.png',
-      lessons: [
-        'Giới thiệu về môn học',
-        'Số học cơ bản',
-        'Đại số và phương trình',
-        'Ứng dụng trong thực tế',
-      ],
-    },
-  ];
+  useEffect(() => {
+    GetSubjectsWithLessons();
+    GetBlog();
+  }, []);
+
+  const GetBlog= async () => {
+    const blog:any=await searchBlog({ page_index: 1, page_size: 10 });
+    console.log("Baif Vieets",blog);
+    setBlogData(blog?.data || []);
+  }
+  const GetSubjectsWithLessons = async () => {
+  try {
+    const res = await Home_Api.GetSubjectsWithLessons();
+    const rawData = res?.data.data;
+
+    if (Array.isArray(rawData)) {
+      const cleaned = rawData.map((subject) => ({
+        ...subject,
+        lessons: Array.isArray(subject.lessons) ? subject.lessons : [],
+      }));
+      setSubjectData(cleaned);
+    } else {
+      setSubjectData([]);
+    }
+  } catch (err) {
+    console.error('Lỗi khi lấy subject data:', err);
+    setSubjectData([]);
+  }
+};
+
 
   const features = [
     {
@@ -105,12 +98,12 @@ const ScienceForumHomepage: React.FC = () => {
         'Chỉ cần có điện thoại máy tính bảng, laptop hoặc TV kết nối Internet',
     },
   ];
-  const handleOpenLessonList=(id:number)=>{
-      router.push(`${LESSON_LIST_PATH}/${id}`);
-  }
-  const handleOpenLessonDetail=(id:number | string)=>{
-      router.push(`${LESSON_DETAIL_PATH}/${id}`);
-  }
+  const handleOpenLessonList = (id: string) => {
+    router.push(`${LESSON_LIST_PATH}/${id}`);
+  };
+  const handleOpenLessonDetail = (id: number | string) => {
+    router.push(`${LESSON_DETAIL_PATH}/${id}`);
+  };
   return (
     <Layout className={styles.layout}>
       <Content className={styles.content}>
@@ -149,12 +142,17 @@ const ScienceForumHomepage: React.FC = () => {
           </div>
         </div>
 
-        {subjectData.map((subject,index) => (
-          <div className={`${styles.subjectsection} ${ index % 2 === 0 ? styles.even_background : styles.odd_background}`} key={index }>
+        {subjectData?.map((subject, index) => (
+          <div
+            className={`${styles.subjectsection} ${
+              index % 2 === 0 ? styles.even_background : styles.odd_background
+            }`}
+            key={index}
+          >
             <div className={styles.subjectconten}>
               {/* Title Section - Centered at top */}
               <Title level={1} className={styles.sectionTitle}>
-                {subject.name}
+                {subject.subject_name}
               </Title>
 
               {/* Main Content Area */}
@@ -164,7 +162,7 @@ const ScienceForumHomepage: React.FC = () => {
                   <div className={styles.image_container}>
                     <Image
                       src={subject.image}
-                      alt={subject.name}
+                      alt={subject.subject_name}
                       className={styles.subjectImage}
                       preview={false}
                     />
@@ -179,12 +177,10 @@ const ScienceForumHomepage: React.FC = () => {
                         key={index}
                         className={styles.subjectDescription}
                       >
-                        {line}
+                        {parse(line)}
                       </Paragraph>
                     ))}
                   </div>
-
-                
                 </div>
 
                 {/* Lesson List Section */}
@@ -194,17 +190,24 @@ const ScienceForumHomepage: React.FC = () => {
                   <List
                     className={styles.lessonList}
                     size="small"
-                    dataSource={subject.lessons}
+                    dataSource={subject.lessons || []}
                     renderItem={(lesson, index) => (
-                      <List.Item className={styles.lessonItem} onClick={()=>handleOpenLessonDetail(lesson)}>
+                      <List.Item
+                        className={styles.lessonItem}
+                        onClick={() => handleOpenLessonDetail(lesson.id)}
+                      >
                         <BookOutlined className={styles.lessonIcon} />
-                        <div className={styles.lesson_content} >
-                          <strong>Bài {index + 1}:</strong>&nbsp;{lesson}
+                        <div className={styles.lesson_content}>
+                          {lesson.name}
                         </div>
                       </List.Item>
                     )}
                   />
-                    <Button type="primary" className={styles.subjectButton} onClick={()=>handleOpenLessonList(subject.id)}>
+                  <Button
+                    type="primary"
+                    className={styles.subjectButton}
+                    onClick={() => handleOpenLessonList(subject.subject_id)}
+                  >
                     Xem bài học
                   </Button>
                 </div>
@@ -213,7 +216,7 @@ const ScienceForumHomepage: React.FC = () => {
           </div>
         ))}
 
-        <BlogItem />
+        <BlogItem blogData={blogData} />
       </Content>
     </Layout>
   );

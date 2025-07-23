@@ -6,7 +6,7 @@ export interface IBlog {
     created_at: Date;
     updated_at: Date;
     created_by: string;
-    create_by_name: string | null;
+    created_by_name: string | null;
     updated_by: string;
     deleted: boolean
 }
