@@ -166,7 +166,7 @@ export const BlogTable = () => {
         />
 
         <Input
-          placeholder="Tìm kiếm bài viết..."
+          placeholder="Nhập tiêu đề bài viết để tìm kiếm..."
           value={titleBlog ?? ''}
           onChange={(e) => setTitleBlog(e.target.value)}
           allowClear

@@ -126,6 +126,7 @@ export const SubjectModal = ({
         }
       }
       getAll();
+      close();
     } catch (error) {
       let errorMessage = "Đã có lỗi không xác định xảy ra.";
 

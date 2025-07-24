@@ -90,3 +90,25 @@ export const authenticate = async (username: string): Promise<any> => {
   }
 };
 
+
+export const findAccountByEmail = async (email: string): Promise<any> => {
+  try {
+    const sql = 'CALL find_account_by_email(?)';
+    const results = await db_Provider(sql, [email]);
+    //trả về object tài khoản đầu tiên hoặc null
+    return results.length > 0 ? results[0] : null;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+
+export const updatePasswordByEmail = async (email: string, hashedPassword: string): Promise<any> => {
+  try {
+    const sql = 'CALL update_password_by_email(?, ?)';
+    //chỉ thực hiện UPDATE, không cần trả về kết quả cụ thể
+    await db_Provider(sql, [email, hashedPassword], true);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};

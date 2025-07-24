@@ -107,7 +107,7 @@ export const RoleTable = () => {
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         <Input
-          placeholder="Tìm kiếm nhóm quyền..."
+          placeholder=" Nhập tên nhóm quyền để tìm kiếm..."
           value={nameRole ?? ''}
           onChange={(e) => setNameRole(e.target.value)}
           allowClear

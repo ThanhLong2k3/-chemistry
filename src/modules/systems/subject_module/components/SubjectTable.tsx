@@ -170,7 +170,7 @@ export const SubjectTable = () => {
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         <Input
-          placeholder="Tìm kiếm môn học..."
+          placeholder="Nhập tên môn học để tìm kiếm..."
           value={nameSubject ?? ''}
           onChange={(e) => setNameSubject(e.target.value)}
           allowClear

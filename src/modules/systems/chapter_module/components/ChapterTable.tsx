@@ -153,7 +153,7 @@ export const ChapterTable = () => {
         </Select>
 
         <Input
-          placeholder="Tìm kiếm chương..."
+          placeholder="Nhập tên chương để tìm kiếm..."
           value={nameChapter ?? ''}
           onChange={(e) => setNameChapter(e.target.value)}
           allowClear

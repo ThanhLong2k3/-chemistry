@@ -56,22 +56,9 @@ const ThemeChanger = () => {
     }
   };
 
-<<<<<<< HEAD
   if (!currentAccount) {
     return;
   }
-=======
-  const handleMenuClick = async (e: { key: string }) => {
-    if (e.key === 'logout') {
-      console.log('Đăng xuất');
-      await authAPI.logout();
-      push('https://vuihochoa.edu.vn/vi/auth/login');
-    } else if (e.key === 'settings') {
-      push('/vi/resetPassword');
-    }
-    setIsMenuOpen(false);
-  };
->>>>>>> main
 
   const menuItems = [
     { key: 'user', icon: <UserOutlined />, label: currentAccount.name },
@@ -140,7 +127,7 @@ const buttonStyle = (color: string) => ({
   cursor: 'pointer',
 });
 
-const imageStyle = {
+const imageStyle: React.CSSProperties = {
   marginLeft: '10px',
   borderRadius: '50%',
   border: '1px black solid',

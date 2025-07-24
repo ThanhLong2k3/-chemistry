@@ -221,7 +221,7 @@ export const LessonTable = () => {
         </Select>
 
         <Input
-          placeholder="Tìm kiếm bài học..."
+          placeholder="Nhập tên bài học để tìm kiếm..."
           value={nameLesson ?? ''}
           onChange={(e) => setNameLesson(e.target.value)}
           allowClear

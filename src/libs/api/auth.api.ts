@@ -14,6 +14,11 @@ interface LoginResponse {
   token?: string;
 }
 
+interface ResetPasswordResponse {
+  success: boolean;
+  message: string;
+}
+
 
 export const authAPI = {
   // register: async (
@@ -48,7 +53,7 @@ export const authAPI = {
         };
       }
 
-      const response = await fetch(`https://vuihochoa.edu.vn/${API_URL}/auth/login`, {
+      const response = await fetch(`http://localhost:3000/${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,6 +84,59 @@ export const authAPI = {
     }
   },
 
+
+  forgotPassword: async (email: string): Promise<{ success: boolean; message: string; otpToken?: string }> => {
+    try {
+      if (!email) return { success: false, message: 'Vui lòng nhập email.' };
+
+      const response = await fetch(`http://localhost:3000/${API_URL}/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Yêu cầu thất bại.');
+
+      // Trả về cả otpToken
+      return { success: true, message: data.message, otpToken: data.otpToken };
+
+    } catch (error) {
+      console.error('Lỗi API quên mật khẩu:', error);
+      return { success: false, message: error instanceof Error ? error.message : 'Lỗi kết nối.' };
+    }
+  },
+
+
+  verifyOtp: async (otp: string, otpToken: string): Promise<{ success: boolean; message: string; email?: string }> => {
+    try {
+      const response = await fetch(`http://localhost:3000/${API_URL}/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ otp, otpToken }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      return data;
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
+  },
+
+  resetPassword: async (email: string, newPassword: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const response = await fetch(`http://localhost:3000/${API_URL}/auth/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, newPassword }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      return data;
+    } catch (error: any) {
+      return { success: false, message: error.message };
+    }
+  },
 
 
   logout: () => {
