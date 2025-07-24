@@ -1,5 +1,5 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
-import { Button, Col, Form, Input, Modal, Row, Select, Upload, UploadFile } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Select, Spin, Upload, UploadFile } from 'antd';
 import { useEffect, useState } from 'react';
 import { createLesson, updateLesson } from '@/services/lesson.service';
 import { ILesson } from '@/types/lesson';
@@ -15,6 +15,8 @@ import { IChapter } from '@/types/chapter';
 import { NewuploadFiles } from '@/libs/api/upload.api';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { ISubject } from '@/types/subject';
+import { searchSubject } from '@/services/subject.service';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -34,55 +36,104 @@ export const LessonModal = ({
   const [form] = Form.useForm();
   const { show } = useNotification();
   const [description, setDescription] = useState('');
+
+  // State cho bộ lọc
+  const [subjects, setSubjects] = useState<ISubject[]>([]);
   const [chapters, setChapters] = useState<IChapter[]>([]);
+  const [loadingSubjects, setLoadingSubjects] = useState(false);
+  const [loadingChapters, setLoadingChapters] = useState(false);
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchChapters = async () => {
+    const fetchInitialData = async () => {
+      // 1. Tải danh sách tất cả Môn học
+      setLoadingSubjects(true);
       try {
-        const res = await searchChapter({ page_index: 1, page_size: 100 });
+        const res = await searchSubject({ page_index: 1, page_size: 1000 });
+        if (res.success) {
+          const allSubjects = res.data;
+          setSubjects(allSubjects);
+
+          // 2. Nếu là SỬA, tìm môn học tương ứng với chương của bài học
+          if (!isCreate && row) {
+            // Cần tải tất cả chương một lần để tìm ra môn học của chương đó
+            const allChaptersRes = await searchChapter({ page_index: 1, page_size: 1000 });
+            if (allChaptersRes.success) {
+              const chapterOfRow = allChaptersRes.data.find((c: IChapter) => c.id === row.chapter_id);
+              if (chapterOfRow) {
+                setSelectedSubjectId(chapterOfRow.subject_id);
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Lỗi khi tải dữ liệu ban đầu:', err);
+      } finally {
+        setLoadingSubjects(false);
+      }
+    };
+
+    if (isOpen) {
+      if (isCreate) {
+        // Reset mọi thứ cho form TẠO MỚI
+        form.resetFields();
+        setDescription('');
+        setSelectedSubjectId(null);
+        setChapters([]);
+      } else if (row) {
+        // Set giá trị ban đầu cho form SỬA
+        const imageFileList: UploadFile[] = row.image ? [
+          {
+            uid: '-1',
+            name: 'image.png',
+            status: 'done',
+            url: row.image
+          }
+        ] : [];
+        form.setFieldsValue({ ...row, image: imageFileList });
+        setDescription(row.description || '');
+      }
+      fetchInitialData();
+    }
+  }, [isOpen, isCreate, row, form]);
+
+
+
+  //tải lại danh sách Chương khi Môn học được chọn thay đổi
+  useEffect(() => {
+    if (!isOpen) return; // Chỉ chạy khi modal đang mở
+
+    const fetchChapters = async () => {
+      setLoadingChapters(true);
+      setChapters([]); // Reset danh sách chương cũ
+      try {
+        // Tìm tên môn học từ ID để gửi lên API 
+        const subjectName = subjects.find(s => s.id === selectedSubjectId)?.name || null;
+
+        const res = await searchChapter({
+          page_index: 1,
+          page_size: 1000,
+          search_content_2: subjectName,
+        });
         if (res.success) {
           setChapters(res.data);
         }
       } catch (err) {
         console.error('Lỗi khi tải chương:', err);
+      } finally {
+        setLoadingChapters(false);
       }
     };
 
-    if (isOpen) {
-      fetchChapters();
-
-      if (isCreate) {
-        form.resetFields();
-        setDescription('');
-      } else if (row) {
-        form.setFieldsValue(row);
-        setDescription(row.description || '');
-      }
-    }
-  }, [isOpen]);
+    fetchChapters();
+  }, [selectedSubjectId, isOpen, subjects]);
 
 
-  useEffect(() => {
-    if (isOpen) {
-      if (isCreate) {
-        form.resetFields();
-        setDescription('');
-      } else if (row) {
-        const imageFileList: UploadFile[] = row.image
-          ? [
-            {
-              uid: '-1',
-              name: 'avatar.png',
-              status: 'done',
-              url: row.image,
-            },
-          ]
-          : [];
-        form.setFieldsValue({ ...row, image: imageFileList }); //đổ data cũ vào form sửa
-        setDescription(row.description || '');
-      }
-    }
-  }, [isOpen]);
+  // Hàm xử lý khi đổi Môn học
+  const handleSubjectChange = (subjectId: string | undefined) => {
+    setSelectedSubjectId(subjectId || null);
+    form.setFieldsValue({ chapter_id: undefined }); // Reset ô chọn Chương
+  };
 
   const handleOk = async () => {
     try {
@@ -228,12 +279,39 @@ export const LessonModal = ({
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                name="chapter_id"
-                label="Tên chương"
-                rules={RULES_FORM.required}
-              >
-                <Select placeholder="Chọn chương" allowClear showSearch optionFilterProp="children">
+              {/* === SELECT LỌC MÔN HỌC === */}
+              <Form.Item label="Chọn Môn học (để lọc chương)">
+                {/* SỬA LẠI COMPONENT SELECT NÀY */}
+                <Select
+                  placeholder="Lọc chương theo môn học"
+                  allowClear
+                  showSearch
+                  loading={loadingSubjects}
+                  value={selectedSubjectId}
+                  onChange={handleSubjectChange}
+                  // Lọc dựa trên thuộc tính `label` của `options`
+                  filterOption={(input, option) =>
+                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                  }
+                  // Cung cấp dữ liệu qua prop `options`
+                  options={subjects.map((subject) => ({
+                    key: subject.id,
+                    value: subject.id,
+                    label: subject.name,
+                  }))}
+                />
+              </Form.Item>
+
+              {/* === SELECT CHƯƠNG === */}
+              <Form.Item name="chapter_id" label="Tên chương" rules={RULES_FORM.required}>
+                <Select
+                  placeholder="Chọn chương"
+                  allowClear
+                  showSearch
+                  optionFilterProp="children"
+                  loading={loadingChapters}
+                  notFoundContent={loadingChapters ? <Spin size="small" /> : null}
+                >
                   {chapters.map((chapter) => (
                     <Select.Option key={chapter.id} value={chapter.id}>
                       {chapter.name}
@@ -255,7 +333,7 @@ export const LessonModal = ({
                 setDescription(value);
                 form.setFieldsValue({ description: value });
               }}
-              style={{ height: '270px' }}
+              style={{ height: '180px' }}
             />
           </Form.Item>
         </Form>
