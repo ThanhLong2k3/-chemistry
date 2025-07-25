@@ -266,7 +266,9 @@ export const registerOTPService = async (email: string, username: string) => {
 
     const account = await authenticate(username);
 
-    if (account || account[0]) {
+    console.log(`Kiểm tra tài khoản: ${username}`, account);
+
+    if (account && account[0]) {
       throw new Error(`Tên đăng nhập ${username} đã được sử dụng.`);
     }
 
