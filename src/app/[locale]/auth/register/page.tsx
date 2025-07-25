@@ -33,9 +33,8 @@ export default function RegisterPage() {
     const { show } = useNotification();
     const [form] = Form.useForm();
 
-    const [step, setStep] = useState(0); // 0: Form đăng ký, 1: Form nhập OTP
-    const [otpToken, setOtpToken] = useState(''); // Lưu token OTP từ backend
-    // State để lưu trữ tạm thời tất cả dữ liệu đăng ký từ bước 0
+    const [step, setStep] = useState(0);
+    const [otpToken, setOtpToken] = useState('');
     const [registrationData, setRegistrationData] = useState<any>(null);
 
     const imageFileList = Form.useWatch('image', form);
@@ -50,72 +49,75 @@ export default function RegisterPage() {
         };
     }, [previewImageUrl]);
 
-    // --- HÀM ONFINISH ĐƯỢC CẬP NHẬT CHO 2 BƯỚC ---
     const onFinish = async (values: any) => {
         setLoading(true);
         try {
-            // === BƯỚC 0: GỬI YÊU CẦU OTP ===
+            // === BƯỚC 0: LƯU DỮ LIỆU VÀ GỬI YÊU CẦU OTP (KHÔNG UPLOAD) ===
             if (step === 0) {
-                let imageUrl: string | null = null;
-                const imageFile = values.image?.[0]?.originFileObj;
+                //kiểm tra username, email đã tồn tại chưa và gửi otp
+                const validationResponse = await authAPI.registerOTP(values.email, values.username);
 
-                // 1. Upload ảnh trước để lấy URL (nếu có)
-                if (imageFile) {
-                    const uploadedPaths = await NewuploadFiles([imageFile as RcFile], show);
-                    if (uploadedPaths && uploadedPaths.length > 0) {
-                        imageUrl = uploadedPaths[0];
-                    }
+                // không thành công thì trả ra thông báo lỗi
+                if (!validationResponse.success) {
+                    show({ result: 1, messageError: validationResponse.message });
+                    return;
                 }
 
-                // 2. Mã hóa mật khẩu
+                // 2. Nếu kiểm tra thành công, LƯU DỮ LIỆU TẠM THỜI
+                const imageFile = values.image?.[0]?.originFileObj || null;
                 const encryptedPassword = encrypt(values.password);
 
-                // 3. Lưu tất cả dữ liệu lại để dùng ở bước 2
                 const dataToSave = {
                     username: values.username,
                     password: encryptedPassword,
                     name: values.name,
                     email: values.email,
-                    image: imageUrl,
+                    imageFile: imageFile, // QUAN TRỌNG: Lưu File object, không phải URL
                 };
                 setRegistrationData(dataToSave);
+                setOtpToken(validationResponse.otpToken!);
 
-                const response = await authAPI.registerOTP(values.email, values.username);
-
-                if (response.success && response.otpToken) {
-                    show({ result: 0, messageDone: "Mã OTP đã được gửi đến email của bạn." });
-                    setOtpToken(response.otpToken);
-                    setStep(1); // Chuyển sang bước nhập OTP
-                    form.resetFields(['otp']);  // Reset trường OTP
-                } else {
-                    show({ result: 1, messageError: response.message });
-                }
+                // 3. Thông báo và chuyển bước
+                show({ result: 0, messageDone: "Mã OTP đã được gửi đến email của bạn." });
+                setStep(1);
+                form.resetFields(['otp']);
             }
-            // === BƯỚC 1: XÁC NHẬN OTP VÀ HOÀN TẤT ĐĂNG KÝ ===
+            // === BƯỚC 1: XÁC THỰC OTP -> UPLOAD ẢNH -> TẠO TÀI KHOẢN ===
             else if (step === 1) {
-                // 1. Xác thực OTP
+                // 1. Xác thực OTP trước
                 const otpResponse = await authAPI.verifyOtp(values.otp, otpToken);
 
-                if (otpResponse.success) {
-                    // 2. Nếu OTP đúng, tiến hành đăng ký với dữ liệu đã lưu
-                    show({ result: 0, messageDone: "Xác thực thành công! Đang tạo tài khoản..." });
-
-                    const finalResponse = await authAPI.register(
-                        registrationData.username,
-                        registrationData.password,
-                        registrationData.name,
-                        registrationData.email,
-                        registrationData.image
-                    );
-
-                    if (finalResponse.success) {
-                        show({ result: 0, messageDone: 'Đăng ký thành công! Chuyển đến trang đăng nhập...' });
-                        setTimeout(() => router.push(LOGIN_PATH), 2000);
-                    } else {
-                        show({ result: 1, messageError: finalResponse.message || 'Đăng ký thất bại.' });
-                    }
-                } else {
+                if (!otpResponse.success) {
                     show({ result: 1, messageError: otpResponse.message || "Mã OTP không chính xác." });
+                    return; // Dừng lại nếu OTP sai
+                }
+
+                // 2. Nếu OTP đúng, BÂY GIỜ MỚI BẮT ĐẦU UPLOAD ẢNH
+                show({ result: 0, messageDone: "Xác thực thành công! Đang xử lý đăng ký..." });
+
+                let imageUrl: string | null = null;
+                // Kiểm tra xem có file ảnh đã được lưu từ bước 0 không
+                if (registrationData.imageFile) {
+                    const uploadedPaths = await NewuploadFiles([registrationData.imageFile as RcFile], show);
+                    if (uploadedPaths && uploadedPaths.length > 0) {
+                        imageUrl = uploadedPaths[0];
+                    }
+                }
+
+                // 3. Tiến hành tạo tài khoản trong DB với dữ liệu đầy đủ
+                const finalResponse = await authAPI.register(
+                    registrationData.username,
+                    registrationData.password,
+                    registrationData.name,
+                    registrationData.email,
+                    imageUrl // Sử dụng imageUrl vừa upload (hoặc null nếu không có ảnh)
+                );
+
+                if (finalResponse.success) {
+                    show({ result: 0, messageDone: 'Đăng ký thành công! Chuyển đến trang đăng nhập...' });
+                    setTimeout(() => router.push(LOGIN_PATH), 2000);
+                } else {
+                    show({ result: 1, messageError: finalResponse.message || 'Đăng ký thất bại.' });
                 }
             }
         } catch (err: any) {
@@ -125,14 +127,12 @@ export default function RegisterPage() {
         }
     };
 
-    // Hàm quay lại bước điền thông tin
     const handleBack = () => {
         setStep(0);
         setOtpToken('');
         setRegistrationData(null);
     };
 
-    //xử lý ảnh 
     const handleImageChange: UploadProps['onChange'] = ({ fileList }) => {
         const newFileList = [...fileList];
         const latestFile = newFileList[0];
@@ -141,6 +141,7 @@ export default function RegisterPage() {
         }
         form.setFieldsValue({ image: newFileList });
     };
+
     const beforeImageUpload = (file: RcFile) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
@@ -148,10 +149,12 @@ export default function RegisterPage() {
         }
         return false;
     };
+
     const normFile = (e: any) => {
         if (Array.isArray(e)) return e;
         return e?.fileList;
     };
+
     const uploadButton = (
         <div style={{ textAlign: 'center' }}>
             <CameraOutlined style={{ fontSize: 24, color: '#999' }} />
@@ -199,8 +202,6 @@ export default function RegisterPage() {
                     </div>
 
                     <Form name="register" form={form} onFinish={onFinish} layout="vertical" className={styles.loginForm} autoComplete="off">
-
-                        {/* === GIAO DIỆN BƯỚC 0: FORM ĐĂNG KÝ === */}
                         {step === 0 && (
                             <>
                                 <Form.Item name="image" valuePropName="fileList" getValueFromEvent={normFile} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -208,22 +209,44 @@ export default function RegisterPage() {
                                         {previewImageUrl ? <Avatar size={100} src={previewImageUrl} /> : <Avatar size={100} icon={<CameraOutlined />} style={{ backgroundColor: '#f0f2f5' }}>{uploadButton}</Avatar>}
                                     </Upload>
                                 </Form.Item>
-                                <Form.Item name="name" rules={RULES_FORM.required} className={styles.formItem}><div className={styles.inputContainer}><label className={styles.inputLabel}>Họ và Tên</label><Input prefix={<SmileOutlined className={styles.inputIcon} />} placeholder="Ví dụ: Nguyễn Văn A" className={styles.input} size="large" /></div></Form.Item>
-                                <Form.Item name="username" rules={RULES_FORM.required} className={styles.formItem}><div className={styles.inputContainer}><label className={styles.inputLabel}>Tên đăng nhập</label><Input prefix={<UserOutlined className={styles.inputIcon} />} placeholder="Nhập tên đăng nhập" className={styles.input} size="large" /></div></Form.Item>
-                                <Form.Item name="email" rules={RULES_FORM.email} className={styles.formItem}><div className={styles.inputContainer}><label className={styles.inputLabel}>Email</label><Input prefix={<MailOutlined className={styles.inputIcon} />} placeholder="Nhập địa chỉ email" className={styles.input} size="large" type="email" /></div></Form.Item>
-                                <Form.Item name="password" rules={RULES_FORM.required} className={styles.formItem}><div className={styles.inputContainer}><label className={styles.inputLabel}>Mật khẩu</label><Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Tối thiểu 6 ký tự" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} /></div></Form.Item>
-                                <Form.Item name="confirmPassword" dependencies={['password']} hasFeedback rules={[{ required: true, message: 'Vui lòng xác nhận mật khẩu!' }, ({ getFieldValue }) => ({ validator(_, value) { if (!value || getFieldValue('password') === value) { return Promise.resolve(); } return Promise.reject(new Error('Mật khẩu không khớp!')); }, }),]}><div className={styles.inputContainer}><label className={styles.inputLabel}>Nhập lại Mật khẩu</label><Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Nhập lại mật khẩu" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} /></div></Form.Item>
+                                <Form.Item
+                                    name="name" rules={RULES_FORM.required}
+                                    className={styles.formItem}>
+                                    <div className={styles.inputContainer}>
+                                        <label className={styles.inputLabel}>Họ và Tên</label>
+                                        <Input prefix={<SmileOutlined className={styles.inputIcon} />} placeholder="Ví dụ: Nguyễn Văn A" className={styles.input} size="large" />
+                                    </div>
+                                </Form.Item>
+                                <Form.Item name="username" rules={RULES_FORM.required} className={styles.formItem}>
+                                    <div className={styles.inputContainer}>
+                                        <label className={styles.inputLabel}>Tên đăng nhập</label>
+                                        <Input prefix={<UserOutlined className={styles.inputIcon} />} placeholder="Nhập tên đăng nhập" className={styles.input} size="large" />
+                                    </div>
+                                </Form.Item>
+                                <Form.Item name="email" rules={RULES_FORM.email} className={styles.formItem}>
+                                    <div className={styles.inputContainer}>
+                                        <label className={styles.inputLabel}>Email</label>
+                                        <Input prefix={<MailOutlined className={styles.inputIcon} />} placeholder="Nhập địa chỉ email" className={styles.input} size="large" type="email" />
+                                    </div>
+                                </Form.Item>
+                                <Form.Item name="password" rules={RULES_FORM.password} className={styles.formItem}><div className={styles.inputContainer}>
+                                    <label className={styles.inputLabel}>Mật khẩu</label>
+                                    <Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Nhập mật khẩu" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} />
+                                </div>
+                                </Form.Item>
+                                <Form.Item name="confirmPassword" dependencies={['password']} hasFeedback rules={[{ required: true, message: 'Vui lòng xác nhận mật khẩu!' }, ({ getFieldValue }) => ({ validator(_, value) { if (!value || getFieldValue('password') === value) { return Promise.resolve(); } return Promise.reject(new Error('Mật khẩu không khớp!')); }, }),]}>
+                                    <div className={styles.inputContainer}>
+                                        <label className={styles.inputLabel}>Nhập lại Mật khẩu</label>
+                                        <Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Nhập lại mật khẩu" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} />
+                                    </div>
+                                </Form.Item>
                             </>
                         )}
-
-                        {/* === GIAO DIỆN BƯỚC 1: NHẬP OTP === */}
                         {step === 1 && (
                             <Form.Item name="otp" label="Mã OTP" rules={RULES_FORM.required} className={styles.formItem}>
                                 <Input prefix={<KeyOutlined className={styles.inputIcon} />} placeholder="Nhập 6 chữ số OTP" size="large" className={styles.input} />
                             </Form.Item>
                         )}
-
-                        {/* === NÚT HÀNH ĐỘNG === */}
                         <Form.Item>
                             <Space direction="vertical" style={{ width: '100%' }}>
                                 <Button type="primary" htmlType="submit" size="large" loading={loading} className={styles.loginButton} block>

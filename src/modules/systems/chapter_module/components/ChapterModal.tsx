@@ -124,7 +124,14 @@ export const ChapterModal = ({
       }
       getAll();
       close();
-    } catch (error) {
+    } catch (error: any) {
+      //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
+      // Antd sẽ tự động hiển thị lỗi trên form.
+      if (error && error.errorFields) {
+        console.log('Validation Failed:', error.errorFields[0].errors[0]);
+        return;
+      }
+
       let errorMessage = "Đã có lỗi không xác định xảy ra.";
 
       if (axios.isAxiosError(error)) {
