@@ -29,13 +29,13 @@ export const createAccount = async (model: IAccount): Promise<any> => {
 // Cập nhật tài khoản
 export const updateAccount = async (model: IAccount): Promise<any> => {
   try {
-    const sql = 'CALL update_account(?,?,?,?,?,?,?,?)';
+    console.log('Updating account:', model);
+
+    const sql = 'CALL update_account(?,?,?,?,?,?)';
     return await db_Provider(
       sql,
       [
-        model.old_username,
         model.username,
-        model.password,
         model.image,
         model.name,
         model.role_id,
@@ -112,3 +112,26 @@ export const updatePasswordByEmail = async (email: string, hashedPassword: strin
     throw new Error(error.message);
   }
 };
+
+
+export const registerAccount = async (model: IAccount): Promise<any> => {
+  try {
+    const sql = 'CALL add_account_register(?,?,?,?,?,?)';
+    return await db_Provider(
+      sql,
+      [
+        model.username,
+        model.password,
+        model.image ?? null,
+        model.name,
+        model.role_id,
+        model.email,
+      ],
+      true
+    );
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+
