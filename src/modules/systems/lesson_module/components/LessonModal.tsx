@@ -43,6 +43,11 @@ export const LessonModal = ({
   const [loadingSubjects, setLoadingSubjects] = useState(false);
   const [loadingChapters, setLoadingChapters] = useState(false);
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
+  // 1. Sử dụng Form.useWatch để theo dõi giá trị của trường 'image'
+  const imageFileList = Form.useWatch('image', form);
+
+  // 2. Kiểm tra xem có ảnh hay không. `hasImage` sẽ là true nếu có file, và false nếu không có.
+  const hasImage = imageFileList && imageFileList.length > 0;
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -271,10 +276,18 @@ export const LessonModal = ({
                   maxCount={1}
                   beforeUpload={() => false}
                 >
-
-                  <Button style={{ marginBottom: '12px' }}
+                  <Button
+                    style={hasImage ? { marginBottom: '12px' } : {}}
                     icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
+              </Form.Item>
+
+              <Form.Item
+                name="sort_order"
+                label="Sắp xếp"
+                rules={RULES_FORM.required}
+              >
+                <Input type='number' min={1} />
               </Form.Item>
             </Col>
             <Col span={16}>

@@ -177,7 +177,7 @@ export const ChapterModal = ({
         style={{ top: 50 }}
       >
         <Form layout="vertical" form={form}>
-          <Row gutter={16}>
+          <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 name="name"
@@ -187,7 +187,7 @@ export const ChapterModal = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
                 name="subject_id"
                 label="Môn học"
@@ -200,6 +200,15 @@ export const ChapterModal = ({
                     </Select.Option>
                   ))}
                 </Select>
+              </Form.Item>
+            </Col>
+            <Col span={4}>
+              <Form.Item
+                name="sort_order"
+                label="Sắp xếp"
+                rules={RULES_FORM.required}
+              >
+                <Input type="number" min={1} />
               </Form.Item>
             </Col>
           </Row>

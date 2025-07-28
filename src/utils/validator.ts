@@ -87,7 +87,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       pattern:
         /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\\[\]:;<>,.?~\\-]).{8,}$/g,
       message:
-        'Mật khẩu phải có ít nhất 8 kí tự bao gồm chữ hoa, chữ thường, và ít nhất một kí tự đặc biệt và số',
+        'Mật khẩu phải có ít nhất 8 kí tự bao gồm chữ hoa, chữ thường, ít nhất một kí tự đặc biệt và số',
     },
     {
       message: 'Không được bỏ trống',

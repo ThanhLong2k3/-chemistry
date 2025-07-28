@@ -107,7 +107,7 @@ export const SubjectTable = () => {
     // },
     {
       title: 'Sách giáo khoa',
-      width: 100,
+      width: 90,
       dataIndex: 'textbook',
       render: (url) =>
         url ? (
@@ -120,7 +120,7 @@ export const SubjectTable = () => {
     },
     {
       title: 'Sách bài tập',
-      width: 100,
+      width: 90,
       dataIndex: 'workbook',
       render: (url) =>
         url ? (
@@ -133,7 +133,7 @@ export const SubjectTable = () => {
     },
     {
       title: 'Vở bài tập',
-      width: 100,
+      width: 90,
       dataIndex: 'exercise_book',
       render: (url) =>
         url ? (
@@ -146,12 +146,18 @@ export const SubjectTable = () => {
     },
     {
       title: 'Đề kiểm tra',
-      width: 120,
+      width: 70,
       render: (_, record) => (
         <a href={`manage_exam?subject=${encodeURIComponent(record.name)}`}>
-          Xem danh sách
+          Xem ngay
         </a>
       )
+    },
+    {
+      title: 'Sắp xếp',
+      width: 60,
+      dataIndex: 'sort_order',
+      align: 'center',
     },
     {
       title: 'Thao tác',

@@ -23,7 +23,7 @@ export const UpLoadDocument = async (
   if (documents.length === 0) {
     return { success: false, documents: [], error: 'No documents to upload' };
   }
-  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+  // const MAX_SIZE = 10 * 1024 * 1024; // 10MB
   const formData = new FormData();
   let hasFiles = false;
   let filesCount = 0;
@@ -43,16 +43,16 @@ export const UpLoadDocument = async (
     };
   }
 
-  // 🛑 Kiểm tra nếu có file nào lớn hơn 10MB => Chặn ngay
-  const hasLargeFile = documents.some(doc => doc.DocumentFile instanceof File && doc.DocumentFile.size > MAX_SIZE);
+  // // 🛑 Kiểm tra nếu có file nào lớn hơn 10MB => Chặn ngay
+  // const hasLargeFile = documents.some(doc => doc.DocumentFile instanceof File && doc.DocumentFile.size > MAX_SIZE);
 
-  if (hasLargeFile) {
-    show?.({
-      result: 1,
-      messageError: '❌ File không được lớn hơn 10MB',
-    });
-    return { success: false, documents, error: 'File quá lớn (>10MB)' };
-  }
+  // if (hasLargeFile) {
+  //   show?.({
+  //     result: 1,
+  //     messageError: '❌ File không được lớn hơn 10MB',
+  //   });
+  //   return { success: false, documents, error: 'File quá lớn (>10MB)' };
+  // }
   documents.forEach((doc) => {
     if (doc.DocumentFile instanceof File) {
       formData.append('files', doc.DocumentFile);
@@ -124,19 +124,19 @@ export const UpLoadDocument = async (
 export async function NewuploadFiles(files: File[], show?: (msg: any) => void) {
   if (!files || files.length === 0) return [];
 
-  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+  // const MAX_SIZE = 10 * 1024 * 1024; // 10MB
   const formData = new FormData();
 
-  // 🛑 Kiểm tra nếu có file nào lớn hơn 10MB => Chặn ngay
-  const hasLargeFile = files.some(file => file.size > MAX_SIZE);
+  // // 🛑 Kiểm tra nếu có file nào lớn hơn 10MB => Chặn ngay
+  // const hasLargeFile = files.some(file => file.size > MAX_SIZE);
 
-  if (hasLargeFile) {
-    show?.({
-      result: 1,
-      messageError: '❌ File không được lớn hơn 10MB',
-    });
-    return []; // Không gọi API
-  }
+  // if (hasLargeFile) {
+  //   show?.({
+  //     result: 1,
+  //     messageError: '❌ File không được lớn hơn 10MB',
+  //   });
+  //   return []; // Không gọi API
+  // }
 
   // ✅ Nếu tất cả file hợp lệ => Tiến hành upload
   files.forEach((file) => {

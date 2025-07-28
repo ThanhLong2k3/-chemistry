@@ -9,5 +9,6 @@ export interface ILesson {
     updated_at: Date;
     created_by: string;
     updated_by: string;
-    deleted: boolean
+    deleted: boolean;
+    sort_order: number;
 }
