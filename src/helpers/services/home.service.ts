@@ -1,4 +1,4 @@
-import { get_subject_detail_by_id, GetSubjectsWithLessons } from "../repositories/home.repository";
+import { get_chapter_subhect_by_idSubject, get_lesson_detail_by_id, GetSubjectsWithLessons } from "../repositories/home.repository";
 
 export const GetSubjectsWithLessonsService = async () => {
     try {
@@ -9,9 +9,19 @@ export const GetSubjectsWithLessonsService = async () => {
 };
 
 
-export const GetSubjectDetailById = async (id:string) => {
+export const GetChapterSubhectByIdSubject = async (id:string) => {
     try {
-        return await get_subject_detail_by_id(id);
+        return await get_chapter_subhect_by_idSubject(id);
+    } catch (error) {
+        throw new Error('Không thể lấy thông tin chương và bài học: ');
+    }
+};
+
+
+
+export const getlessonDetailById = async (id:string) => {
+    try {
+        return await get_lesson_detail_by_id(id);
     } catch (error) {
         throw new Error('Không thể lấy thông tin chương và bài học: ');
     }

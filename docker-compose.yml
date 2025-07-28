@@ -3,12 +3,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    mem_limit: 4g
     hostname: localhost  
     ports:
       - "80:80"  
     environment:
       - NODE_ENV=production
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=3306           
+      - MYSQL_DATABASE=SoKHCNProject
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=0000
     volumes:
       - ./uploads:/app/uploads  
-    restart: unless-stopped  
+    restart: unless-stopped 

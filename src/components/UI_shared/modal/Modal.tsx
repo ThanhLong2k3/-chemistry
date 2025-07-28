@@ -5,13 +5,13 @@ import { Button, Modal as ModalAntd, Typography } from 'antd';
 import type { ModalProps } from 'antd';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-
+import { easeOut } from 'framer-motion';
 import classes from './modal.module.scss';
 
 const modalVariants = {
   hidden: { opacity: 0, y: 100 },
   visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 100, transition: { duration: 0.15, ease: 'easeOut' } },
+  exit: { opacity: 0, y: 100, transition: { duration: 0.15, ease: easeOut } },
 };
 
 const top = 40;
@@ -64,8 +64,8 @@ export const Modal = ({
             content: { padding: 0 },
           }}
           footer={null}
-          okText={"Đồng ý"}
-          cancelText={"Hủy"}
+          okText={'Đồng ý'}
+          cancelText={'Hủy'}
           destroyOnHidden
           open={visible}
           onCancel={handleClose}
@@ -80,13 +80,13 @@ export const Modal = ({
               backgroundColor: 'rgba(0, 0, 0, 0.8)',
             },
           }}
-          modalRender={node => (
+          modalRender={(node) => (
             <motion.div
               initial="hidden"
               animate="visible"
               exit="exit"
               variants={modalVariants}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ duration: 0.3, ease: easeOut }}
             >
               {node}
             </motion.div>
@@ -124,7 +124,7 @@ export const Modal = ({
                   boxShadow: 'none',
                 }}
               >
-                {"Đồng ý"}
+                {'Đồng ý'}
               </Button>
             )}
           </div>

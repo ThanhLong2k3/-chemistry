@@ -11,7 +11,7 @@ import { IAccount } from '@/types/account';
 import { searchAccount } from '@/services/account.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
-
+import Image from 'next/image';
 
 export const BlogTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -97,7 +97,7 @@ export const BlogTable = () => {
       width: 80,
       dataIndex: 'image',
       render: (imageUrl) => (
-        <img
+        <Image
           src={imageUrl}
           alt="Avatar"
           style={{ width: 84, objectFit: 'cover' }}

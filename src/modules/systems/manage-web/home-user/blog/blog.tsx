@@ -11,7 +11,7 @@ import {
 import styles from './blog.module.scss';
 import { IBlog } from '@/types/blog';
 import parse from 'html-react-parser';
-
+import Image from 'next/image';
 const { Title } = Typography;
 
 const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
@@ -120,7 +120,7 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
           {blogData.map((blog) => (
             <div key={blog.id} className={styles.blogCard}>
               <div className={styles.blogImageWrapper}>
-                <img
+                <Image
                   src={blog.image}
                   alt={blog.title}
                   className={styles.blogImage}

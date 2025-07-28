@@ -9,7 +9,7 @@ import { IDecodedToken } from '@/types/decodedToken';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
-
+import Image from 'next/image';
 export const AdvisoryMemberTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -77,7 +77,7 @@ export const AdvisoryMemberTable = () => {
       dataIndex: 'image',
       align: 'center',
       render: (imageUrl) => (
-        <img
+        <Image
           src={imageUrl}
           alt="Avatar"
           style={{ height: 60, objectFit: 'cover' }}

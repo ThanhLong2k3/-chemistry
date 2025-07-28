@@ -8,7 +8,7 @@ import { AccountDelete } from './AccountDelete';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
-
+import Image from 'next/image';
 
 export const AccountTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -69,7 +69,7 @@ export const AccountTable = () => {
       align: 'center',
 
       render: (imageUrl) => (
-        <img
+        <Image 
           src={imageUrl}
           alt="Avatar"
           style={{ width: 45, height: 45, objectFit: 'cover', borderRadius: '50%' }}

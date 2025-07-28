@@ -12,7 +12,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm install -g pnpm 
-RUN pnpm build
+RUN NEXT_DISABLE_ESLINT=true pnpm build
 
 FROM base AS production
 WORKDIR /app

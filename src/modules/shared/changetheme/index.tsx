@@ -120,7 +120,7 @@ const ThemeChanger = () => {
       >
         <div className={styles.rightContent}>
           <Image
-            src={currentAccount.image}
+            src={currentAccount.image ?currentAccount.image: '/favicon.ico'}
             alt="Avatar"
             width={40}
             height={40}
