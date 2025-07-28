@@ -5,7 +5,7 @@ import { IChapter } from '@/types/chapter';
 // Thêm chương mới
 export const createChapter = async (model: IChapter): Promise<any> => {
     try {
-        const sql = 'CALL add_chapter(?,?,?,?,?)';
+        const sql = 'CALL add_chapter(?,?,?,?,?,?)';
         return await db_Provider(
             sql,
             [
@@ -13,7 +13,8 @@ export const createChapter = async (model: IChapter): Promise<any> => {
                 model.name,
                 model.subject_id,
                 model.description ?? null,
-                model.created_by
+                model.created_by,
+                model.sort_order
             ],
             true
         );
@@ -25,7 +26,7 @@ export const createChapter = async (model: IChapter): Promise<any> => {
 // Cập nhật chương
 export const updateChapter = async (model: IChapter): Promise<any> => {
     try {
-        const sql = 'CALL update_chapter(?,?,?,?,?)';
+        const sql = 'CALL update_chapter(?,?,?,?,?,?)';
         return await db_Provider(
             sql,
             [
@@ -33,7 +34,8 @@ export const updateChapter = async (model: IChapter): Promise<any> => {
                 model.name,
                 model.subject_id,
                 model.description ?? null,
-                model.updated_by
+                model.updated_by,
+                model.sort_order
             ],
             true
         );

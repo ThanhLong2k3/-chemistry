@@ -6,7 +6,7 @@ import { ISubject } from '@/types/subject';
 // Thêm môn học mới
 export const createSubject = async (model: ISubject): Promise<any> => {
     try {
-        const sql = 'CALL add_subject(?,?,?,?,?,?,?,?)';
+        const sql = 'CALL add_subject(?,?,?,?,?,?,?,?,?)';
         return await db_Provider(
             sql,
             [
@@ -17,7 +17,8 @@ export const createSubject = async (model: ISubject): Promise<any> => {
                 model.textbook ?? null,
                 model.workbook ?? null,
                 model.exercise_book ?? null,
-                model.created_by
+                model.created_by,
+                model.sort_order
             ],
             true
         );
@@ -29,7 +30,7 @@ export const createSubject = async (model: ISubject): Promise<any> => {
 // Cập nhật môn học
 export const updateSubject = async (model: ISubject): Promise<any> => {
     try {
-        const sql = 'CALL update_subject(?,?,?,?,?,?,?,?)';
+        const sql = 'CALL update_subject(?,?,?,?,?,?,?,?,?)';
         return await db_Provider(
             sql,
             [
@@ -40,7 +41,8 @@ export const updateSubject = async (model: ISubject): Promise<any> => {
                 model.textbook ?? null,
                 model.workbook ?? null,
                 model.exercise_book ?? null,
-                model.updated_by
+                model.updated_by,
+                model.sort_order
             ],
             true
         );

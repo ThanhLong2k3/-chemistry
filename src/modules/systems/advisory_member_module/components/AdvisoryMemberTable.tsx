@@ -133,7 +133,7 @@ export const AdvisoryMemberTable = () => {
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         <Input
-          placeholder="Tìm kiếm bài học..."
+          placeholder="Nhập tên thành viên ban tư vấn để tìm kiếm..."
           value={nameAdvisoryMember ?? ''}
           onChange={(e) => setNameAdvisoryMember(e.target.value)}
           allowClear

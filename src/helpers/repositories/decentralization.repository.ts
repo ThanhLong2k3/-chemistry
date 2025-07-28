@@ -1,6 +1,5 @@
 //1
 import { db_Provider } from '@/app/api/Api_Provider';
-import { IBaseSearch } from '@/types/base';
 
 // lấy ra phân quyền
 export const searchDecentralizations = async (): Promise<any> => {

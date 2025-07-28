@@ -5,11 +5,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // const authResult = await verifyAuth(request, 'ACCOUNT_MANAGE'); // Truyền vào mã phân quyền
+    const authResult = await verifyAuth(request, 'ACCOUNT_MANAGE'); // Truyền vào mã phân quyền
 
-    // if (authResult.error) {
-    //   return authResult.error;
-    // }
+    if (authResult.error) {
+      return authResult.error;
+    }
 
     const model = await request.json();
     const result = await createAccountService(model);

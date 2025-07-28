@@ -119,6 +119,12 @@ export const ChapterTable = () => {
     //   ),
     // },
     {
+      title: 'Sắp xếp',
+      width: 50,
+      dataIndex: 'sort_order',
+      align: 'center',
+    },
+    {
       title: 'Thao tác',
       width: 120,
       align: 'center',
@@ -153,7 +159,7 @@ export const ChapterTable = () => {
         </Select>
 
         <Input
-          placeholder="Tìm kiếm chương..."
+          placeholder="Nhập tên chương để tìm kiếm..."
           value={nameChapter ?? ''}
           onChange={(e) => setNameChapter(e.target.value)}
           allowClear

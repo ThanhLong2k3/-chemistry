@@ -12,8 +12,8 @@ interface keyValidator {
   people_name?: any;
   full_name?: any;
   department_name?: any;
-  required_max50?:any;
-  Description_max50?:any;
+  required_max50?: any;
+  Description_max50?: any;
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -26,7 +26,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       message: 'Không được bỏ trống',
       pattern: /^(?!\s+$).*/gm
     },
-   
+
   ],
   email: [
     {
@@ -87,7 +87,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       pattern:
         /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\\[\]:;<>,.?~\\-]).{8,}$/g,
       message:
-        'Mật khẩu phải có ít nhất 8 kí tự bao gồm chữ hoa, chữ thường, và ít nhất một kí tự đặc biệt và số',
+        'Mật khẩu phải có ít nhất 8 kí tự bao gồm chữ hoa, chữ thường, ít nhất một kí tự đặc biệt và số',
     },
     {
       message: 'Không được bỏ trống',
@@ -200,22 +200,21 @@ export const checkDateOfBirth = (
   DateOfBirth: string | null,
   show?: (msg: any) => void,
 ) => {
-  if(DateOfBirth)
-  {
+  if (DateOfBirth) {
     const regex = /^(\d{4})-(\d{2})-(\d{2})$|^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if ( !regex.test(DateOfBirth)) {
+    if (!regex.test(DateOfBirth)) {
       show?.({
         result: 1,
         messageError: 'Định dạng ngày sinh không hợp lệ (yyyy-mm-dd hoặc dd/mm/yyyy)',
       });
       return false;
     }
-  
-    
+
+
     const parsedDate = DateOfBirth.includes('-')
-      ? new Date(DateOfBirth) 
-      : new Date(DateOfBirth.split('/').reverse().join('-')); 
-  
+      ? new Date(DateOfBirth)
+      : new Date(DateOfBirth.split('/').reverse().join('-'));
+
     if (isNaN(parsedDate.getTime())) {
       show?.({
         result: 1,
@@ -223,10 +222,10 @@ export const checkDateOfBirth = (
       });
       return false;
     }
-  
+
     const today = new Date();
-    today.setHours(0, 0, 0, 0); 
-  
+    today.setHours(0, 0, 0, 0);
+
     if (parsedDate >= today) {
       show?.({
         result: 1,
@@ -238,9 +237,8 @@ export const checkDateOfBirth = (
   return true;
 };
 
-export const checkNumber=(value:number | null,  show?: (msg: any) => void,)=>{
-  if( value && value < 0)
-  {
+export const checkNumber = (value: number | null, show?: (msg: any) => void,) => {
+  if (value && value < 0) {
     show?.({
       result: 1,
       messageError: 'Số phải lớn hơn hoặc bằng 0',

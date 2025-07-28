@@ -1,11 +1,11 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
-import { Button, Col, Form, Input, Modal, Row, Select, Upload } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Select, Upload, UploadFile } from 'antd';
 import { useEffect, useState } from 'react';
 import { createExam, updateExam } from '@/services/exam.service';
 import { IExam } from '@/types/exam';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
+import { EditOutlined, FileAddOutlined, PaperClipOutlined, UploadOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
@@ -14,6 +14,7 @@ import { searchSubject } from '@/services/subject.service';
 import axios from 'axios';
 import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { NewuploadFiles } from '@/libs/api/upload.api';
 
 
 
@@ -24,6 +25,17 @@ interface Props {
   row?: IExam;
   getAll: () => void;
 }
+
+// Hàm tiện ích để chuyển đổi URL thành định dạng UploadFile của Antd
+const urlToUploadFile = (url: string | null, fieldName: string): UploadFile[] => {
+  if (!url) return [];
+  return [{
+    uid: `-1-${fieldName}`,
+    name: url.split('/').pop() || 'file.pdf',
+    status: 'done',
+    url: url,
+  }];
+};
 
 export const ExamModal = ({
   isCreate = false,
@@ -55,26 +67,28 @@ export const ExamModal = ({
         form.resetFields();
         setDescription('');
       } else if (row) {
-        form.setFieldsValue(row);
-        setDescription(row.description || '');
-      }
-    }
-
-    if (isOpen) {
-      if (isCreate) {
-        form.resetFields();
-        setDescription('');
-      } else if (row) {
-        form.setFieldsValue(row); //đổ data cũ vào form sửa
+        // Chuyển đổi URL của file đề thi thành định dạng UploadFile
+        form.setFieldsValue({
+          ...row,
+          file: urlToUploadFile(row.file, 'file'),
+        });
         setDescription(row.description || '');
       }
     }
   }, [isOpen]);
 
 
-  useEffect(() => {
-  }, [isOpen]);
-
+  const handleFileUpload = async (formValue: any): Promise<string | null> => {
+    if (!formValue || formValue.length === 0) return null;
+    const file = formValue[0];
+    if (file.originFileObj) {
+      const uploadedPaths = await NewuploadFiles([file.originFileObj], show);
+      return uploadedPaths[0];
+    } else if (file.url) {
+      return file.url;
+    }
+    return null;
+  };
   const handleOk = async () => {
     try {
       //lấy thông tin người dùng đang đăng nhập
@@ -89,11 +103,19 @@ export const ExamModal = ({
       }
 
       const values = await form.validateFields();
+      const fileUrl = await handleFileUpload(values.file);
+
+      // Xây dựng object dữ liệu cuối cùng để gửi đi
+      const dataToSubmit = {
+        ...values,
+        file: fileUrl,
+      };
+
 
       if (isCreate) {
         const responseData: any = await createExam({
           id: uuidv4(),
-          ...values,
+          ...dataToSubmit,
           created_by: currentAccount.username,
 
         });
@@ -110,7 +132,7 @@ export const ExamModal = ({
           });
         }
       } else if (row?.id) {
-        const responseData: any = await updateExam({ ...values, id: row.id, updated_by: currentAccount.username });
+        const responseData: any = await updateExam({ ...dataToSubmit, id: row.id, updated_by: currentAccount.username });
         if (responseData.success) {
           show({
             result: 0,
@@ -125,7 +147,14 @@ export const ExamModal = ({
       }
       getAll();
       close();
-    } catch (error) {
+    } catch (error: any) {
+      //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
+      // Antd sẽ tự động hiển thị lỗi trên form.
+      if (error && error.errorFields) {
+        console.log('Validation Failed:', error.errorFields[0].errors[0]);
+        return;
+      }
+
       let errorMessage = "Đã có lỗi không xác định xảy ra.";
 
       if (axios.isAxiosError(error)) {
@@ -200,10 +229,19 @@ export const ExamModal = ({
 
           <Form.Item
             name="file"
-            label="Link đề kiểm tra"
+            label="File đề kiểm tra (PDF)"
             rules={RULES_FORM.required}
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e?.fileList}
           >
-            <Input />
+            <Upload
+              name="examFile"
+              maxCount={1}
+              beforeUpload={() => false}
+              accept=".pdf"
+            >
+              <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
+            </Upload>
           </Form.Item>
 
           <Form.Item

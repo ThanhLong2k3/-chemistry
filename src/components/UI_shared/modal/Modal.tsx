@@ -3,7 +3,7 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Modal as ModalAntd, Typography } from 'antd';
 import type { ModalProps } from 'antd';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 import classes from './modal.module.scss';
@@ -11,7 +11,7 @@ import classes from './modal.module.scss';
 const modalVariants = {
   hidden: { opacity: 0, y: 100 },
   visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 100, transition: { duration: 0.15, ease: 'easeOut' } },
+  exit: { opacity: 0, y: 100, transition: { duration: 0.15, ease: easeOut } },
 };
 
 const top = 40;
@@ -86,7 +86,7 @@ export const Modal = ({
               animate="visible"
               exit="exit"
               variants={modalVariants}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ duration: 0.3, ease: easeOut }}
             >
               {node}
             </motion.div>

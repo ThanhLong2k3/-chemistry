@@ -10,7 +10,7 @@ import { App as AntApp } from "antd"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons"
-import { ADMIN_USER_PATH, ADVISORY_BOARD_PATH, BASE_PATH, HOME_PATH, LESSON_DETAIL_PATH, LESSON_LIST_PATH, LOGIN_PATH, PERIODIC_TABLE_PATH, REGISTER_PATH, REVIEW_FILE_PDF_PATH } from "@/path"
+import { ADMIN_USER_PATH, ADVISORY_BOARD_PATH, BASE_PATH, HOME_PATH, LESSON_DETAIL_PATH, LESSON_LIST_PATH, LOGIN_PATH, PERIODIC_TABLE_PATH, REGISTER_PATH, REVIEW_FILE_PDF_PATH, FOGOTPASS_PATH } from "@/path"
 
 const { Sider, Content } = Layout
 
@@ -25,8 +25,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isLessonDetailPage = pathname.startsWith(LESSON_DETAIL_PATH);
   const isOpenPDFPage = pathname.startsWith(REVIEW_FILE_PDF_PATH);
 
-  const isAuthPage = pathname === BASE_PATH || pathname === REGISTER_PATH || pathname ===HOME_PATH || pathname ===LOGIN_PATH || pathname=== ADMIN_USER_PATH || 
-  pathname=== ADVISORY_BOARD_PATH || pathname=== PERIODIC_TABLE_PATH ||  isLessonListPage || isLessonDetailPage || isOpenPDFPage;
+  const isAuthPage = pathname === BASE_PATH || pathname === REGISTER_PATH || pathname === HOME_PATH || pathname === LOGIN_PATH || pathname === ADMIN_USER_PATH ||
+    pathname === ADVISORY_BOARD_PATH || pathname === PERIODIC_TABLE_PATH || isLessonListPage || isLessonDetailPage || isOpenPDFPage || pathname === FOGOTPASS_PATH;
 
   const siderStyle: React.CSSProperties = {
     position: "fixed",
@@ -42,8 +42,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   const toggleButtonStyle: React.CSSProperties = {
     position: "fixed",
-    top: "20px",
-    left: collapsed ? "60px" : "225px",
+    top: collapsed ? "10px" : "20px",
+    left: collapsed ? "60px" : "205px",
     zIndex: 1000,
     transition: "all 0.3s",
     background: "#fff",
@@ -67,7 +67,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <Layout style={{ minHeight: "100vh", overflow: "hidden" }}>
                 {!isAuthPage && (
                   <>
-                    <Sider collapsed={collapsed} width={240} collapsedWidth={60} style={siderStyle}>
+                    <Sider collapsed={collapsed} width={250} collapsedWidth={60} style={siderStyle}>
                       <SiderBar collapsed={collapsed} />
                     </Sider>
                     <div style={toggleButtonStyle} onClick={() => setCollapsed(!collapsed)}>
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   >
 
                     {children}
-                   
+
                   </Content>
                 </Layout>
               </Layout>

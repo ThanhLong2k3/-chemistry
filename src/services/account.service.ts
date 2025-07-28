@@ -11,7 +11,12 @@ const baseURL =
 const prefix = `${baseURL}/api/account`;
 
 export const createAccount = async (request: IAccount): Promise<ResponseProps> => {
-  const response = await axios.post(`${prefix}/create`, request);
+  const token = localStorage.getItem('TOKEN');
+  const response = await axios.post(`${prefix}/create`, request, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
   return response.data;
 };
 
@@ -47,3 +52,5 @@ export const deleteAccount = async (data: { username: string, deleted_by: string
   });
   return response.data;
 };
+
+
