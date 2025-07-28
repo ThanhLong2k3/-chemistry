@@ -16,7 +16,7 @@ export const encrypt = (value: any) => {
 };
 
 export const decrypt = (encrypted: string) => {
-  console.log(env.ENCRYPTION_KEY);
+  // console.log(env.ENCRYPTION_KEY);
   const result = CryptoJS.AES.decrypt(encrypted, env.ENCRYPTION_KEY).toString(
     CryptoJS.enc.Utf8
   );

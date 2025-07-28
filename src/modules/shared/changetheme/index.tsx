@@ -1,6 +1,6 @@
 import { useColorState } from '@/stores/color.store';
 import Image from 'next/image';
-import { Dropdown } from 'antd';
+import { Dropdown, Avatar } from 'antd';
 import {
   themeOrangeConfig,
   themeBlueConfig,
@@ -76,7 +76,8 @@ const ThemeChanger = () => {
   }
 
   const menuItems = [
-    { key: 'user', icon: <UserOutlined />, label: currentAccount.name },
+    { key: 'user', icon: <UserOutlined />, label: `Xin chào, ${currentAccount.name}` },
+    { type: 'divider' as const }, // Thêm đường kẻ phân cách cho đẹp
     {
       key: 'settings',
       icon: <SettingOutlined />,
@@ -119,14 +120,24 @@ const ThemeChanger = () => {
         trigger={['click']}
       >
         <div className={styles.rightContent}>
-          <Image
-            src={currentAccount.image ?currentAccount.image: '/favicon.ico'}
-            alt="Avatar"
-            width={40}
-            height={40}
-            className="h-12 object-contain"
-            style={imageStyle}
-          />
+          {/* Kiểm tra nếu có currentAccount.image thì mới dùng Next/Image */}
+          {currentAccount.image ? (
+            <Image
+              src={currentAccount.image}
+              alt="Avatar"
+              width={40}
+              height={40}
+              className="h-12 object-contain"
+              style={imageStyle}
+            />
+          ) : (
+            // Nếu không có ảnh, hiển thị Avatar mặc định của Antd
+            <Avatar
+              size={40}
+              icon={<UserOutlined />}
+              style={{ ...imageStyle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            />
+          )}
         </div>
       </Dropdown>
     </div>

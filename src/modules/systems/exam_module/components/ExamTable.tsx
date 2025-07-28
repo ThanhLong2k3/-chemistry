@@ -219,7 +219,7 @@ export const ExamTable = () => {
         />
 
         <Input
-          placeholder="Tìm kiếm bài kiểm tra..."
+          placeholder="Nhập tên bài kiểm tra để tìm kiếm..."
           value={nameExam ?? ''}
           onChange={(e) => setNameExam(e.target.value)}
           allowClear

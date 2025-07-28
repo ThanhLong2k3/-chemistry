@@ -134,7 +134,7 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
           }}
         />
       </ConfigProvider>
-    </div>
+    </div >
   );
 };
 

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-// import { login } from '@/services/account.service';
 import { login } from '@/helpers/services/account.service';
 import { executeQuery } from '@/libs/db';
 

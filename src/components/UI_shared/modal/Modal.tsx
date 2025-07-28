@@ -3,7 +3,7 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Modal as ModalAntd, Typography } from 'antd';
 import type { ModalProps } from 'antd';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, easeOut, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { easeOut } from 'framer-motion';
 import classes from './modal.module.scss';

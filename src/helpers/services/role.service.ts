@@ -1,6 +1,7 @@
 import { IRole } from '@/types/role';
 
 import {
+    countAccountsByRoleId,
     createRole,
     deleteRole,
     searchRoles,
@@ -47,12 +48,29 @@ export const searchRoleService = async (model: IBaseSearch) => {
 
 export const deleteRoleService = async (id: string) => {
     try {
-        return await deleteRole(id);
-    } catch (error) {
-        throw new Error('Không thể xóa nhóm quyền' + error);
+        // Bước 1: Kiểm tra ràng buộc nghiệp vụ
+        const accountCount = await countAccountsByRoleId(id);
+
+        // Nếu có tài khoản, ném ra một lỗi nghiệp vụ cụ thể
+        if (accountCount > 0) {
+            throw new Error(`Không thể xóa vai trò này. Hiện đang có ${accountCount} tài khoản thuộc vai trò này.`);
+        }
+
+        // Bước 2: Nếu không có ràng buộc, thực hiện hành động
+        const deleteResult = await deleteRole(id);
+
+        // Giả sử procedure trả về { details: [{ result: 1 }] } khi thành công
+        if (deleteResult?.details?.[0]?.result === 1) {
+            return { success: true, message: 'Xóa vai trò thành công.' };
+        } else {
+            // Trường hợp procedure chạy nhưng không thành công (vd: trả về -1)
+            throw new Error('Xóa vai trò thất bại do lỗi từ cơ sở dữ liệu.');
+        }
+
+    } catch (error: any) {
+        throw error;
     }
 };
-
 
 export const updatePermissionsForRoleService = async (roleId: string, permissionIds: string[]) => {
     try {
