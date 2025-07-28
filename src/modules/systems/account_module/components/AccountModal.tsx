@@ -133,7 +133,7 @@ export const AccountModal = ({
           messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại !',
         });
       } else if (row?.username) {
-        const result: any = await updateAccount({ ...dataToSubmit, old_username: row.username, updated_by: currentAccount.username });
+        const result: any = await updateAccount({ ...dataToSubmit, updated_by: currentAccount.username });
         show({
           result: result.data.result,
           messageDone: 'Cập nhập người dùng thành công',
@@ -142,7 +142,14 @@ export const AccountModal = ({
       }
       getAll();
       close();
-    } catch (error) {
+    } catch (error: any) {
+      //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
+      // Antd sẽ tự động hiển thị lỗi trên form.
+      if (error && error.errorFields) {
+        console.log('Validation Failed:', error.errorFields[0].errors[0]);
+        return;
+      }
+
       let errorMessage = "Đã có lỗi không xác định xảy ra.";
 
       if (axios.isAxiosError(error)) {
@@ -218,10 +225,10 @@ export const AccountModal = ({
                 label="Tên đăng nhập"
                 rules={RULES_FORM.required}
               >
-                <Input />
+                <Input disabled={!isCreate} />
               </Form.Item>
 
-              {/* nếu đang ở dialog sửa vào đang có k có ảnh*/}
+              {/*đang k có ảnh*/}
               {hasImage ? null :
                 (<Form.Item
                   name="name"
@@ -255,15 +262,28 @@ export const AccountModal = ({
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                name="password"
-                label="Mật khẩu"
-                rules={RULES_FORM.required}
-              >
-                <Input.Password />
-              </Form.Item></Col>
-            {/* nếu đang ở dialog tạo và có ảnh thì tăng chiều rộng, chỉ định 1 mình nó 1 dòng */}
-            {hasImage ?
+              {isCreate ? (
+                <Form.Item
+                  name="password"
+                  label="Mật khẩu"
+                  rules={RULES_FORM.password}
+                >
+                  <Input.Password />
+                </Form.Item>
+              ) : null}
+              {hasImage && !isCreate ?
+                (<Form.Item
+                  name="name"
+                  label="Tên người dùng"
+                  rules={RULES_FORM.required}
+                >
+                  <Input />
+                </Form.Item>
+                ) :
+                null}
+            </Col>
+            {/* đang ở dialog tạo và có ảnh */}
+            {hasImage && isCreate ?
               (<Form.Item
                 name="name"
                 label="Tên người dùng"

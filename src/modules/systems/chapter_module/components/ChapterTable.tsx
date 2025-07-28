@@ -119,6 +119,12 @@ export const ChapterTable = () => {
     //   ),
     // },
     {
+      title: 'Sắp xếp',
+      width: 50,
+      dataIndex: 'sort_order',
+      align: 'center',
+    },
+    {
       title: 'Thao tác',
       width: 120,
       align: 'center',

@@ -9,6 +9,7 @@ import {
   createAccount,
   deleteAccount,
   findAccountByEmail,
+  registerAccount,
   searchAccounts,
   updateAccount,
   updatePasswordByEmail,
@@ -20,7 +21,6 @@ import { decrypt } from '@/libs/access';
 import { getPermissionsByRole } from '../repositories/permission.repository';
 
 const BCRYPT_ROUNDS = parseInt('10'); //số vòng lặp mà thư viện bcryptjs sử dụng khi mã hoá mật khẩu
-
 
 export const createAccountService = async (model: IAccount) => {
   try {
@@ -215,3 +215,111 @@ export const resetPasswordService = async (email: string, newPassword: string) =
     throw new Error(error.message || "Lỗi khi đặt lại mật khẩu.");
   }
 }
+
+export const registerAccountService = async (model: IAccount) => {
+  try {
+    //kiểm tra các trường dữ liệu bắt buộc
+    if (!model.username?.trim()) throw new Error('Tên đăng nhập không được để trống');
+    if (!model.name?.trim()) throw new Error('Họ tên không được để trống');
+    if (!model.email?.trim()) throw new Error('Email không được để trống');
+    if (!model.password?.trim()) throw new Error('Mật khẩu không được để trống');
+
+    //kiểm tra email đã tồn tại chưa
+    const existingAccountByEmail = await findAccountByEmail(model.email);
+    if (existingAccountByEmail) {
+      throw new Error(`Địa chỉ email ${model.email} đã được sử dụng.`);
+    }
+
+    //kiểm tra username đã tồn tại chưa
+    const existingAccountByUsername = await authenticate(model.username);
+    if (existingAccountByUsername && existingAccountByUsername[0]) {
+      throw new Error(`Tên đăng nhập ${model.username} đã tồn tại.`);
+    }
+
+    //kiểm tra email có hợp lệ không
+    const isInvalidEmail = await isDisposableEmail(model.email);
+    if (isInvalidEmail) throw new Error('Địa chỉ email không hợp lệ.');
+
+    const decryptedPassword = decrypt(model.password);
+    if (!decryptedPassword) throw new Error('Mật khẩu không hợp lệ');
+
+    const hashedPassword = await bcrypt.hash(decryptedPassword, BCRYPT_ROUNDS);
+    const result = await registerAccount({
+      ...model,
+      password: hashedPassword,
+    });
+
+    return result;
+
+  } catch (error: any) {
+    throw new Error(error.message || 'Lỗi khi đăng ký tài khoản');
+  }
+};
+
+export const registerOTPService = async (email: string, username: string) => {
+  try {
+    // 1. Kiểm tra xem email hoặc tài khoản đã được đăng ký chưa
+    const existingAccount = await findAccountByEmail(email);
+    if (existingAccount) {
+      throw new Error(`Địa chỉ email ${email} đã được sử dụng.`);
+    }
+
+    const account = await authenticate(username);
+
+    console.log(`Kiểm tra tài khoản: ${username}`, account);
+
+    if (account && account[0]) {
+      throw new Error(`Tên đăng nhập ${username} đã được sử dụng.`);
+    }
+
+
+    // 2. Tạo OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // 3. Gửi email chứa OTP
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"CHEMISTRY FORUM Support" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Mã OTP đăng ký tài khoản CHEMISTRY FORUM',
+      html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2 style="color: #0d448a;">Xác thực Email Đăng ký</h2>
+            <p>Cảm ơn bạn đã quan tâm đến Diễn đàn Hóa học (CHEMISTRY FORUM).</p>
+            <p>Để hoàn tất quá trình đăng ký, vui lòng sử dụng mã OTP sau:</p>
+            <p style="background-color: #f0f0f0; border: 1px solid #ddd; padding: 10px 15px; font-size: 18px; font-weight: bold; text-align: center; letter-spacing: 2px;">
+                ${otp}
+            </p>
+            <p>Mã này có hiệu lực trong 5 phút.</p>
+            <p>Nếu bạn không yêu cầu đăng ký tài khoản, vui lòng bỏ qua email này.</p>
+            <hr>
+            <p>Trân trọng,<br/>Đội ngũ CHEMISTRY FORUM</p>
+        </div>`,
+    };
+    await transporter.sendMail(mailOptions);
+
+    const otpToken = jwt.sign(
+      { email: email, otp: otp },
+      process.env.JWT_SECRET as string,
+      { expiresIn: '5m' } // Hết hạn sau 5 phút
+    );
+
+    return {
+      success: true,
+      message: 'OTP đã được gửi đến email của bạn.',
+      otpToken: otpToken,
+    };
+
+  } catch (error: any) {
+    // Ném lỗi ra ngoài để API route có thể bắt và trả về đúng thông báo
+    throw new Error(error.message || "Gửi email thất bại do lỗi hệ thống.");
+  }
+};
+

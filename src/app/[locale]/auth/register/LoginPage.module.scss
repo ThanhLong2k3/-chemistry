@@ -44,7 +44,7 @@
   width: 100px;
   height: 100px;
   position: relative;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -58,17 +58,17 @@
     transform: translate(-50%, -50%);
     animation: triangleFloat 8s ease-in-out infinite;
   }
-  
+
   &:nth-child(odd)::before {
     border-bottom: 70px solid rgba(255, 255, 255, 0.6);
     animation-delay: -2s;
   }
-  
+
   &:nth-child(3n)::before {
     border-bottom: 70px solid rgba(255, 255, 255, 0.4);
     animation-delay: -4s;
   }
-  
+
   &:nth-child(4n)::before {
     transform: translate(-50%, -50%) rotate(180deg);
     animation-delay: -6s;
@@ -76,13 +76,27 @@
 }
 
 @keyframes floatPattern {
-  0%, 100% { transform: rotate(15deg) translateY(0px); }
-  50% { transform: rotate(15deg) translateY(-20px); }
+
+  0%,
+  100% {
+    transform: rotate(15deg) translateY(0px);
+  }
+
+  50% {
+    transform: rotate(15deg) translateY(-20px);
+  }
 }
 
 @keyframes triangleFloat {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 // Brand Section
@@ -109,8 +123,15 @@
 }
 
 @keyframes iconPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .brandText {
@@ -163,7 +184,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.25);
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-4px);
     background: rgba(255, 255, 255, 0.25);
@@ -177,28 +198,45 @@
   opacity: 0.9;
 }
 
-// Right Panel - Login Form
+// // Right Panel - Login Form
+// .rightPanel {
+//   flex: 1;
+//   background: #ffffff;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 40px;
+//   position: relative;
+
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     background: 
+//       radial-gradient(circle at 20% 80%, rgba(40, 73, 115, 0.03) 0%, transparent 50%),
+//       radial-gradient(circle at 80% 20%, rgba(30, 58, 95, 0.03) 0%, transparent 50%);
+//   }
+// }
+
 .rightPanel {
-  flex: 1;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // Giữ nguyên các thuộc tính khác
+  width: 50%; // Giả sử
   padding: 40px;
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-      radial-gradient(circle at 20% 80%, rgba(40, 73, 115, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(30, 58, 95, 0.03) 0%, transparent 50%);
-  }
+  background-color: #ffffff;
+
+  // THAY ĐỔI Ở ĐÂY
+  display: flex;
+  flex-direction: column; // Sắp xếp theo chiều dọc
+  justify-content: flex-start; // BẮT ĐẦU TỪ TRÊN CÙNG
+  align-items: center; // Vẫn căn giữa theo chiều ngang
+
+  // Thêm thanh cuộn
+  overflow-y: auto;
 }
+
 
 .formContainer {
   width: 100%;
@@ -263,23 +301,23 @@
   border: 2px solid #e5e7eb !important;
   background: #ffffff !important;
   transition: all 0.2s ease !important;
-  
+
   &:hover {
     border-color: #d1d5db !important;
   }
-  
+
   &:focus {
     border-color: #284973 !important;
     box-shadow: 0 0 0 3px rgba(40, 73, 115, 0.1) !important;
   }
-  
+
   .ant-input {
     border: none !important;
     box-shadow: none !important;
     font-size: 15px !important;
     color: #374151 !important;
     background: transparent !important;
-    
+
     &::placeholder {
       color: #9ca3af !important;
     }
@@ -296,7 +334,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  
+
   .ant-form-item {
     margin: 0 !important;
   }
@@ -305,18 +343,18 @@
 .checkbox {
   color: #374151 !important;
   font-size: 14px !important;
-  
+
   .ant-checkbox {
     &-inner {
       border-color: #d1d5db !important;
       border-radius: 4px !important;
     }
-    
+
     &-checked .ant-checkbox-inner {
       background-color: #284973 !important;
       border-color: #284973 !important;
     }
-    
+
     &:hover .ant-checkbox-inner {
       border-color: #284973 !important;
     }
@@ -329,7 +367,7 @@
   font-weight: 500 !important;
   text-decoration: none !important;
   transition: color 0.2s ease !important;
-  
+
   &:hover {
     color: #1e3a5f !important;
     text-decoration: underline !important;
@@ -347,17 +385,17 @@
   color: white !important;
   box-shadow: 0 4px 12px rgba(40, 73, 115, 0.25) !important;
   transition: all 0.2s ease !important;
-  
+
   &:hover {
     transform: translateY(-1px) !important;
     box-shadow: 0 6px 16px rgba(40, 73, 115, 0.35) !important;
     background: linear-gradient(135deg, #1e3a5f 0%, #233f6b 100%) !important;
   }
-  
+
   &:active {
     transform: translateY(0) !important;
   }
-  
+
   &:focus {
     background: linear-gradient(135deg, #284973 0%, #1e3a5f 100%) !important;
   }
@@ -367,7 +405,7 @@
   position: relative;
   text-align: center;
   margin: 32px 0 24px 0;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -404,14 +442,14 @@
   font-size: 15px !important;
   font-weight: 500 !important;
   transition: all 0.2s ease !important;
-  
+
   &:hover {
     border-color: #284973 !important;
     background: #f8fafc !important;
     transform: translateY(-1px) !important;
     color: #284973 !important;
   }
-  
+
   .anticon {
     font-size: 18px !important;
   }
@@ -433,7 +471,7 @@
   font-weight: 600 !important;
   text-decoration: none !important;
   transition: color 0.2s ease !important;
-  
+
   &:hover {
     color: #1e3a5f !important;
     text-decoration: underline !important;
@@ -445,7 +483,7 @@
   .leftPanel {
     display: none;
   }
-  
+
   .rightPanel {
     flex: none;
     width: 100%;
@@ -456,20 +494,20 @@
   .rightPanel {
     padding: 24px;
   }
-  
+
   .formContainer {
     max-width: 100%;
   }
-  
+
   .welcomeTitle {
     font-size: 28px !important;
   }
-  
+
   .featuresGrid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .brandName {
     font-size: 36px;
   }
@@ -479,10 +517,20 @@
   .socialButtons {
     flex-direction: column;
   }
-  
+
   .formOptions {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
+}
+
+/* Style cho avatar uploader hình tròn */
+.avatar-uploader,
+.ant-upload,
+.ant-upload-select {
+  width: 100px !important;
+  height: 100px !important;
+  margin: 0 auto;
+  border-radius: 50%;
 }
