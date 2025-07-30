@@ -4,7 +4,7 @@
   flex-direction: column;
 
   :global {
-    .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
+    .ant-menu-light .ant-menu-submenu-selected>.ant-menu-submenu-title {
       color: inherit !important;
     }
   }
@@ -23,6 +23,7 @@
     overflow-y: auto;
 
     :global {
+
       .ant-menu-item,
       .ant-menu-submenu-title {
         height: 32px;

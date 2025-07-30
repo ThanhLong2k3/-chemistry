@@ -22,8 +22,8 @@ import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import { LOGIN_PATH } from '@/path';
 import styles from './LoginPage.module.scss';
-import { authAPI } from '@/libs/api/auth.api';
 import { encrypt } from '@/libs/access';
+import { authAPI } from '@/services/auth.service';
 
 const { Title, Text } = Typography;
 

@@ -12,9 +12,9 @@ import dynamic from 'next/dynamic';
 import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
 import axios from 'axios';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { NewuploadFiles } from '@/libs/api/upload.api';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 
 

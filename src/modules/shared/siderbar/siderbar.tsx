@@ -19,6 +19,7 @@ import {
   CopyOutlined,
 } from '@ant-design/icons';
 import styles from '@/modules/shared/siderbar/siderbar.module.scss';
+import { ADMIN_MANAGE_ACCOUNT_PATH, ADMIN_MANAGE_ADVISORY_MEMBER_PATH, ADMIN_MANAGE_BLOG_PATH, ADMIN_MANAGE_CHAPTER_PATH, ADMIN_MANAGE_EXAM_PATH, ADMIN_MANAGE_LESSON_PATH, ADMIN_MANAGE_ROLE_PATH, ADMIN_MANAGE_SUBJECT_PATH } from '@/path';
 
 type MenuItem = Required<MenuProps>['items'][number];
 interface SiderBarProps {
@@ -27,14 +28,14 @@ interface SiderBarProps {
 
 const routeMap: Record<string, string> = {
   sub1: '/vi/dashboard',
-  '1': '/vi/admin/manage_chapter',
-  '2': '/vi/admin/manage_lesson',
-  '3': '/vi/admin/manage_exam',
-  '4': '/vi/admin/manage_subject',
-  sub3: '/vi/admin/manage_advisory_member',
-  sub4: '/vi/admin/manage_blog',
-  '5': '/vi/admin/manage_role',
-  '6': '/vi/admin/manage_account',
+  '1': ADMIN_MANAGE_CHAPTER_PATH,
+  '2': ADMIN_MANAGE_LESSON_PATH,
+  '3': ADMIN_MANAGE_EXAM_PATH,
+  '4': ADMIN_MANAGE_SUBJECT_PATH,
+  sub3: ADMIN_MANAGE_ADVISORY_MEMBER_PATH,
+  sub4: ADMIN_MANAGE_BLOG_PATH,
+  '5': ADMIN_MANAGE_ROLE_PATH,
+  '6': ADMIN_MANAGE_ACCOUNT_PATH,
 };
 
 const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {

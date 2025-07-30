@@ -8,11 +8,11 @@ import { RULES_FORM } from '@/utils/validator';
 import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
 import { encrypt } from '@/libs/access';
 import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { IRole } from '@/types/role';
 import { searchRole } from '@/services/role.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 interface Props {
   isCreate?: boolean;

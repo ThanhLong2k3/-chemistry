@@ -12,8 +12,8 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { image } from 'd3';
 import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });

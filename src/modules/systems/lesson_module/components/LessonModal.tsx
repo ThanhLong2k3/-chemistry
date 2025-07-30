@@ -13,10 +13,10 @@ import { searchChapter } from '@/services/chapter.service';
 import axios from 'axios';
 import { IChapter } from '@/types/chapter';
 import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
