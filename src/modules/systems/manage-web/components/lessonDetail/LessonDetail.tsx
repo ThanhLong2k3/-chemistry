@@ -5,17 +5,13 @@ import styles from './LessonDetail.module.scss';
 import { ILessonDetail } from '@/types/home';
 import parse from 'html-react-parser';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
-const relatedLessons = [
-  { id: 1, name: 'Bài học 1: Mở đầu' },
-  { id: 2, name: 'Bài học 2: Danh sách liên kết' },
-  { id: 3, name: 'Bài học 3: Cây nhị phân' },
-];
 interface LessonDetailProps {
   lesson?:ILessonDetail
+  relatedLessons?: ILessonDetail[];
 }
-export default function LessonDetail({ lesson }: LessonDetailProps) {
+export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProps) {
     
   return (
     <div className={styles.lessonWrapper}>
@@ -39,7 +35,7 @@ export default function LessonDetail({ lesson }: LessonDetailProps) {
           dataSource={relatedLessons}
           renderItem={(item) => (
             <List.Item className={styles.lessonItem}>
-              {item.name}
+              {item.lesson_name}
             </List.Item>
           )}
         />

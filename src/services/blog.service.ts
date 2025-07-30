@@ -1,8 +1,11 @@
+import env from '@/env';
 import { IAccount } from '@/types/account';
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IBlog } from '@/types/blog';
 import axios from 'axios';
-const prefix = '/api/blog';
+
+const prefix = `${env.BASE_URL}/api/blog`;
+
 
 export const createBlog = async (request: IBlog): Promise<ResponseProps> => {
     const token = localStorage.getItem('TOKEN');
@@ -27,7 +30,7 @@ export const updateBlog = async (request: IBlog): Promise<ResponseProps> => {
 export const searchBlog = async (
     request: IBaseSearch
 ): Promise<ResponseProps<IBlog[]>> => {
-    const response = await axios?.post(`${prefix}/search`, request);
+    const response = await axios.post(`${prefix}/search`, request);
     return response.data;
 };
 

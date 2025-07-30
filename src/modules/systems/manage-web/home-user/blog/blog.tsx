@@ -11,13 +11,15 @@ import {
 import styles from './blog.module.scss';
 import { IBlog } from '@/types/blog';
 import parse from 'html-react-parser';
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { BLOG_DETAIL_PATH } from '@/path';
 const { Title } = Typography;
 
 const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const router = useRouter();
   // Function để kiểm tra blog mới (trong vòng 7 ngày)
   const isNewBlog = (createdAt: Date | string): boolean => {
     const now = new Date();
@@ -90,7 +92,9 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
     }
   };
 
-
+  const handleBlogClick = (id: string) => {
+    router.push(`${BLOG_DETAIL_PATH}/${id}`);
+  }
   return (
     <div className={styles.blogContainer}>
       <div className={styles.sectionHeader}>
@@ -118,9 +122,9 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
           onScroll={checkScrollButtons}
         >
           {blogData.map((blog) => (
-            <div key={blog.id} className={styles.blogCard}>
+            <div key={blog.id} className={styles.blogCard} onClick={()=>handleBlogClick(blog.id)}>
               <div className={styles.blogImageWrapper}>
-                <Image
+                <img
                   src={blog.image}
                   alt={blog.title}
                   className={styles.blogImage}

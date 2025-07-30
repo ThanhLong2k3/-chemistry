@@ -1,7 +1,9 @@
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IAdvisoryMember } from '@/types/advisory_member';
 import axios from 'axios';
-const prefix = '/api/advisory_member';
+import env from '@/env';
+const prefix = `${env.BASE_URL}/api/advisory_member`;
+
 
 export const createAdvisoryMember = async (request: IAdvisoryMember): Promise<ResponseProps> => {
     const token = localStorage.getItem('TOKEN');

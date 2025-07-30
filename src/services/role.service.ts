@@ -1,7 +1,8 @@
+import env from '@/env';
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IRole } from '@/types/role';
 import axios from 'axios';
-const prefix = '/api/role';
+const prefix = `${env.BASE_URL}/api/role`;
 
 export const createRole = async (request: IRole): Promise<ResponseProps> => {
     const token = localStorage.getItem('TOKEN');

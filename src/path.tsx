@@ -1,10 +1,12 @@
-export const BASE_PATH = '/vi';
+export const BASE_PATH = '/web';
 export const HOME_BASE_PATH = `${BASE_PATH}/home_user`;
 export const HOME_PATH = `${HOME_BASE_PATH}/home`;
 export const ADVISORY_BOARD_PATH = `${HOME_BASE_PATH}/advisoryboard`;
 export const PERIODIC_TABLE_PATH = `${HOME_BASE_PATH}/periodictable`;
-export const LESSON_LIST_PATH = `${HOME_BASE_PATH}/lessonlist`;
-export const LESSON_DETAIL_PATH = `${HOME_BASE_PATH}/lessondetail`;
+export const LESSON_LIST_PATH = `${HOME_BASE_PATH}/lesson/lessonlist`;
+export const LESSON_DETAIL_PATH = `${HOME_BASE_PATH}/lesson/lessondetail`;
+export const BLOG_LIST_PATH = `${HOME_BASE_PATH}/blog/bloglist`;
+export const BLOG_DETAIL_PATH = `${HOME_BASE_PATH}/blog/blogdetail`;
 export const REVIEW_FILE_PDF_PATH = `${HOME_BASE_PATH}/reviewfilepdf`;
 
 
@@ -16,7 +18,7 @@ export const FOGOTPASS_PATH = `${BASE_PATH}/${AUTH_PATH}/forgotpass`;
 
 // path ADMIN
 export const ADMIN_PATH = 'admin';
-export const ADMIN_LOGIN_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_account`;
+export const ADMIN_MANAGE_ACCOUNT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_account`;
 export const ADMIN_REGISTER_PATH = `${ADMIN_PATH}/l`;
 
 // path ADMIN_USER

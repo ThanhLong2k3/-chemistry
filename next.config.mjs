@@ -1,16 +1,11 @@
-import createNextIntlPlugin from 'next-intl/plugin';
-
-const withNextIntl = createNextIntlPlugin();
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  rewrites: () => [
+  rewrites: async () => [
     {
       source: '/uploads/:path*',
-      destination: '/api/uploads/:path*', // dùng để lấy file
-
+      destination: '/api/uploads/:path*',
     }
   ],
   webpack(config) {
@@ -20,7 +15,6 @@ const nextConfig = {
     });
     return config;
   }
-
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

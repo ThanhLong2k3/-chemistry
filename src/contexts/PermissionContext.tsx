@@ -1,8 +1,8 @@
 'use client';
 
+import { getAccountLogin } from '@/env/getInfor_token';
 // 1. Import thêm 'useCallback'
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 
 interface IPermissionContext {
     permissions: string[];

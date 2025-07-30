@@ -79,8 +79,10 @@ export const AdvisoryMemberTable = () => {
       render: (imageUrl) => (
         <Image
           src={imageUrl}
+           width={45}
+          height={45}
           alt="Avatar"
-          style={{ height: 60, objectFit: 'cover' }}
+          style={{ objectFit: 'cover' }}
         />
       ),
     },

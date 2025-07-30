@@ -70,9 +70,11 @@ export const AccountTable = () => {
 
       render: (imageUrl) => (
         <Image 
+          width={45}
+          height={45}
           src={imageUrl}
           alt="Avatar"
-          style={{ width: 45, height: 45, objectFit: 'cover', borderRadius: '50%' }}
+          style={{ objectFit: 'cover', borderRadius: '50%' }}
         />
       ),
     },

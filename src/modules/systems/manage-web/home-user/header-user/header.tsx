@@ -16,13 +16,15 @@ import { useRouter } from 'next/navigation';
 import styles from './header.module.scss';
 import {
   ADVISORY_BOARD_PATH,
+  BLOG_LIST_PATH,
   HOME_PATH,
+  LOGIN_PATH,
   PERIODIC_TABLE_PATH,
   REVIEW_FILE_PDF_PATH,
 } from '@/path';
 import { searchSubject } from '@/services/subject.service';
-import { Home_Api } from '@/libs/api/home.api';
 import GoogleTranslate from '@/modules/shared/GoogleTranslate';
+import { Home_Api } from '@/services/home.service';
 
 const { Header } = Layout;
 
@@ -66,7 +68,7 @@ const Header_User = () => {
       { key: HOME_PATH, icon: <HomeOutlined />, label: 'TRANG CHỦ' },
       { key: ADVISORY_BOARD_PATH, icon: <UserOutlined />, label: 'BAN TƯ VẤN' },
       { key: 'facebook-link', icon: <FacebookOutlined />, label: 'HOẠT ĐỘNG' },
-      { key: 'blog', icon: <FileTextOutlined />, label: 'BLOG' },
+      { key: BLOG_LIST_PATH, icon: <FileTextOutlined />, label: 'BLOG' },
       {
         key: PERIODIC_TABLE_PATH,
         icon: <ExperimentOutlined />,
@@ -196,7 +198,7 @@ const Header_User = () => {
         />
         <GoogleTranslate />
         {/* Button đăng nhập */}
-        <a href="/vi/auth/login">
+        <a href={LOGIN_PATH}>
           <Button style={{ marginRight: '10px' }} type="primary">
             Đăng nhập
           </Button>

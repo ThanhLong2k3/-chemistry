@@ -1,14 +1,11 @@
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IAccount } from '@/types/account';
 import axios from 'axios';
+import env from '@/env';
 
 // Nếu đang chạy phía server (API route), cần URL tuyệt đối
-const baseURL =
-  typeof window === 'undefined'
-    ? process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000'
-    : ''; // phía client thì dùng URL tương đối
 
-const prefix = `${baseURL}/api/account`;
+const prefix = `${env.BASE_URL}/api/account`;
 
 export const createAccount = async (request: IAccount): Promise<ResponseProps> => {
   const token = localStorage.getItem('TOKEN');

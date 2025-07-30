@@ -1,7 +1,9 @@
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IChapter } from '@/types/chapter';
 import axios from 'axios';
-const prefix = '/api/chapter';
+import { env } from 'process';
+const prefix = `${env.BASE_URL}/api/chapter`;
+
 
 export const createChapter = async (request: IChapter): Promise<ResponseProps> => {
     const token = localStorage.getItem('TOKEN');
