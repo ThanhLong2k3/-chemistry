@@ -3,24 +3,25 @@ import axios from "axios";
 const prefix = `${env.BASE_URL}/api/upload`;
 
 export const UpLoadImage = async (
-  request: any,
+  files: File[],
   show?: ({ result }: { result: number }) => void
-): Promise<any> => {
+): Promise<string[]> => {
   const token = localStorage.getItem('TOKEN');
 
+  const formData = new FormData();
+  files.forEach(file => {
+    formData.append('files', file); // key 'files' khớp với Multer
+  });
+
   try {
-    const response = await axios.post(`${prefix}/`, request, {
+    const response = await axios.post(`${prefix}/`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
     });
 
-    // Giả sử response.data.result là kết quả xử lý
-    if (show) {
-      show({ result: response.data.result ?? 0 }); // Nếu không có result thì coi như thành công
-    }
-
-    return response.data;
+    return response.data.urls;
   } catch (error: any) {
     if (show) {
       show({ result: 1 });

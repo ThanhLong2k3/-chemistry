@@ -10,6 +10,7 @@ import { getAccountLogin } from '@/env/getInfor_token';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';
+import env from '@/env';
 
 export const SubjectTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -78,15 +79,18 @@ export const SubjectTable = () => {
       title: 'Ảnh đại diện',
       width: 80,
       dataIndex: 'image',
-      render: (imageUrl) => (
-        <Image
-          src={imageUrl}
-           width={45}
-          height={45}
-          alt="Avatar"
-          style={{  objectFit: 'cover' }}
-        />
-      ),
+      render: (imageUrl) => {
+        const fullUrl = imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_book.png';
+        return (
+          <Image
+            width={45}
+            height={45}
+            src={fullUrl}
+            alt="Avatar"
+            style={{ width: '80px', height: 'auto' }}
+          />
+        );
+      },
     },
     // {
     //   title: 'Mô tả',
@@ -113,7 +117,7 @@ export const SubjectTable = () => {
       dataIndex: 'textbook',
       render: (url) =>
         url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer">
+          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
             Link
           </a>
         ) : (
@@ -126,7 +130,7 @@ export const SubjectTable = () => {
       dataIndex: 'workbook',
       render: (url) =>
         url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer">
+          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
             Link
           </a>
         ) : (
@@ -139,7 +143,7 @@ export const SubjectTable = () => {
       dataIndex: 'exercise_book',
       render: (url) =>
         url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer">
+          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
             Link
           </a>
         ) : (

@@ -1,7 +1,7 @@
+import env from '@/env';
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IChapter } from '@/types/chapter';
 import axios from 'axios';
-import { env } from 'process';
 const prefix = `${env.BASE_URL}/api/chapter`;
 
 

@@ -6,7 +6,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useColorState } from '@/stores/color.store';
 import type { MenuProps } from 'antd';
 import {
-  UserOutlined,
   SettingOutlined,
   TeamOutlined,
   ProjectOutlined,
@@ -27,11 +26,11 @@ interface SiderBarProps {
 }
 
 const routeMap: Record<string, string> = {
-  sub1: '/vi/dashboard',
-  '1': ADMIN_MANAGE_CHAPTER_PATH,
-  '2': ADMIN_MANAGE_LESSON_PATH,
-  '3': ADMIN_MANAGE_EXAM_PATH,
-  '4': ADMIN_MANAGE_SUBJECT_PATH,
+  sub1: '/web/dashboard',
+  '1': ADMIN_MANAGE_SUBJECT_PATH,
+  '2': ADMIN_MANAGE_CHAPTER_PATH,
+  '3': ADMIN_MANAGE_LESSON_PATH,
+  '4': ADMIN_MANAGE_EXAM_PATH,
   sub3: ADMIN_MANAGE_ADVISORY_MEMBER_PATH,
   sub4: ADMIN_MANAGE_BLOG_PATH,
   '5': ADMIN_MANAGE_ROLE_PATH,
@@ -65,10 +64,10 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
         label: 'Quản lý nội dung bài học',
         icon: <ProfileOutlined />,
         children: [
-          { key: '4', label: 'Quản lý môn học', icon: <ProjectOutlined />, },
-          { key: '1', label: 'Danh mục chương', icon: <BookOutlined /> },
-          { key: '2', label: 'Danh mục bài học', icon: <ReadOutlined /> },
-          { key: '3', label: 'Danh mục đề kiểm tra', icon: <CopyOutlined /> },
+          { key: '1', label: 'Quản lý môn học', icon: <ProjectOutlined />, },
+          { key: '2', label: 'Danh mục chương', icon: <BookOutlined /> },
+          { key: '3', label: 'Danh mục bài học', icon: <ReadOutlined /> },
+          { key: '4', label: 'Danh mục đề kiểm tra', icon: <CopyOutlined /> },
         ],
       },
       { key: 'sub3', label: 'Quản lý ban tư vấn', icon: <IdcardOutlined /> },

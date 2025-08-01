@@ -20,6 +20,7 @@ import { usePermissions } from '@/contexts/PermissionContext';
 import { IDecodedToken } from '@/types/decodedToken';
 import { getAccountLogin } from '@/env/getInfor_token';
 import { authAPI } from '@/services/auth.service';
+import env from '@/env';
 
 const buttonStyle = (color: string) => ({
   backgroundColor: color,
@@ -34,6 +35,7 @@ const imageStyle = {
   marginLeft: '10px',
   borderRadius: '50%',
   border: '1px black solid',
+  objectFit: 'cover'
 };
 
 
@@ -50,7 +52,7 @@ const ThemeChanger = () => {
     const account = getAccountLogin();
     if (!account) {
       // Điều hướng về trang đăng nhập nếu chưa login
-      push('/vi/auth/login');
+      push('/web/auth/login');
     } else {
       // Nếu đã đăng nhập, lưu thông tin vào state
       setCurrentAccount(account);
@@ -64,10 +66,10 @@ const ThemeChanger = () => {
       refreshPermissions();
 
       //điều hướng về trang login
-      push('/vi/auth/login');
+      push('/web/auth/login');
 
     } else if (e.key === 'settings') {
-      push('/vi/auth/resetPassword');
+      push('/web/auth/resetPassword');
     }
   };
 
@@ -123,7 +125,7 @@ const ThemeChanger = () => {
           {/* Kiểm tra nếu có currentAccount.image thì mới dùng Next/Image */}
           {currentAccount.image ? (
             <Image
-              src={currentAccount.image}
+              src={`${env.BASE_URL}${currentAccount.image}`}
               alt="Avatar"
               width={40}
               height={40}

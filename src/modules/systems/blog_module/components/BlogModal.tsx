@@ -1,5 +1,5 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
-import { Button, Col, Form, Input, Modal, Row, Select, Upload, UploadFile } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Upload, UploadFile } from 'antd';
 import { useEffect, useState } from 'react';
 import { createBlog, updateBlog } from '@/services/blog.service';
 import { IBlog } from '@/types/blog';
@@ -7,13 +7,13 @@ import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
-import 'react-quill/dist/quill.snow.css'; // CSS mặc định
+import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
-
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { getAccountLogin } from '@/env/getInfor_token';
 import { UpLoadImage } from '@/services/upload.service';
+import env from '@/env';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -23,22 +23,14 @@ interface Props {
   getAll: () => void;
 }
 
-export const BlogModal = ({
-  isCreate = false,
-  row,
-  getAll,
-}: Props): JSX.Element => {
+export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
   const { show } = useNotification();
   const [description, setDescription] = useState('');
 
-  // 1. Sử dụng Form.useWatch để theo dõi giá trị của trường 'image'
   const imageFileList = Form.useWatch('image', form);
-
-  // 2. Kiểm tra xem có ảnh hay không. `hasImage` sẽ là true nếu có file, và false nếu không có.
   const hasImage = imageFileList && imageFileList.length > 0;
-
 
   useEffect(() => {
     if (isOpen) {
@@ -46,17 +38,22 @@ export const BlogModal = ({
         form.resetFields();
         setDescription('');
       } else if (row) {
-        const imageFileList: UploadFile[] = row.image
-          ? [
+        const convertImage = (url: string | null): UploadFile[] => {
+          if (!url) return [];
+          return [
             {
               uid: '-1',
-              name: 'avatar.png',
+              name: 'image.png',
               status: 'done',
-              url: row.image,
+              url: `${env.BASE_URL}${url}`,
             },
-          ]
-          : [];
-        form.setFieldsValue({ ...row, image: imageFileList }); //đổ data cũ vào form sửa
+          ];
+        };
+
+        form.setFieldsValue({
+          ...row,
+          image: convertImage(row.image),
+        });
         setDescription(row.description || '');
       }
     }
@@ -64,101 +61,74 @@ export const BlogModal = ({
 
   const handleOk = async () => {
     try {
-      //lấy thông tin người dùng đang đăng nhập
       const currentAccount = getAccountLogin();
-
       if (!currentAccount) {
-        show({
-          result: 1,
-          messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
-        });
+        show({ result: 1, messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
         return;
       }
 
       const values = await form.validateFields();
 
-      let imageUrl: string | null = null;
-      const imageValue = values.image; // imageValue bây giờ luôn là một mảng
-
-      if (imageValue && imageValue.length > 0) {
-        const file = imageValue[0];
+      const extractImageUrl = async (fileList: UploadFile[] | undefined): Promise<string | null> => {
+        if (!fileList || fileList.length === 0) return null;
+        const file = fileList[0];
         if (file.originFileObj) {
           const uploadedPaths = await UpLoadImage([file.originFileObj], show);
-          imageUrl = uploadedPaths[0];
+          return uploadedPaths[0];
         } else if (file.url) {
-          imageUrl = file.url;
+          return file.url.replace(env.BASE_URL, '');
         }
-      } else {
-        imageUrl = null;
-      }
+        return null;
+      };
 
+      const imageUrl = await extractImageUrl(values.image);
+
+      const dataToSubmit = {
+        ...values,
+        image: imageUrl,
+        description,
+      };
+
+      let responseData: any;
       if (isCreate) {
-        const responseData: any = await createBlog({
+        responseData = await createBlog({
           id: uuidv4(),
-          ...values,
+          ...dataToSubmit,
           created_by: currentAccount.username,
-          image: imageUrl
         });
-
-        if (responseData.success) {
-          show({
-            result: 0,
-            messageDone: 'Thêm bài viết thành công!',
-          });
-        } else {
-          show({
-            result: 1,
-            messageError: responseData.message || 'Thêm bài viết thất bại.',
-          });
-        }
       } else if (row?.id) {
-        const responseData: any = await updateBlog({ ...values, id: row.id, updated_by: currentAccount.username, image: imageUrl });
-
-        if (responseData.success) {
-          show({
-            result: 0,
-            messageDone: 'Cập nhật bài viết thành công!',
-          });
-        } else {
-          show({
-            result: 1,
-            messageError: responseData.message || 'Cập nhật bài viết thất bại.',
-          });
-        }
+        responseData = await updateBlog({
+          ...dataToSubmit,
+          id: row.id,
+          updated_by: currentAccount.username,
+        });
       }
+
+      show({
+        result: responseData.success ? 0 : 1,
+        messageDone: isCreate ? 'Thêm bài viết thành công!' : 'Cập nhật bài viết thành công!',
+        messageError: responseData.message || (isCreate ? 'Thêm bài viết thất bại.' : 'Cập nhật bài viết thất bại.'),
+      });
+
       getAll();
+      close();
     } catch (error: any) {
-      //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
-      // Antd sẽ tự động hiển thị lỗi trên form.
-      if (error && error.errorFields) {
-        console.log('Validation Failed:', error.errorFields[0].errors[0]);
-        return;
-      }
+      if (error?.errorFields) return;
 
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
-
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
       if (axios.isAxiosError(error)) {
-        const axiosError = error; // TypeScript hiểu đây là AxiosError
-        const responseMessage = axiosError.response?.data?.message;
-
-        if (axiosError.response?.status === 401) {
+        if (error.response?.status === 401) {
           showSessionExpiredModal();
           return;
-        } else {
-          errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+        errorMessage = error.response?.data?.message || error.message;
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
 
-      // Chỉ hiển thị notification cho các lỗi không phải 401
-      show({
-        result: 1,
-        messageError: errorMessage,
-      });
+      show({ result: 1, messageError: errorMessage });
     }
-  }
+  };
 
   return (
     <>
@@ -166,11 +136,7 @@ export const BlogModal = ({
         {isCreate ? 'Thêm bài viết' : 'Sửa'}
       </Button>
       <Modal
-        title={
-          <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
-            {isCreate ? 'Thêm bài viết' : 'Sửa bài viết'}
-          </div>
-        }
+        title={<div style={{ fontSize: '20px', paddingBottom: '8px' }}>{isCreate ? 'Thêm bài viết' : 'Sửa bài viết'}</div>}
         open={isOpen}
         onOk={handleOk}
         onCancel={close}
@@ -180,43 +146,34 @@ export const BlogModal = ({
         style={{ top: 15 }}
       >
         <Form layout="vertical" form={form}>
-
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
                 name="image"
                 label="Ảnh đại diện"
                 valuePropName="fileList"
-                getValueFromEvent={(e) => {
-                  if (Array.isArray(e)) return e;
-                  return e?.fileList;
-                }}
+                getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
               >
                 <Upload
                   name="avatar"
                   listType="picture"
                   maxCount={1}
                   beforeUpload={() => false}
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
-                  <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}
-                  >Chọn ảnh</Button>
+                  <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}>
+                    Chọn ảnh
+                  </Button>
                 </Upload>
               </Form.Item>
 
-              <Form.Item
-                name="title"
-                label="Tiêu đề bài viết"
-                rules={RULES_FORM.required}
-              >
+              <Form.Item name="title" label="Tiêu đề bài viết" rules={RULES_FORM.required}>
                 <Input />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item
-            name="description"
-            label="Mô tả"
-          >
+          <Form.Item name="description" label="Mô tả">
             <ReactQuill
               theme="snow"
               value={description}

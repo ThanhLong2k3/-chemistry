@@ -9,6 +9,7 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';
 import { getAccountLogin } from '@/env/getInfor_token';
+import env from '@/env';
 
 export const AccountTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -68,15 +69,19 @@ export const AccountTable = () => {
       dataIndex: 'image',
       align: 'center',
 
-      render: (imageUrl) => (
-        <Image 
-          width={45}
-          height={45}
-          src={imageUrl}
-          alt="Avatar"
-          style={{ objectFit: 'cover', borderRadius: '50%' }}
-        />
-      ),
+      render: (imageUrl) => {
+        const fullUrl = imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_user.jpg';
+        return (
+          <Image
+            width={45}
+            height={45}
+            src={fullUrl}
+            alt="Avatar"
+            style={{ objectFit: 'cover', borderRadius: '50%' }}
+          />
+        );
+      },
+
     },
     {
       title: 'Tên tài khoản',

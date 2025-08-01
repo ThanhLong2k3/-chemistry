@@ -25,7 +25,7 @@ const Header_Children: React.FC<HeaderProps> = ({
           style={{ display: 'flex', alignItems: 'center', lineHeight: '49px' }}
         >
           <Link
-            href="/vi/dashboard"
+            href="/web/dashboard"
             className="hover:text-purple-600 flex items-center justify-center"
           >
             <Button type="default" icon={<HomeIcon />} />

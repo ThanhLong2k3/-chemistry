@@ -7,11 +7,11 @@ import { BlogModal } from './BlogModal';
 import { BlogDelete } from './BlogDelete';
 import { IDecodedToken } from '@/types/decodedToken';
 import { IAccount } from '@/types/account';
-import { searchAccount } from '@/services/account.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';
 import { getAccountLogin } from '@/env/getInfor_token';
+import env from '@/env';
 
 export const BlogTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -96,13 +96,14 @@ export const BlogTable = () => {
       title: 'Ảnh đại diện',
       width: 80,
       dataIndex: 'image',
+      align: 'center',
       render: (imageUrl) => (
         <Image
-          src={imageUrl}
-           width={45}
+          width={45}
           height={45}
+          src={imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_blog.png'}
           alt="Avatar"
-          style={{  objectFit: 'cover' }}
+          style={{ width: '180px', height: 'auto' }}
         />
       ),
     },

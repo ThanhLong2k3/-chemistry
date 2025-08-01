@@ -13,6 +13,7 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { getAccountLogin } from '@/env/getInfor_token';
 import { UpLoadImage } from '@/services/upload.service';
+import env from '@/env';
 
 interface Props {
   isCreate?: boolean;
@@ -63,7 +64,7 @@ export const AccountModal = ({
               uid: '-1',
               name: 'avatar.png',
               status: 'done',
-              url: row.image,
+              url: `${env.BASE_URL}${row.image}`,
             },
           ]
           : [];
@@ -103,7 +104,8 @@ export const AccountModal = ({
           const uploadedPaths = await UpLoadImage([file.originFileObj], show);
           imageUrl = uploadedPaths[0];
         } else if (file.url) {
-          imageUrl = file.url;
+          const baseUrl = env.BASE_URL;
+          imageUrl = file.url.replace(baseUrl, '');
         }
       } else {
         imageUrl = null;

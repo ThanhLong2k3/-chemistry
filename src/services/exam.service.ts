@@ -49,7 +49,7 @@ export const deleteExam = async (data: {
 
 export const getExamCreatedByName = async (): Promise<ResponseProps<IAccount[]>> => {
     const token = localStorage.getItem('TOKEN');
-    const response = await axios.get(`${prefix}/created_by_name`, {
+    const response = await axios.get(`${prefix}/authors`, {
         headers: { 'Authorization': `Bearer ${token}` }
     });
     return response.data;

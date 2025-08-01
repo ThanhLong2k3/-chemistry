@@ -14,6 +14,7 @@ import { IAccount } from '@/types/account';
 import { getExamCreatedByName } from '@/services/exam.service';
 import { useSearchParams } from 'next/navigation';
 import { getAccountLogin } from '@/env/getInfor_token';
+import env from '@/env';
 
 
 export const ExamTable = () => {
@@ -28,8 +29,6 @@ export const ExamTable = () => {
   const [total, settotal] = useState<number>(10);
   const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
   const [subjects, setSubjects] = useState<ISubject[]>([]);
-  // Nếu có param 'subject' trên URL, dùng nó làm giá trị khởi tạo.
-  // Nếu không, giá trị khởi tạo là null.
   const [selectedSubject, setSelectedSubject] = useState<string | null>(subjectFromUrl);
   const [loadingSubjects, setLoadingSubjects] = useState(false);
   const [createdByName, setCreatedByName] = useState<IAccount[]>([]);
@@ -136,7 +135,7 @@ export const ExamTable = () => {
       dataIndex: 'file',
       render: (url) =>
         url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer">
+          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
             Link
           </a>
         ) : (
@@ -144,25 +143,6 @@ export const ExamTable = () => {
         ),
     },
 
-    // {
-    //   title: 'Mô tả',
-    //   dataIndex: 'description',
-    //   width: 100,
-    //   render: (html: string) => (
-    //     <div
-    //       dangerouslySetInnerHTML={{ __html: html }}
-    //       style={{
-    //         maxWidth: '150px',
-    //         overflow: 'hidden',
-    //         textOverflow: 'ellipsis', //khi bị tràn, thay vì ẩn hoàn toàn thì hiển thị ....
-    //         display: '-webkit-box',
-    //         WebkitLineClamp: 2,
-    //         WebkitBoxOrient: 'vertical',
-    //         whiteSpace: 'normal',
-    //       }}
-    //     />
-    //   ),
-    // },
     {
       title: 'Thao tác',
       width: 120,
