@@ -13,8 +13,8 @@ import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
-import { NewuploadFiles } from '@/libs/api/upload.api';
 import { getAccountLogin } from '@/env/getInfor_token';
+import { UpLoadImage } from '@/services/upload.service';
 
 
 
@@ -82,7 +82,7 @@ export const ExamModal = ({
     if (!formValue || formValue.length === 0) return null;
     const file = formValue[0];
     if (file.originFileObj) {
-      const uploadedPaths = await NewuploadFiles([file.originFileObj], show);
+      const uploadedPaths = await UpLoadImage([file.originFileObj], show);
       return uploadedPaths[0];
     } else if (file.url) {
       return file.url;

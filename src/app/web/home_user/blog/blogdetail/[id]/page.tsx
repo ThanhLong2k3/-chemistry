@@ -1,27 +1,28 @@
-import BlogDetail from "@/modules/systems/manage-web/components/blog/blogDetail/BlogDetail";
-import { Home_Api } from "@/services/home.service";
-import { IBlog_Get } from "@/types/blog";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import BlogDetailPageClient from '@/modules/systems/manage-web/components/blog/blogDetail';
+import { searchBlog } from '@/services/blog.service';
 
-const BlogDetailPage =()=>{
-    const params = useParams();
-    const id = params?.id;
-    const [blogDetail, setBlogDetail] = useState<IBlog_Get>();
+export async function generateStaticParams() {
+  const res: any = await searchBlog({
+    page_index: 1,
+    page_size: 1000000, // đủ lớn là được
+    order_type: 'ASC',
+  });
 
-    useEffect( () => {
-        document.title = "Chi tiết bài viết";
-        if (id) {
-            GetBlogDetailById(id as string);
-        }
-    }, [id]);
+  const blogs = res?.data || [];
 
-    const GetBlogDetailById = async (id: string) => {
-        const blogDetailData: any = await Home_Api.getBlogById(id);
-        setBlogDetail(blogDetailData.data.data);
-        console.log(blogDetailData.data.data);
-    }
-    return(
-        <BlogDetail blog={blogDetail} />
-    );
+  return blogs.length ? blogs.map((blog: any) => ({
+    id: blog.id.toString(),
+  })) : [{id: 'exam'}]; // fallback nếu không có blog nào
 }
+
+interface Props {
+  params: { id: string };
+}
+
+const BlogDetailPage = ({ params }: Props) => {
+  const id = params.id;
+
+  return <BlogDetailPageClient id={id} />;
+};
+
+export default BlogDetailPage;

@@ -91,6 +91,7 @@ const AdvisoryBoard: React.FC = () => {
     return '#1890ff';
   };
 
+
   const getExperienceColor = (years: number) => {
     if (years >= 15) return '#ff4d4f';
     if (years >= 10) return '#fa8c16';

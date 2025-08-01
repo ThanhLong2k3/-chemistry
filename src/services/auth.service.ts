@@ -1,7 +1,6 @@
-import { IAccount } from "@/types/account";
-import { ResponseProps } from "@/types/base";
+import env from "@/env";
 
-const API_URL = '/api';
+const API_URL = `${env.BASE_URL}/api`;
 
 interface LoginResponse {
   success: boolean;
@@ -87,7 +86,7 @@ export const authAPI = {
         };
       }
 
-      const response = await fetch(`http://localhost:3000/${API_URL}/auth/login`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +122,7 @@ export const authAPI = {
     try {
       if (!email) return { success: false, message: 'Vui lòng nhập email.' };
 
-      const response = await fetch(`http://localhost:3000/${API_URL}/auth/forgot-password`, {
+      const response = await fetch(`${API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -144,7 +143,7 @@ export const authAPI = {
 
   verifyOtp: async (otp: string, otpToken: string): Promise<{ success: boolean; message: string; email?: string }> => {
     try {
-      const response = await fetch(`http://localhost:3000/${API_URL}/auth/verify-otp`, {
+      const response = await fetch(`${API_URL}/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ otp, otpToken }),
@@ -159,7 +158,7 @@ export const authAPI = {
 
   resetPassword: async (email: string, newPassword: string): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch(`http://localhost:3000/${API_URL}/auth/reset-password`, {
+      const response = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, newPassword }),
@@ -175,14 +174,14 @@ export const authAPI = {
 
   logout: () => {
     localStorage.clear();
-    window.location.href = '/vi/auth/login';
+    window.location.href = '/web/auth/login';
   },
 
   registerOTP: async (email: string, username: string): Promise<{ success: boolean; message: string; otpToken?: string }> => {
     try {
       if (!email) return { success: false, message: 'Vui lòng nhập email.' };
 
-      const response = await fetch(`http://localhost:3000/${API_URL}/auth/register-otp`, {
+      const response = await fetch(`${API_URL}/auth/register-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, username }),

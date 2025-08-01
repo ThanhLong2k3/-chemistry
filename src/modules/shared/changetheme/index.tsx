@@ -16,10 +16,10 @@ import {
 import { useEffect, useState } from 'react';
 import styles from '@/modules/shared/header/Header.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
-import { authAPI } from '@/libs/api/auth.api';
 import { usePermissions } from '@/contexts/PermissionContext';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/env/getInfor_token';
+import { authAPI } from '@/services/auth.service';
 
 const buttonStyle = (color: string) => ({
   backgroundColor: color,

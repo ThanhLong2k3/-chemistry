@@ -1,13 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
-  rewrites: async () => [
-    {
-      source: '/uploads/:path*',
-      destination: '/api/uploads/:path*',
-    }
-  ],
+  trailingSlash: true,
+  output: 'export', // Build thành static files
+  distDir: 'build', // Tùy chọn: thư mục output
+  // images: {
+  //   unoptimized: true,
+  // },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

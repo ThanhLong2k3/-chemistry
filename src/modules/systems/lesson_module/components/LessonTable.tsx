@@ -6,7 +6,7 @@ import { ILesson } from '@/types/lesson';
 import { LessonModal } from './LessonModal';
 import { LessonDelete } from './LessonDelete';
 import { IDecodedToken } from '@/types/decodedToken';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { getAccountLogin } from '@/env/getInfor_token';
 import { ISubject } from '@/types/subject';
 import { IChapter } from '@/types/chapter';
 import { searchSubject } from '@/services/subject.service';
