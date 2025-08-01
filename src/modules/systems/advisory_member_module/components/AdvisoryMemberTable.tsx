@@ -10,6 +10,7 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';
 import { getAccountLogin } from '@/env/getInfor_token';
+import env from '@/env';
 export const AdvisoryMemberTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -78,11 +79,11 @@ export const AdvisoryMemberTable = () => {
       align: 'center',
       render: (imageUrl) => (
         <Image
-          src={imageUrl}
-           width={45}
+          width={45}
           height={45}
+          src={imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_user.jpg'}
           alt="Avatar"
-          style={{ objectFit: 'cover' }}
+          style={{ width: '60px', height: 'auto' }}
         />
       ),
     },

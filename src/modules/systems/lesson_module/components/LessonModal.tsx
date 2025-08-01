@@ -18,6 +18,7 @@ import { showSessionExpiredModal } from '@/utils/session-handler';
 import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
 import { UpLoadImage } from '@/services/upload.service';
+import env from '@/env';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -91,9 +92,9 @@ export const LessonModal = ({
         const imageFileList: UploadFile[] = row.image ? [
           {
             uid: '-1',
-            name: 'image.png',
+            name: 'avatar.png',
             status: 'done',
-            url: row.image
+            url: `${env.BASE_URL}${row.image}`,
           }
         ] : [];
         form.setFieldsValue({ ...row, image: imageFileList });
@@ -165,7 +166,8 @@ export const LessonModal = ({
           const uploadedPaths = await UpLoadImage([file.originFileObj], show);
           imageUrl = uploadedPaths[0];
         } else if (file.url) {
-          imageUrl = file.url;
+          const baseUrl = env.BASE_URL;
+          imageUrl = file.url.replace(baseUrl, '');
         }
       } else {
         imageUrl = null;

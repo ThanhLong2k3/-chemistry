@@ -18,11 +18,11 @@ export const FOGOTPASS_PATH = `${BASE_PATH}/${AUTH_PATH}/forgotpass`;
 
 // path ADMIN
 export const ADMIN_PATH = 'admin';
-export const ADMIN_MANAGE_ACCOUNT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_account`;
-export const ADMIN_MANAGE_ADVISORY_MEMBER_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_advisory_member`;
-export const ADMIN_MANAGE_BLOG_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_blog`;
-export const ADMIN_MANAGE_CHAPTER_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_chapter`;
-export const ADMIN_MANAGE_EXAM_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_exam`;
-export const ADMIN_MANAGE_LESSON_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_lesson`;
-export const ADMIN_MANAGE_ROLE_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_role`;
-export const ADMIN_MANAGE_SUBJECT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_subject`;
+export const ADMIN_MANAGE_ACCOUNT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_account/`;
+export const ADMIN_MANAGE_ADVISORY_MEMBER_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_advisory_member/`;
+export const ADMIN_MANAGE_BLOG_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_blog/`;
+export const ADMIN_MANAGE_CHAPTER_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_chapter/`;
+export const ADMIN_MANAGE_EXAM_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_exam/`;
+export const ADMIN_MANAGE_LESSON_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_lesson/`;
+export const ADMIN_MANAGE_ROLE_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_role/`;
+export const ADMIN_MANAGE_SUBJECT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_subject/`;

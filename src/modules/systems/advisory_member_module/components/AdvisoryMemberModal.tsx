@@ -1,5 +1,5 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
-import { Button, Col, Form, Input, Modal, Row, Select, Upload, UploadFile } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Upload, UploadFile } from 'antd';
 import { useEffect, useState } from 'react';
 import { createAdvisoryMember, updateAdvisoryMember } from '@/services/advisory_member.service';
 import { IAdvisoryMember } from '@/types/advisory_member';
@@ -13,7 +13,7 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { UpLoadImage } from '@/services/upload.service';
 import { getAccountLogin } from '@/env/getInfor_token';
-
+import env from '@/env';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -33,10 +33,7 @@ export const AdvisoryMemberModal = ({
   const { show } = useNotification();
   const [description, setDescription] = useState('');
 
-  // 1. Sử dụng Form.useWatch để theo dõi giá trị của trường 'image'
   const imageFileList = Form.useWatch('image', form);
-
-  // 2. Kiểm tra xem có ảnh hay không. `hasImage` sẽ là true nếu có file, và false nếu không có.
   const hasImage = imageFileList && imageFileList.length > 0;
 
   useEffect(() => {
@@ -45,17 +42,20 @@ export const AdvisoryMemberModal = ({
         form.resetFields();
         setDescription('');
       } else if (row) {
-        const imageFileList: UploadFile[] = row.image
-          ? [
-            {
-              uid: '-1',
-              name: 'avatar.png',
-              status: 'done',
-              url: row.image,
-            },
-          ]
-          : [];
-        form.setFieldsValue({ ...row, image: imageFileList }); //đổ data cũ vào form sửa
+        const convertImage = (url: string | null): UploadFile[] => {
+          if (!url) return [];
+          return [{
+            uid: '-1',
+            name: 'avatar.png',
+            status: 'done',
+            url: `${env.BASE_URL}${url}`,
+          }];
+        };
+
+        form.setFieldsValue({
+          ...row,
+          image: convertImage(row.image),
+        });
         setDescription(row.description || '');
       }
     }
@@ -63,9 +63,7 @@ export const AdvisoryMemberModal = ({
 
   const handleOk = async () => {
     try {
-      //lấy thông tin người dùng đang đăng nhập
       const currentAccount = getAccountLogin();
-
       if (!currentAccount) {
         show({
           result: 1,
@@ -76,85 +74,68 @@ export const AdvisoryMemberModal = ({
 
       const values = await form.validateFields();
 
-      let imageUrl: string | null = null;
-      const imageValue = values.image; // imageValue bây giờ luôn là một mảng
-
-      if (imageValue && imageValue.length > 0) {
-        const file = imageValue[0];
+      const extractImageUrl = async (fileList: UploadFile[] | undefined): Promise<string | null> => {
+        if (!fileList || fileList.length === 0) return null;
+        const file = fileList[0];
         if (file.originFileObj) {
-          const uploadedPaths = await UpLoadImage([file.originFileObj], show);
-          imageUrl = uploadedPaths[0];
+          const uploaded = await UpLoadImage([file.originFileObj], show);
+          return uploaded[0];
         } else if (file.url) {
-          imageUrl = file.url;
+          return file.url.replace(env.BASE_URL, '');
         }
-      } else {
-        imageUrl = null;
-      }
+        return null;
+      };
+
+      const imageUrl = await extractImageUrl(values.image);
+
+      const dataToSubmit = {
+        ...values,
+        image: imageUrl,
+      };
 
       if (isCreate) {
         const responseData: any = await createAdvisoryMember({
           id: uuidv4(),
-          ...values,
+          ...dataToSubmit,
           created_by: currentAccount.username,
-          image: imageUrl
         });
 
-        if (responseData.success) {
-          show({
-            result: 0,
-            messageDone: 'Thêm thành viên ban tư vấn thành công!',
-          });
-        } else {
-          show({
-            result: 1,
-            messageError: responseData.message || 'Thêm thành viên ban tư vấn thất bại.',
-          });
-        }
+        show({
+          result: responseData.success ? 0 : 1,
+          messageDone: 'Thêm thành viên ban tư vấn thành công!',
+          messageError: responseData.message || 'Thêm thành viên ban tư vấn thất bại.',
+        });
       } else if (row?.id) {
-        const responseData: any = await updateAdvisoryMember({ ...values, id: row.id, updated_by: currentAccount.username, image: imageUrl });
-        if (responseData.success) {
-          show({
-            result: 0,
-            messageDone: 'Cập nhật thành viên ban tư vấn thành công!',
-          });
-        } else {
-          show({
-            result: 1,
-            messageError: responseData.message || 'Cập nhật thành viên ban tư vấn thất bại.',
-          });
-        }
+        const responseData: any = await updateAdvisoryMember({
+          ...dataToSubmit,
+          id: row.id,
+          updated_by: currentAccount.username,
+        });
+
+        show({
+          result: responseData.success ? 0 : 1,
+          messageDone: 'Cập nhật thành viên ban tư vấn thành công!',
+          messageError: responseData.message || 'Cập nhật thành viên ban tư vấn thất bại.',
+        });
       }
+
       getAll();
       close();
     } catch (error: any) {
-      //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
-      // Antd sẽ tự động hiển thị lỗi trên form.
-      if (error && error.errorFields) {
-        console.log('Validation Failed:', error.errorFields[0].errors[0]);
-        return;
-      }
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+      if (error?.errorFields) return;
 
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
       if (axios.isAxiosError(error)) {
-        const axiosError = error; // TypeScript hiểu đây là AxiosError
-        const responseMessage = axiosError.response?.data?.message;
-
-        if (axiosError.response?.status === 401) {
+        if (error.response?.status === 401) {
           showSessionExpiredModal();
           return;
-        } else {
-          errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+        errorMessage = error.response?.data?.message || error.message;
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
 
-      // Chỉ hiển thị notification cho các lỗi không phải 401
-      show({
-        result: 1,
-        messageError: errorMessage,
-      });
+      show({ result: 1, messageError: errorMessage });
     }
   };
 
@@ -164,11 +145,7 @@ export const AdvisoryMemberModal = ({
         {isCreate ? 'Thêm thành viên ban tư vấn' : 'Sửa'}
       </Button>
       <Modal
-        title={
-          <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
-            {isCreate ? 'Thêm thành viên ban tư vấn' : 'Sửa thành viên ban tư vấn'}
-          </div>
-        }
+        title={<div style={{ fontSize: '20px', paddingBottom: '8px' }}>{isCreate ? 'Thêm thành viên ban tư vấn' : 'Sửa thành viên ban tư vấn'}</div>}
         open={isOpen}
         onOk={handleOk}
         onCancel={close}
@@ -184,77 +161,50 @@ export const AdvisoryMemberModal = ({
                 name="image"
                 label="Ảnh đại diện"
                 valuePropName="fileList"
-                getValueFromEvent={(e) => {
-                  if (Array.isArray(e)) return e;
-                  return e?.fileList;
-                }}
+                getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
               >
                 <Upload
                   name="avatar"
                   listType="picture"
                   maxCount={1}
                   beforeUpload={() => false}
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
-                  <Button
-                    icon={<UploadOutlined />}
-                    style={hasImage ? { marginBottom: '12px' } : {}}
-                  >Chọn ảnh</Button>
+                  <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}>
+                    Chọn ảnh
+                  </Button>
                 </Upload>
               </Form.Item>
 
-              <Form.Item
-                name="subject"
-                label="Môn học phụ trách"
-                rules={RULES_FORM.required}
-              >
+              <Form.Item name="subject" label="Môn học phụ trách" rules={RULES_FORM.required}>
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                name="years_of_experience"
-                label="Số năm kinh nghiệm"
-              >
-                <Input type='number' min={1} />
+              <Form.Item name="years_of_experience" label="Số năm kinh nghiệm">
+                <Input type="number" min={1} />
               </Form.Item>
             </Col>
 
-
             <Col span={12}>
-              <Form.Item
-                name="teacher_name"
-                label="Tên thành viên ban tư vấn"
-                rules={RULES_FORM.required}
-              >
+              <Form.Item name="teacher_name" label="Tên thành viên ban tư vấn" rules={RULES_FORM.required}>
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                name="qualification"
-                label="Trình độ"
-              >
+              <Form.Item name="qualification" label="Trình độ">
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                name="in_charge"
-                label="Phụ trách"
-              >
+              <Form.Item name="in_charge" label="Phụ trách">
                 <Input />
               </Form.Item>
-              <Form.Item
-                name="workplace"
-                label="Nơi công tác"
-              >
+
+              <Form.Item name="workplace" label="Nơi công tác">
                 <Input />
               </Form.Item>
             </Col>
           </Row>
 
-
-          <Form.Item
-            name="description"
-            label="Mô tả chi tiết"
-          >
+          <Form.Item name="description" label="Mô tả chi tiết">
             <ReactQuill
               theme="snow"
               value={description}
@@ -266,7 +216,7 @@ export const AdvisoryMemberModal = ({
             />
           </Form.Item>
         </Form>
-      </Modal >
+      </Modal>
     </>
   );
 };

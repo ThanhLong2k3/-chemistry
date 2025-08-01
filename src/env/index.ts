@@ -7,7 +7,9 @@ const getEnvSafely = (envKey: string) => {
 /**
  * For server-used only
  */
-const BASE_URL = "https://vuihochoa.edu.vn";
+// const BASE_URL = "https://vuihochoa.edu.vn";
+const BASE_URL = "http://localhost:3000";
+
 const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || '';
 const DB_HOST = getEnvSafely('DB_HOST');
 const DB_PORT = getEnvSafely('DB_PORT');

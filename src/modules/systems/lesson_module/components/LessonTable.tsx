@@ -1,4 +1,5 @@
-import { Card, Flex, type TableColumnsType, Table, Input, Tag, Select } from 'antd';
+import { Card, Flex, type TableColumnsType, Table, Input, Select } from 'antd';
+import Image from 'next/image';
 
 import { useEffect, useState } from 'react';
 import { searchLesson } from '@/services/lesson.service';
@@ -13,6 +14,7 @@ import { searchSubject } from '@/services/subject.service';
 import { searchChapter } from '@/services/chapter.service';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import axios from 'axios';
+import env from '@/env';
 
 export const LessonTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -138,10 +140,12 @@ export const LessonTable = () => {
       width: 80,
       dataIndex: 'image',
       render: (imageUrl) => (
-        <img
-          src={imageUrl}
+        <Image
+          width={45}
+          height={45}
+          src={imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_lesson.png'}
           alt="Avatar"
-          style={{ height: 60, objectFit: 'cover' }}
+          style={{ width: '80px', height: 'auto' }}
         />
       ),
     },

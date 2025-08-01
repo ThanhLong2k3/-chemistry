@@ -17,7 +17,7 @@ export const showSessionExpiredModal = () => {
         onOk() {
             // Xóa token và chuyển hướng
             localStorage.removeItem('TOKEN');
-            window.location.href = '/vi/auth/login';
+            window.location.href = '/web/auth/login';
         },
     });
 };
