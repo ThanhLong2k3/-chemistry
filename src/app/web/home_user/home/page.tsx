@@ -21,6 +21,7 @@ import { ISubject_Home } from '@/types/home';
 import { searchBlog } from '@/services/blog.service';
 import { IBlog } from '@/types/blog';
 import { Home_Api } from '@/services/home.service';
+import env from '@/env';
 
 const { Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
@@ -120,7 +121,7 @@ const ScienceForumHomepage: React.FC = () => {
                   cover={
                     <div className={styles.featureIconContainer}>
                       <Image
-                        src={feature.icon}
+                      src={feature.icon}
                         alt={feature.title}
                         className={styles.featureIcon}
                         preview={false}
@@ -158,7 +159,7 @@ const ScienceForumHomepage: React.FC = () => {
                 <div className={styles.subject_image_section}>
                   <div className={styles.image_container}>
                     <Image
-                      src={subject.image}
+                      src={`${env.BASE_URL}${ subject.image}`}
                       alt={subject.subject_name}
                       className={styles.subjectImage}
                       preview={false}

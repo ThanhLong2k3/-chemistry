@@ -13,6 +13,7 @@ import { IBlog } from '@/types/blog';
 import parse from 'html-react-parser';
 import { useRouter } from 'next/navigation';
 import { BLOG_DETAIL_PATH } from '@/path';
+import env from '@/env';
 const { Title } = Typography;
 
 const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
@@ -125,7 +126,7 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
             <div key={blog.id} className={styles.blogCard} onClick={()=>handleBlogClick(blog.id)}>
               <div className={styles.blogImageWrapper}>
                 <img
-                  src={blog.image}
+                  src={`${env.BASE_URL}${blog.image}`}
                   alt={blog.title}
                   className={styles.blogImage}
                 />

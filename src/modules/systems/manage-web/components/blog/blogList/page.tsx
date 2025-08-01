@@ -9,6 +9,7 @@ import { IBlog } from '@/types/blog';
 import parse from 'html-react-parser';
 import { BLOG_DETAIL_PATH } from '@/path';
 import { useRouter } from 'next/navigation';
+import env from '@/env';
 
 const { Title, Text } = Typography;
 
@@ -52,8 +53,8 @@ const BlogList: React.FC<BlogListProps> = ({
   };
 
   const handleBlogClick = (id: string) => {
-      router.push(`${BLOG_DETAIL_PATH}/${id}`);
-    }
+    router.push(`${BLOG_DETAIL_PATH}/${id}`);
+  };
   return (
     <>
       <HeaderTitle title={'Danh sách bài viết'} />
@@ -70,10 +71,14 @@ const BlogList: React.FC<BlogListProps> = ({
 
         <Row gutter={[20, 20]} className={styles.grid}>
           {blogData.map((blog) => (
-            <div key={blog.id} className={styles.blogCard} onClick={() => handleBlogClick(blog.id)}>
+            <div
+              key={blog.id}
+              className={styles.blogCard}
+              onClick={() => handleBlogClick(blog.id)}
+            >
               <div className={styles.blogImageWrapper}>
                 <img
-                  src={blog.image}
+                  src={`${env.BASE_URL}${blog.image}`}
                   alt={blog.title}
                   className={styles.blogImage}
                 />

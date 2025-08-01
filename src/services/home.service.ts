@@ -1,5 +1,6 @@
 import env from '@/env';
 import axios from 'axios';
+import { get } from 'lodash';
 const prefix = `${env.BASE_URL}/api/home`;
 
 export const Home_Api = {
@@ -37,4 +38,23 @@ export const Home_Api = {
         throw new Error('Không thể lấy thông tin bài viết: ');
         }
     },
+    getExamByIdSubject: async (id: string) => {
+    try {
+      return await axios.get(`${prefix}/get_exam_by_id_subject`, {
+        params: { id },
+      });
+    } catch (error) {
+      throw new Error('Không thể lấy thông tin đề kiểm tra: ');
+    }
+  },
+    getExamDetailById: async (id: string) => {
+        try {
+            return await axios.get(`${prefix}/get_exam_detail_by_id`, {
+                params: { id },
+            });
+        } catch (error) {
+            throw new Error('Không thể lấy thông tin đề kiểm tra: ');
+        }
+    }   
+
 };

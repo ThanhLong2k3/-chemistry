@@ -35,9 +35,8 @@ const imageStyle = {
   marginLeft: '10px',
   borderRadius: '50%',
   border: '1px black solid',
-  objectFit: 'cover'
+  objectFit: 'cover',
 };
-
 
 const ThemeChanger = () => {
   const { push } = useRouter();
@@ -46,7 +45,9 @@ const ThemeChanger = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { refreshPermissions } = usePermissions();
   // Sửa lại state để lưu thông tin tài khoản
-  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(
+    null
+  );
 
   useEffect(() => {
     const account = getAccountLogin();
@@ -67,7 +68,6 @@ const ThemeChanger = () => {
 
       //điều hướng về trang login
       push('/web/auth/login');
-
     } else if (e.key === 'settings') {
       push('/web/auth/resetPassword');
     }
@@ -78,7 +78,11 @@ const ThemeChanger = () => {
   }
 
   const menuItems = [
-    { key: 'user', icon: <UserOutlined />, label: `Xin chào, ${currentAccount.name}` },
+    {
+      key: 'user',
+      icon: <UserOutlined />,
+      label: `Xin chào, ${currentAccount.name}`,
+    },
     { type: 'divider' as const }, // Thêm đường kẻ phân cách cho đẹp
     {
       key: 'settings',
@@ -129,15 +133,26 @@ const ThemeChanger = () => {
               alt="Avatar"
               width={40}
               height={40}
-              className="h-12 object-contain"
-              style={imageStyle}
+              className="h-12"
+              objectFit="cover"
+              style={{
+                marginLeft: '10px',
+                borderRadius: '50%',
+                border: '1px black solid',
+              }}
             />
           ) : (
-            // Nếu không có ảnh, hiển thị Avatar mặc định của Antd
             <Avatar
               size={40}
               icon={<UserOutlined />}
-              style={{ ...imageStyle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{
+                marginLeft: '10px',
+                borderRadius: '50%',
+                border: '1px black solid',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             />
           )}
         </div>

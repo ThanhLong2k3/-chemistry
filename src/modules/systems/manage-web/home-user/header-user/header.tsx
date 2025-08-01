@@ -17,6 +17,7 @@ import styles from './header.module.scss';
 import {
   ADVISORY_BOARD_PATH,
   BLOG_LIST_PATH,
+  EXAM_LIST_PATH,
   HOME_PATH,
   LOGIN_PATH,
   PERIODIC_TABLE_PATH,
@@ -25,6 +26,7 @@ import {
 import { searchSubject } from '@/services/subject.service';
 import GoogleTranslate from '@/modules/shared/GoogleTranslate';
 import { Home_Api } from '@/services/home.service';
+import env from '@/env';
 
 const { Header } = Layout;
 
@@ -85,34 +87,20 @@ const Header_User = () => {
       // Tạo submenu cho từng môn học
       const children = [
         {
-          key: `1`,
+          key: `${EXAM_LIST_PATH}/${subject.id}`,
           label: 'Đề kiểm tra',
-          onClick: () =>
-            handleSubjectItemClick(subject.subject_id, 'dekiemtra'),
         },
         {
-          key: `2`,
+          key: `${env.BASE_URL}/${subject.workbook}`,
           label: 'Vở bài tập',
-          onClick: (e: any) => {
-            e.domEvent.stopPropagation();
-            handleWorkbookClick(subject.workbook);
-          },
         },
         {
-          key: `3`,
+          key: `${env.BASE_URL}/${subject.exercise_book}`,
           label: 'Sách bài tập',
-          onClick: (e: any) => {
-            e.domEvent.stopPropagation();
-            handleExerciseBookClick(subject.exercise_book);
-          },
         },
         {
-          key: `4`,
+          key: ` ${env.BASE_URL}/${subject.textbook}`,
           label: 'Sách giáo khoa',
-          onClick: (e: any) => {
-            e.domEvent.stopPropagation();
-            handleTextbookClick(subject.textbook);
-          },
         },
       ];
 
@@ -133,49 +121,15 @@ const Header_User = () => {
   const handleMenuClick = ({ key }: { key: string }) => {
     if (key === 'facebook-link') {
       window.open('https://www.facebook.com/diendanhoahoc.2023', '_blank');
-    } else if (!['1', '2', '3', '4'].includes(key)) {
+    }
+    else if (!['1', '2', '3', '4'].includes(key)) {
       router.push(`${key}`);
     }
 
     setDrawerVisible(false);
   };
 
-  // Xử lý click cho các mục của môn học
-  const handleSubjectItemClick = (subjectId: string, type: string) => {
-    router.push(`/subject/${subjectId}/${type}`);
-    setDrawerVisible(false);
-  };
-
-  // Xử lý click cho workbook
-  const handleWorkbookClick = (workbookUrl: string | null) => {
-    if (workbookUrl) {
-      window.open(workbookUrl, '_blank');
-    } else {
-      console.log('Vở bài tập chưa có sẵn');
-      // Có thể hiển thị notification hoặc message
-    }
-    setDrawerVisible(false);
-  };
-
-  // Xử lý click cho exercise book
-  const handleExerciseBookClick = (exerciseBookUrl: string | null) => {
-    if (exerciseBookUrl) {
-      window.open(exerciseBookUrl, '_blank');
-    } else {
-      console.log('Sách bài tập chưa có sẵn');
-    }
-    setDrawerVisible(false);
-  };
-
-  // Xử lý click cho textbook
-  const handleTextbookClick = (textbookUrl: string | null) => {
-    if (textbookUrl) {
-      window.open(textbookUrl, '_blank');
-    } else {
-      console.log('Sách giáo khoa chưa có sẵn');
-    }
-    setDrawerVisible(false);
-  };
+  
 
   return (
     <Header className={styles.header}>

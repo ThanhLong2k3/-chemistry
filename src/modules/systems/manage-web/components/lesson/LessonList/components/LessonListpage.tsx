@@ -6,6 +6,7 @@ import styles from './LessonList.module.scss';
 import { IChapter_Home } from '@/types/home';
 import { useRouter } from 'next/navigation';
 import { LESSON_DETAIL_PATH } from '@/path';
+import env from '@/env';
 
 const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -39,7 +40,7 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
                   onClick={() => handleLessonClick(lesson.id)} // 👈 Click để chuyển trang
                   cover={
                     lesson.image ? (
-                      <Image alt={lesson.name} src={lesson.image} preview={false} />
+                      <Image alt={lesson.name} src={`${env.BASE_URL}${lesson.image}`} preview={false} />
                     ) : null
                   }
                 >
