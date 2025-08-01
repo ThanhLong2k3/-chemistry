@@ -6,11 +6,11 @@ import { IChapter } from '@/types/chapter';
 import { ChapterModal } from './ChapterModal';
 import { ChapterDelete } from './ChapterDelete';
 import { IDecodedToken } from '@/types/decodedToken';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 export const ChapterTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);

@@ -10,8 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });

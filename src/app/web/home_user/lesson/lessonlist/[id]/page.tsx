@@ -1,35 +1,27 @@
-'use client';
-import LessonList from '@/modules/systems/manage-web/components/LessonList/LessonListpage';
-import { Home_Api } from '@/services/home.service';
-import { IChapter_Home } from '@/types/home';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import LessonListPageClient from '@/modules/systems/manage-web/components/lesson/LessonList';
+import { searchSubject } from '@/services/subject.service';
 
-const LessonListPage = () => {
-  const params = useParams();
-  const id = params?.id;
-  const [Chapter_Subject, setChapter_Subject] = useState<IChapter_Home[]>([]);
+export async function generateStaticParams() {
+  const res: any = await searchSubject({
+    page_index: 1,
+    page_size: 1000000,
+    order_type: 'ASC',
+  });
 
-  useEffect(() => {
-    if (id) {
-      GetChapterSubhectByIdSubject(id as string);
-    }
-  }, [id]);
+  const subjects = res?.data || [];
 
-  const GetChapterSubhectByIdSubject = async (id: string) => {  
-    const Lesson_Subject: any = await Home_Api.GetChapterSubhectByIdSubject(id);
-    const normalizedData = Lesson_Subject.data.data.map((chapter:any) => ({
-      ...chapter,
-      lessons: chapter.lessons ?? [], 
-    }));
-    setChapter_Subject(normalizedData);
-  };
+  return subjects.length ? subjects.map((subject: any) => ({
+    id: subject.id.toString(),
+  })) : [{id: 'exam'}];
+}
 
-  return (
-    <>
-      <LessonList chapters={Chapter_Subject} />
-    </>
-  );
+interface Props {
+  params: { id: string };
+}
+
+const LessonListPage = ({ params }: Props) => {
+  const id = params.id;
+  return <LessonListPageClient id={id} />;
 };
 
 export default LessonListPage;

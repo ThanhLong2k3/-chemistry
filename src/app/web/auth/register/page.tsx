@@ -17,13 +17,13 @@ import {
     KeyOutlined,
 } from '@ant-design/icons';
 
-import { NewuploadFiles } from '@/libs/api/upload.api';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import { LOGIN_PATH } from '@/path';
 import styles from './LoginPage.module.scss';
-import { authAPI } from '@/libs/api/auth.api';
 import { encrypt } from '@/libs/access';
+import { authAPI } from '@/services/auth.service';
+import { UpLoadImage } from '@/services/upload.service';
 
 const { Title, Text } = Typography;
 
@@ -98,7 +98,7 @@ export default function RegisterPage() {
                 let imageUrl: string | null = null;
                 // Kiểm tra xem có file ảnh đã được lưu từ bước 0 không
                 if (registrationData.imageFile) {
-                    const uploadedPaths = await NewuploadFiles([registrationData.imageFile as RcFile], show);
+                    const uploadedPaths = await UpLoadImage([registrationData.imageFile as RcFile], show);
                     if (uploadedPaths && uploadedPaths.length > 0) {
                         imageUrl = uploadedPaths[0];
                     }

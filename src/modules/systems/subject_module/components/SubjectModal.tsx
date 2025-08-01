@@ -10,9 +10,10 @@ import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css'; // CSS mặc định
 import dynamic from 'next/dynamic';
 import axios from 'axios';
-import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+
+import { getAccountLogin } from '@/env/getInfor_token';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { UpLoadImage } from '@/services/upload.service';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -81,7 +82,7 @@ export const SubjectModal = ({
     const file = formValue[0];
     if (file.originFileObj) {
       // Trường hợp file mới được người dùng chọn
-      const uploadedPaths = await NewuploadFiles([file.originFileObj], show);
+      const uploadedPaths = await UpLoadImage([file.originFileObj], show);
       return uploadedPaths[0];
     } else if (file.url) {
       // Trường hợp file cũ đã tồn tại, giữ nguyên URL

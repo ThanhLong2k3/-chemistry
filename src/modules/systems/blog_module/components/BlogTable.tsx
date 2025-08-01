@@ -6,12 +6,12 @@ import { IBlog } from '@/types/blog';
 import { BlogModal } from './BlogModal';
 import { BlogDelete } from './BlogDelete';
 import { IDecodedToken } from '@/types/decodedToken';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { IAccount } from '@/types/account';
 import { searchAccount } from '@/services/account.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 export const BlogTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);

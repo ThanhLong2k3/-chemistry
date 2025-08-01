@@ -8,7 +8,7 @@ import { PermissionTree } from './PermissionTree';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { SaveOutlined } from '@ant-design/icons';
 import { showSessionExpiredModal } from '@/utils/session-handler';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 export const PermissionAssignment = () => {
     const { show } = useNotification();

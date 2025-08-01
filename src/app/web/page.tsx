@@ -21,10 +21,10 @@ import {
   GoogleOutlined,
   FacebookOutlined,
 } from '@ant-design/icons';
-import { authAPI } from '@/libs/api/auth.api';
 import { RULES_FORM } from '@/utils/validator';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { REGISTER_PATH } from '@/path';
+import { authAPI } from '@/services/auth.service';
 const { Title, Text } = Typography;
 
 export default function LoginPage() {

@@ -6,7 +6,7 @@ import { ISubject } from '@/types/subject';
 import { SubjectModal } from './SubjectModal';
 import { SubjectDelete } from './SubjectDelete';
 import { IDecodedToken } from '@/types/decodedToken';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { getAccountLogin } from '@/env/getInfor_token';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';

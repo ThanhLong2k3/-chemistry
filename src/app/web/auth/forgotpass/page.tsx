@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Form, Input, Button, Typography, Space } from 'antd';
 import { MailOutlined, ThunderboltOutlined, KeyOutlined, LockOutlined } from '@ant-design/icons';
-import { authAPI } from '@/libs/api/auth.api';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import styles from './ForgotPasswordPage.module.scss';
 import { LOGIN_PATH } from '@/path';
+import { authAPI } from '@/services/auth.service';
 
 const { Title, Text } = Typography;
 

@@ -5,10 +5,10 @@ import { searchAccount } from '@/services/account.service';
 import { IAccount } from '@/types/account';
 import { AccountModal } from './AccountModal';
 import { AccountDelete } from './AccountDelete';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import Image from 'next/image';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 export const AccountTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);

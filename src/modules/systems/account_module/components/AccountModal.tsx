@@ -7,12 +7,12 @@ import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
 import { encrypt } from '@/libs/access';
-import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { IRole } from '@/types/role';
 import { searchRole } from '@/services/role.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { getAccountLogin } from '@/env/getInfor_token';
+import { UpLoadImage } from '@/services/upload.service';
 
 interface Props {
   isCreate?: boolean;
@@ -100,7 +100,7 @@ export const AccountModal = ({
       if (imageValue && imageValue.length > 0) {
         const file = imageValue[0];
         if (file.originFileObj) {
-          const uploadedPaths = await NewuploadFiles([file.originFileObj], show);
+          const uploadedPaths = await UpLoadImage([file.originFileObj], show);
           imageUrl = uploadedPaths[0];
         } else if (file.url) {
           imageUrl = file.url;

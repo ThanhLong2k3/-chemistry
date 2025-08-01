@@ -12,11 +12,12 @@ import dynamic from 'next/dynamic';
 import { searchChapter } from '@/services/chapter.service';
 import axios from 'axios';
 import { IChapter } from '@/types/chapter';
-import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+
+import { getAccountLogin } from '@/env/getInfor_token';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
+import { UpLoadImage } from '@/services/upload.service';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -161,7 +162,7 @@ export const LessonModal = ({
       if (imageValue && imageValue.length > 0) {
         const file = imageValue[0];
         if (file.originFileObj) {
-          const uploadedPaths = await NewuploadFiles([file.originFileObj], show);
+          const uploadedPaths = await UpLoadImage([file.originFileObj], show);
           imageUrl = uploadedPaths[0];
         } else if (file.url) {
           imageUrl = file.url;

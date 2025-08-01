@@ -10,10 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
-import { image } from 'd3';
-import { NewuploadFiles } from '@/libs/api/upload.api';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import { UpLoadImage } from '@/services/upload.service';
+import { getAccountLogin } from '@/env/getInfor_token';
 
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -83,7 +82,7 @@ export const AdvisoryMemberModal = ({
       if (imageValue && imageValue.length > 0) {
         const file = imageValue[0];
         if (file.originFileObj) {
-          const uploadedPaths = await NewuploadFiles([file.originFileObj], show);
+          const uploadedPaths = await UpLoadImage([file.originFileObj], show);
           imageUrl = uploadedPaths[0];
         } else if (file.url) {
           imageUrl = file.url;

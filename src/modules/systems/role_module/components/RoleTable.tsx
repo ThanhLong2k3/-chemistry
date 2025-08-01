@@ -6,7 +6,7 @@ import { IRole } from '@/types/role';
 import { RoleModal } from './RoleModal';
 import { RoleDelete } from './RoleDelete';
 import { IDecodedToken } from '@/types/decodedToken';
-import { getAccountLogin } from '@/helpers/auth/auth.helper.client';
+import { getAccountLogin } from '@/env/getInfor_token';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 
