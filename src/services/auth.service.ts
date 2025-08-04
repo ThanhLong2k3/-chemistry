@@ -20,6 +20,15 @@ interface RegisterResponse {
   message?: string;
 }
 
+// Interface cho dữ liệu cập nhật profile
+interface UpdateProfileData {
+  name: string;
+  email: string;
+  image?: string | null;
+  currentPassword?: string; // Mật khẩu hiện tại (nếu đổi mật khẩu)
+  newPassword?: string;     // Mật khẩu mới (nếu đổi mật khẩu)
+}
+
 export const authAPI = {
 
   register: async (
@@ -196,6 +205,75 @@ export const authAPI = {
     } catch (error) {
       console.error('Lỗi API quên mật khẩu:', error);
       return { success: false, message: error instanceof Error ? error.message : 'Lỗi kết nối.' };
+    }
+  },
+
+  // ===== CẬP NHẬT PROFILE =====
+  updateProfile: async (model: UpdateProfileData): Promise<{ success: boolean; message: string }> => {
+    try {
+      const token = localStorage.getItem('TOKEN');
+      if (!token) {
+        return { success: false, message: 'Yêu cầu không được xác thực.' };
+      }
+
+      const response = await fetch(`${API_URL}/account/update-profile`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        // Backend mong đợi một object chứa `model`
+        body: JSON.stringify({ model }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Cập nhật thông tin thất bại.');
+      }
+
+      return { success: true, message: data.message || "Cập nhật thành công!" };
+
+    } catch (error) {
+      console.error('Lỗi API cập nhật profile:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Lỗi kết nối đến máy chủ.'
+      };
+    }
+  },
+
+  // ===== XÁC THỰC MẬT KHẨU HIỆN TẠI =====
+  verifyCurrentPassword: async (currentPassword: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const token = localStorage.getItem('TOKEN');
+      if (!token) {
+        return { success: false, message: 'Yêu cầu không được xác thực.' };
+      }
+
+      const response = await fetch(`${API_URL}/account/verify-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ currentPassword }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Xác thực mật khẩu thất bại.');
+      }
+
+      return { success: true, message: data.message || "Mật khẩu chính xác." };
+
+    } catch (error) {
+      console.error('Lỗi API xác thực mật khẩu:', error);
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Lỗi kết nối đến máy chủ.'
+      };
     }
   },
 };

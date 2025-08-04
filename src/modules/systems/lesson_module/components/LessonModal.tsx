@@ -278,6 +278,7 @@ export const LessonModal = ({
                   listType="picture"
                   maxCount={1}
                   beforeUpload={() => false}
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
                   <Button
                     style={hasImage ? { marginBottom: '12px' } : {}}
@@ -304,7 +305,6 @@ export const LessonModal = ({
 
               {/* === SELECT LỌC MÔN HỌC === */}
               <Form.Item label="Chọn Môn học (để lọc chương)">
-                {/* SỬA LẠI COMPONENT SELECT NÀY */}
                 <Select
                   placeholder="Lọc chương theo môn học"
                   allowClear
