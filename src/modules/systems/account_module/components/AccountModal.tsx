@@ -215,6 +215,7 @@ export const AccountModal = ({
                   listType="picture"
                   maxCount={1}
                   beforeUpload={() => false}
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
                   <Button icon={<UploadOutlined />}
                     style={hasImage ? { marginBottom: '12px' } : {}}
