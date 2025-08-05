@@ -70,7 +70,7 @@ const Header_User = () => {
       { key: HOME_PATH, icon: <HomeOutlined />, label: 'TRANG CHỦ' },
       { key: ADVISORY_BOARD_PATH, icon: <UserOutlined />, label: 'BAN TƯ VẤN' },
       { key: 'facebook-link', icon: <FacebookOutlined />, label: 'HOẠT ĐỘNG' },
-      { key: BLOG_LIST_PATH, icon: <FileTextOutlined />, label: 'BLOG' },
+      { key: BLOG_LIST_PATH, icon: <FileTextOutlined />, label: 'BÀI VIẾT' },
       {
         key: PERIODIC_TABLE_PATH,
         icon: <ExperimentOutlined />,
@@ -99,7 +99,7 @@ const Header_User = () => {
           label: 'Sách bài tập',
         },
         {
-          key: ` ${env.BASE_URL}${subject.textbook}`,
+          key: ` SGK`,
           label: 'Sách giáo khoa',
         },
       ];
@@ -121,6 +121,9 @@ const Header_User = () => {
   const handleMenuClick = ({ key }: { key: string }) => {
     if (key === 'facebook-link') {
       window.open('https://www.facebook.com/diendanhoahoc.2023', '_blank');
+    }
+     if (key === 'SGK') {
+      window.open('https://online.fliphtml5.com/mkjym/kdov/', '_blank');
     }
     else if (!['1', '2', '3', '4'].includes(key)) {
       router.push(`${key}`);

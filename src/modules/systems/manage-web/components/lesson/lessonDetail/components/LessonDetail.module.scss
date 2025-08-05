@@ -14,7 +14,22 @@
 
 .leftContent {
   flex: 4; // 80%
-  
+   p{
+    font-size: 18px;
+  }
+  span{
+    font-size: 18px;
+    
+  }
+  strong{
+    font-size: 18px;
+  }
+  img{
+    width: 100%;
+  }
+   h2{
+      font-size:20px ;
+    }
   .lessonImage {
     width: 100%;
     height: auto;
@@ -26,7 +41,7 @@
   }
 
   .lessonDescription {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.6;
     color: #333;
 
@@ -51,7 +66,7 @@
   .lessonItem {
     cursor: pointer;
     transition: all 0.3s ease;
-
+    font-size: 18px;
     &:hover {
       color: #7a52aa;
       font-weight: 500;
@@ -64,3 +79,46 @@
     }
   }
 }
+
+
+/* MOBILE MINI: iPhone SE, 320–375px */
+@media (max-width: 375px) {
+  .lessonWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+
+}
+
+/* MOBILE PHỔ BIẾN: 376px – 575px */
+@media (max-width: 575px) {
+  .lessonWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+
+}
+
+
+/* TABLET ĐỨNG: 576px – 767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .lessonWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+
+}
+
+/* TABLET NGANG: 768px – 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .lessonWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+}
+/* LAPTOP NHỎ: 992px – 1199px */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+
+/* DESKTOP: 1200px – 1439px */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .lessonWrapper{width: 95%;}
+
+}
+
+/* 4K, TV: ≥ 1440px */
+@media (min-width: 1440px) {}

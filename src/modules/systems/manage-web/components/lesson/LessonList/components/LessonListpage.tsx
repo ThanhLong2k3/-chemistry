@@ -28,7 +28,7 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
       <Title level={2} className={styles.pageTitle}>
         Danh sách bài học
       </Title>
-      <Collapse style={{ width: '80%', margin: 'auto' }}>
+      <Collapse className={styles.Collapse}>
         {chapters.map((chapter) => (
           <Panel header={chapter.chapter_name} key={chapter.chapter_id}>
             {chapter.chapter_description && (

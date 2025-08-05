@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Tag, Row, Col, Typography, Avatar, Space } from 'antd';
 import {
   UserOutlined,
@@ -11,6 +11,9 @@ import {
 } from '@ant-design/icons';
 import styles from './AdvisoryBoard.module.scss';
 import HeaderTitle from '@/modules/systems/manage-web/components/header_title/header_title';
+import { IAdvisoryMember } from '@/types/advisory_member';
+import { searchAdvisoryMember } from '@/services/advisory_member.service';
+import env from '@/env';
 
 const { Title, Text } = Typography;
 
@@ -84,10 +87,25 @@ const advisoryMembers: AdvisoryMember[] = [
 ];
 
 const AdvisoryBoard: React.FC = () => {
-  const getDegreeColor = (degree: string) => {
-    if (degree.includes('Phó Giáo sư')) return '#1890ff';
-    if (degree.includes('Tiến sĩ')) return '#1890ff';
-    if (degree.includes('Thạc sĩ')) return '#52c41a';
+  const [advisoryMembers,setadvisoryMembers]=useState<IAdvisoryMember[]>([]);
+  useEffect(()=>{
+    document.title='Ban tư vấn'
+    getAllAdvisoryMember();
+  })
+  const getAllAdvisoryMember = async () => {
+        const data: any = await searchAdvisoryMember({
+          page_index: 1,
+          page_size: 6,
+          order_type: 'ASC',
+          search_content_1: null,
+        });
+        setadvisoryMembers(data.data || []);
+    }
+  
+  const getDegreeColor = (degree?: string | null ) => {
+    if (degree?.includes('Phó Giáo sư')) return '#1890ff';
+    if (degree?.includes('Tiến sĩ')) return '#1890ff';
+    if (degree?.includes('Thạc sĩ')) return '#52c41a';
     return '#1890ff';
   };
 
@@ -120,15 +138,15 @@ const AdvisoryBoard: React.FC = () => {
                 {/* Header với avatar */}
                 <div className={styles.cardHeader}>
                   <Avatar
-                    size={80}
-                    icon={<UserOutlined />}
+                    size={100}
+                     src={member.image ? `${env.BASE_URL}${member.image}` : '/default.png'}
                     className={styles.avatar}
                   />
                 </div>
 
                 {/* Tên thành viên */}
                 <Title level={4} className={styles.memberName}>
-                  {member.name}
+                  {member.teacher_name}
                 </Title>
 
                 {/* Thông tin chi tiết */}
@@ -137,10 +155,10 @@ const AdvisoryBoard: React.FC = () => {
                     <BookOutlined className={styles.icon} />
                     <Text strong>Trình độ: </Text>
                     <Tag
-                      color={getDegreeColor(member.degree)}
+                      color={getDegreeColor(member.qualification)}
                       className={styles.degreeTag}
                     >
-                      {member.degree}
+                      {member.qualification}
                     </Tag>
                   </div>
 
@@ -148,7 +166,7 @@ const AdvisoryBoard: React.FC = () => {
                     <TeamOutlined className={styles.icon} />
                     <Text strong>Bộ môn:</Text>
                     <Text className={styles.department}>
-                      {member.department}
+                      {member.subject}
                     </Text>
                   </div>
 
@@ -166,15 +184,13 @@ const AdvisoryBoard: React.FC = () => {
                       Lớp phụ trách:
                     </Text>
                     <div className={styles.classesContainer}>
-                      {member.classesInCharge.map((className, index) => (
+                     
                         <Tag
-                          key={index}
                           color="#f0f0f0"
                           className={styles.classTag}
                         >
-                          {className}
+                          {member.in_charge}
                         </Tag>
-                      ))}
                     </div>
                   </div>
                 </div>
@@ -182,10 +198,10 @@ const AdvisoryBoard: React.FC = () => {
                 {/* Footer */}
                 <div className={styles.cardFooter}>
                   <Tag
-                    color={getExperienceColor(member.yearsOfExperience)}
+                    color={getExperienceColor(member.years_of_experience)}
                     className={styles.experienceTag}
                   >
-                    {member.yearsOfExperience} năm kinh nghiệm
+                    {member.years_of_experience} năm kinh nghiệm
                   </Tag>
                 </div>
               </Card>

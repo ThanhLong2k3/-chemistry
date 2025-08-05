@@ -14,7 +14,23 @@
 
 .leftContent {
   flex: 4; // 80%
-  
+  text-align: justify;
+  p{
+    font-size: 18px;
+  }
+  span{
+    font-size: 18px;
+    
+  }
+  strong{
+    font-size: 18px;
+  }
+  img{
+    width: 100%;
+  }
+   h2{
+      font-size:20px ;
+    }
   .blogImage {
     width: 100%;
     height: auto;
@@ -38,6 +54,7 @@
       max-width: 100%;
       height: auto;
     }
+   
   }
 }
 
@@ -100,7 +117,7 @@
 }
 
 .blogTitle {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: #222;
   display: -webkit-box;
@@ -110,3 +127,44 @@
   text-overflow: ellipsis;
   line-height: 1.3;
 }
+/* MOBILE MINI: iPhone SE, 320–375px */
+@media (max-width: 375px) {
+  .blogWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+
+}
+
+/* MOBILE PHỔ BIẾN: 376px – 575px */
+@media (max-width: 575px) {
+  .blogWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+
+}
+
+
+/* TABLET ĐỨNG: 576px – 767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .blogWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+
+}
+
+/* TABLET NGANG: 768px – 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .blogWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+}
+/* LAPTOP NHỎ: 992px – 1199px */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+
+/* DESKTOP: 1200px – 1439px */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .blogWrapper{width: 95%;}
+
+}
+
+/* 4K, TV: ≥ 1440px */
+@media (min-width: 1440px) {}

@@ -4,7 +4,7 @@ import { searchBlog } from '@/services/blog.service';
 export async function generateStaticParams() {
   const res: any = await searchBlog({
     page_index: 1,
-    page_size: 1000000, // đủ lớn là được
+    page_size: 1000000,
     order_type: 'ASC',
   });
 

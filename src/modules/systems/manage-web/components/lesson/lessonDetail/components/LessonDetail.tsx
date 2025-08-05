@@ -4,6 +4,7 @@ import { Card, Typography, Image, List } from 'antd';
 import styles from './LessonDetail.module.scss';
 import { ILessonDetail } from '@/types/home';
 import parse from 'html-react-parser';
+import { formatDateVN } from '@/utils/date';
 
 const { Title } = Typography;
 
@@ -17,9 +18,9 @@ export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProp
     <div className={styles.lessonWrapper}>
       <div className={styles.leftContent}>
         <Card>
-          <Title level={2} className={styles.lessonTitle}>{lesson?.lesson_name}</Title>
+          <Title level={3} className={styles.lessonTitle}>{lesson?.lesson_name}</Title>
           <div style={{display:'flex'}}>
-              <span><strong>Ngày tạo: </strong>{lesson?.created_at} - <strong>Người tạo:</strong> {lesson?.created_by}</span> 
+              <span><strong>Ngày tạo: </strong>{formatDateVN(lesson?.created_at)} - <strong>Người tạo:</strong> {lesson?.created_by_name}</span> 
           </div>
           <div
             className={styles.lessonDescription}
@@ -29,7 +30,7 @@ export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProp
       </div>
 
       <div className={styles.rightSidebar}>
-        <Title level={4} className={styles.sidebarTitle}>Bài học khác</Title>
+        <Title level={3} className={styles.sidebarTitle}>Bài học khác</Title>
         <List
           size="small"
           dataSource={relatedLessons}

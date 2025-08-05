@@ -392,7 +392,7 @@ $card-background: #ffffff;
     .lessonList {
       height: 100%;
       overflow-y: auto;
-
+      padding-bottom: 10px;
       .lessonItem {
         display: flex;
         align-items: center;
