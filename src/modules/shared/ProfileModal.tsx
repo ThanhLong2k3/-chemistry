@@ -10,8 +10,6 @@ import {
     MailOutlined,
     SaveOutlined,
     LockOutlined,
-    EyeTwoTone,
-    EyeInvisibleOutlined
 } from '@ant-design/icons';
 
 import { useNotification } from '@/components/UI_shared/Notification';
@@ -108,15 +106,21 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
 
             if (updateResponse.success) {
                 show({ result: 0, messageDone: updateResponse.message || 'Cập nhật thành công!' });
+                // --- XỬ LÝ TOKEN MỚI ---
+                if (updateResponse.token) {
+                    // 1. Lấy token mới từ response
+                    const newToken = updateResponse.token;
 
-                const message = values.newPassword
-                    ? 'Bạn đã đổi mật khẩu. Vui lòng đăng nhập lại.'
-                    : 'Thông tin đã được cập nhật. Vui lòng đăng nhập lại để thấy thay đổi.';
-                show({ result: 0, messageDone: message });
+                    // 2. Ghi đè token cũ trong localStorage
+                    localStorage.setItem('TOKEN', newToken);
+
+                    // 3. (Tùy chọn) Cập nhật lại thông tin hiển thị ngay lập tức mà không cần reload
+                    // Bạn có thể dùng global state (Zustand) hoặc một cách đơn giản hơn là reload
+                }
                 setTimeout(() => {
                     onClose();
-                    authAPI.logout();
-                }, 2000);
+                    window.location.reload();
+                }, 1500);
             } else {
                 show({ result: 1, messageError: updateResponse.message || 'Cập nhật thất bại.' });
             }

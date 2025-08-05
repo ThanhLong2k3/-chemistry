@@ -115,7 +115,7 @@ export const authAPI = {
       return {
         success: true,
         message: 'Đăng nhập thành công',
-        token: data.token       // Token trả về từ server
+        token: data.token
       };
     } catch (error) {
       console.error('Lỗi API đăng nhập:', error);
@@ -208,8 +208,7 @@ export const authAPI = {
     }
   },
 
-  // ===== CẬP NHẬT PROFILE =====
-  updateProfile: async (model: UpdateProfileData): Promise<{ success: boolean; message: string }> => {
+  updateProfile: async (model: UpdateProfileData): Promise<{ success: boolean; message: string, token?: string }> => {
     try {
       const token = localStorage.getItem('TOKEN');
       if (!token) {
@@ -232,7 +231,7 @@ export const authAPI = {
         throw new Error(data.message || 'Cập nhật thông tin thất bại.');
       }
 
-      return { success: true, message: data.message || "Cập nhật thành công!" };
+      return { success: true, message: data.message || "Cập nhật thành công!", token: data.token };
 
     } catch (error) {
       console.error('Lỗi API cập nhật profile:', error);
