@@ -8,7 +8,7 @@ import { UserOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, GoogleOut
 import { RULES_FORM } from '@/utils/validator';
 import { useNotification } from '@/components/UI_shared/Notification';
 import styles from './LoginPage.module.scss';
-import { ADMIN_MANAGE_ACCOUNT_PATH, FOGOTPASS_PATH, REGISTER_PATH } from '@/path';
+import { ADMIN_MANAGE_ACCOUNT_PATH, FOGOTPASS_PATH, HOME_PATH, REGISTER_PATH } from '@/path';
 import { jwtDecode } from 'jwt-decode';
 import { IDecodedToken } from '@/types/decodedToken';
 import { usePermissions } from '@/contexts/PermissionContext';
@@ -23,6 +23,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const { show } = useNotification();
   const { refreshPermissions } = usePermissions();
+  const ID_ROLE_STUDENT = 'ade9dcaa-ee35-42a4-8855-3ba1506fa65a';
 
   useEffect(() => {
     document.title = "Đăng nhập";
@@ -56,7 +57,12 @@ export default function LoginPage() {
       show({ result: 0, messageDone: 'Đăng nhập thành công!' });
 
       refreshPermissions();
-      router.push(`${ADMIN_MANAGE_ACCOUNT_PATH}`);
+      if (accountInfo.role_id === ID_ROLE_STUDENT) {
+        router.push(`${HOME_PATH}`);
+      }
+      else {
+        router.push(`${ADMIN_MANAGE_ACCOUNT_PATH}`);
+      }
 
     } catch (err: any) {
       console.error("Lỗi ngoài dự kiến khi đăng nhập:", err);
