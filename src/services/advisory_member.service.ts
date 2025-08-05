@@ -2,7 +2,7 @@ import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IAdvisoryMember } from '@/types/advisory_member';
 import axios from 'axios';
 import env from '@/env';
-const prefix = `${env.BASE_URL}/api/advisory_member`;
+const prefix = `${env.BASE_URL}/advisory_member`;
 
 
 export const createAdvisoryMember = async (request: IAdvisoryMember): Promise<ResponseProps> => {

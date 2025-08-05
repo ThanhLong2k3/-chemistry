@@ -9,7 +9,6 @@ export async function generateStaticParams() {
   });
 
   const blogs = res?.data || [];
-
   return blogs.length ? blogs.map((blog: any) => ({
     id: blog.id.toString(),
   })) : [{id: 'exam'}]; // fallback nếu không có blog nào

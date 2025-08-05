@@ -31,6 +31,7 @@
 
   .lessonCard {
     border-radius: 12px;
+    height: 400px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s;
@@ -40,7 +41,7 @@
     }
 
     .ant-card-cover img {
-      height: 160px;
+      height: 100px;
       object-fit: cover;
     }
   }

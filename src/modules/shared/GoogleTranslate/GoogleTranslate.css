@@ -79,3 +79,18 @@
 body {
   top: 0px !important; 
 }
+@media (max-width: 375px) {
+  .custom-google-translate{
+    display: none !important;
+  }
+}
+@media (max-width: 575px) {
+   .custom-google-translate{
+    display: none !important;
+  }
+}
+@media (min-width: 576px) and (max-width: 767px) {
+  .custom-google-translate{
+    display: none !important;
+  }
+}

@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Button,
-  Card,
-  Image,
-  Layout,
-  List,
-  Typography,
-} from 'antd';
+import { Button, Card, Image, Layout, List, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
 
@@ -38,31 +31,30 @@ const ScienceForumHomepage: React.FC = () => {
     GetBlog();
   }, []);
 
-  const GetBlog= async () => {
-    const blog:any=await searchBlog({ page_index: 1, page_size: 10 });
-    console.log("Baif Vieets",blog);
+  const GetBlog = async () => {
+    const blog: any = await searchBlog({ page_index: 1, page_size: 10 });
+    console.log('Baif Vieets', blog);
     setBlogData(blog?.data || []);
-  }
+  };
   const GetSubjectsWithLessons = async () => {
-  try {
-    const res = await Home_Api.GetSubjectsWithLessons();
-    const rawData = res?.data.data;
+    try {
+      const res = await Home_Api.GetSubjectsWithLessons();
+      const rawData = res?.data.data;
 
-    if (Array.isArray(rawData)) {
-      const cleaned = rawData.map((subject) => ({
-        ...subject,
-        lessons: Array.isArray(subject.lessons) ? subject.lessons : [],
-      }));
-      setSubjectData(cleaned);
-    } else {
+      if (Array.isArray(rawData)) {
+        const cleaned = rawData.map((subject) => ({
+          ...subject,
+          lessons: subject.lessons ? JSON.parse(subject.lessons) : [],
+        }));
+        setSubjectData(cleaned);
+      } else {
+        setSubjectData([]);
+      }
+    } catch (err) {
+      console.error('Lỗi khi lấy subject data:', err);
       setSubjectData([]);
     }
-  } catch (err) {
-    console.error('Lỗi khi lấy subject data:', err);
-    setSubjectData([]);
-  }
-};
-
+  };
 
   const features = [
     {
@@ -121,7 +113,7 @@ const ScienceForumHomepage: React.FC = () => {
                   cover={
                     <div className={styles.featureIconContainer}>
                       <Image
-                      src={feature.icon}
+                        src={feature.icon}
                         alt={feature.title}
                         className={styles.featureIcon}
                         preview={false}
@@ -159,7 +151,11 @@ const ScienceForumHomepage: React.FC = () => {
                 <div className={styles.subject_image_section}>
                   <div className={styles.image_container}>
                     <Image
-                      src={`${env.BASE_URL}${ subject.image}`}
+                      src={
+                        subject.image
+                          ? `${env.BASE_URL}${subject.image}`
+                          : '/default.png'
+                      }
                       alt={subject.subject_name}
                       className={styles.subjectImage}
                       preview={false}

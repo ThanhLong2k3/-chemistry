@@ -3,7 +3,7 @@ import { IAccount } from '@/types/account';
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IExam } from '@/types/exam';
 import axios from 'axios';
-const prefix = `${env.BASE_URL}/api/exam`;
+const prefix = `${env.BASE_URL}/exam`;
 
 
 export const createExam = async (request: IExam): Promise<ResponseProps> => {

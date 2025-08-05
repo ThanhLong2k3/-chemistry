@@ -1,6 +1,6 @@
 import env from "@/env";
 
-const API_URL = `${env.BASE_URL}/api`;
+const API_URL = `${env.BASE_URL}`;
 
 interface LoginResponse {
   success: boolean;

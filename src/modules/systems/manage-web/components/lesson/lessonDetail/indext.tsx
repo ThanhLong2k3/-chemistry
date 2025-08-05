@@ -24,17 +24,18 @@ const LessonDetailPageClient = ({ id }: Props) => {
     const detail = lessonDetailData?.data?.data?.[0];
     if (detail) {
       setLessonDetail(detail);
-      getLessonByChapter(detail.chapter_id);
+      console.log('Lesson Detail:', detail);
+      getLessonByChapter(detail.chapter_name);
     }
   };
 
-  const getLessonByChapter = async (chapterId: string) => {
+  const getLessonByChapter = async (chapter_name: string) => {
     const data: any = await searchLesson({
       page_index: 1,
       page_size: 10,
       order_type: 'asc',
       search_content_1: null,
-      search_content_2: chapterId,
+      search_content_2: chapter_name,
       search_content_3: null,
     });
     setListLesson(data?.data || []);

@@ -87,19 +87,19 @@ const Header_User = () => {
       // Tạo submenu cho từng môn học
       const children = [
         {
-          key: `${EXAM_LIST_PATH}/${subject.id}`,
+          key: `${EXAM_LIST_PATH}${subject.id}`,
           label: 'Đề kiểm tra',
         },
         {
-          key: `${env.BASE_URL}/${subject.workbook}`,
+          key: `${env.BASE_URL}${subject.workbook}`,
           label: 'Vở bài tập',
         },
         {
-          key: `${env.BASE_URL}/${subject.exercise_book}`,
+          key: `${env.BASE_URL}${subject.exercise_book}`,
           label: 'Sách bài tập',
         },
         {
-          key: ` ${env.BASE_URL}/${subject.textbook}`,
+          key: ` ${env.BASE_URL}${subject.textbook}`,
           label: 'Sách giáo khoa',
         },
       ];
@@ -153,7 +153,7 @@ const Header_User = () => {
         <GoogleTranslate />
         {/* Button đăng nhập */}
         <a href={LOGIN_PATH}>
-          <Button style={{ marginRight: '10px' }} type="primary">
+          <Button style={{ marginRight: '10px', marginLeft:'10px' }} type="primary">
             Đăng nhập
           </Button>
         </a>

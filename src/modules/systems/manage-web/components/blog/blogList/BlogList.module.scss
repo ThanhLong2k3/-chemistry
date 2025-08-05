@@ -26,9 +26,6 @@
   }
 }
 
-.grid {
-  padding: 24px;
-}
 
 .memberCard {
   border-radius: 8px;
@@ -260,8 +257,8 @@
 
 
 .blogCard {
-  flex: 0 0 calc((100% - 3 * 24px) / 4); // 4 items, 3 gaps
-  max-width: calc((100% - 3 * 24px) / 4);
+  flex: 0 0 calc((100% - 4 * 24px) / 4); // 4 items, 3 gaps
+  max-width: calc((100% - 4 * 24px) / 4);
   min-width: 0px;
 }
 

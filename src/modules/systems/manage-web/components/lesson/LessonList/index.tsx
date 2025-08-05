@@ -21,7 +21,7 @@ const LessonListPageClient = ({ id }: Props) => {
     const Lesson_Subject: any = await Home_Api.GetChapterSubhectByIdSubject(id);
     const normalizedData = Lesson_Subject.data.data.map((chapter: any) => ({
       ...chapter,
-      lessons: chapter.lessons ?? [],
+      lessons: chapter.lessons ? JSON.parse(chapter.lessons) : [],
     }));
     setChapter_Subject(normalizedData);
   };

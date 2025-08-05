@@ -8,8 +8,8 @@ import styles from './sliderShowSection.module.scss';
 
 const images = [
   '/Slider/slider1.png',
-  'https://www.shutterstock.com/image-vector/chemistry-dark-blue-word-concept-260nw-2505113625.jpg',
-  'https://standoutinternational.net/upload/filemanager/ho%C3%A1cc.jpg',
+  '/Slider/slider2.jpg',
+  '/Slider/slider3.jpg',
 ];
 const { Title } = Typography;
 

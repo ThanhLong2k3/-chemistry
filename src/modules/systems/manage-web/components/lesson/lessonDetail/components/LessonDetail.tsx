@@ -9,10 +9,10 @@ const { Title } = Typography;
 
 interface LessonDetailProps {
   lesson?:ILessonDetail
-  relatedLessons?: ILessonDetail[];
+  relatedLessons?: any[];
 }
 export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProps) {
-    
+    console.log('Lesson relatedLessons:', relatedLessons);
   return (
     <div className={styles.lessonWrapper}>
       <div className={styles.leftContent}>
@@ -35,7 +35,7 @@ export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProp
           dataSource={relatedLessons}
           renderItem={(item) => (
             <List.Item className={styles.lessonItem}>
-              {item.lesson_name}
+              {item.name}
             </List.Item>
           )}
         />
