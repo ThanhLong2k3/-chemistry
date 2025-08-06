@@ -6,6 +6,9 @@ export interface ISubject {
     textbook: string | null;
     workbook: string | null;
     exercise_book: string | null;
+    flip_textbook: string | null,
+    flip_workbook: string | null,
+    flip_exercise_book: string | null,
     created_at: Date;
     updated_at: Date;
     created_by: string;

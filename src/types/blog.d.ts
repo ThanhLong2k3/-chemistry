@@ -3,13 +3,14 @@ export interface IBlog {
     image: string;
     title: string;
     description: string | null;
+    views: int | null;
     created_at: Date;
     updated_at: Date;
     created_by: string;
     created_by_name: string | null;
     updated_by: string;
     deleted: boolean
-    TotalRecords: number ;
+    TotalRecords: number;
 }
 
 
@@ -24,7 +25,7 @@ export interface IBlog_Get {
     created_by_name: string | null;
     updated_by: string;
     deleted: boolean
-    TotalRecords: number ;
+    TotalRecords: number;
 }
 
 
