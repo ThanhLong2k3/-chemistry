@@ -170,7 +170,7 @@ export const SubjectModal = ({
       >
         <Form layout="vertical" form={form}>
           <Row gutter={24}>
-            <Col span={12}>
+            <Col span={9}>
               <Form.Item
                 name="image"
                 label="Ảnh đại diện"
@@ -199,7 +199,8 @@ export const SubjectModal = ({
                 <Input type="number" min={1} />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={1}></Col>
+            <Col span={6}>
               <Form.Item name="textbook" label="Sách giáo khoa (PDF)" valuePropName="fileList" getValueFromEvent={(e) => e?.fileList}>
                 <Upload name="textbook" maxCount={1} beforeUpload={() => false} accept=".pdf">
                   <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
@@ -221,6 +222,19 @@ export const SubjectModal = ({
                 <Upload name="exercise_book" maxCount={1} beforeUpload={() => false} accept=".pdf">
                   <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
                 </Upload>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="flip_textbook" label="Link lật sách giáo khoa">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="flip_workbook" label="Link lật sách bài tập">
+                <Input />
+              </Form.Item>
+
+              <Form.Item name="flip_exercise_book" label="Link lật vở bài tập">
+                <Input />
               </Form.Item>
             </Col>
           </Row>

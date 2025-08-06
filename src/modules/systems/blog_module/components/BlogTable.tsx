@@ -109,8 +109,14 @@ export const BlogTable = () => {
     },
     {
       title: 'Tiêu đề bài viết',
-      width: 100,
+      width: 150,
       dataIndex: 'title',
+    },
+    {
+      title: 'Lượt xem',
+      width: 50,
+      dataIndex: 'views',
+      align: 'center'
     },
     // {
     //   title: 'Mô tả',
