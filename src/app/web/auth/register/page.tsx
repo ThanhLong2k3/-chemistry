@@ -143,11 +143,21 @@ export default function RegisterPage() {
     };
 
     const beforeImageUpload = (file: RcFile) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            show({ result: 1, messageError: 'Bạn chỉ có thể tải lên file JPG/PNG!' });
+        const acceptedTypes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/gif',
+            'image/webp'
+        ];
+
+        const isAccepted = acceptedTypes.includes(file.type);
+
+        if (!isAccepted) {
+            show({ result: 1, messageError: 'Bạn chỉ có thể tải lên các file JPG, PNG, GIF hoặc WEBP!' });
         }
-        return false;
+
+        return isAccepted;
     };
 
     const normFile = (e: any) => {
@@ -205,7 +215,7 @@ export default function RegisterPage() {
                         {step === 0 && (
                             <>
                                 <Form.Item name="image" valuePropName="fileList" getValueFromEvent={normFile} style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Upload name="avatar" listType="picture-circle" showUploadList={false} beforeUpload={beforeImageUpload} onChange={handleImageChange} maxCount={1}>
+                                    <Upload name="avatar" listType="picture-circle" showUploadList={false} beforeUpload={beforeImageUpload} onChange={handleImageChange} maxCount={1} accept=".jpg,.jpeg,.png,.gif,.webp">
                                         {previewImageUrl ? <Avatar size={100} src={previewImageUrl} /> : <Avatar size={100} icon={<CameraOutlined />} style={{ backgroundColor: '#f0f2f5' }}>{uploadButton}</Avatar>}
                                     </Upload>
                                 </Form.Item>

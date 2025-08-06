@@ -92,25 +92,6 @@ export const SubjectTable = () => {
         );
       },
     },
-    // {
-    //   title: 'Mô tả',
-    //   dataIndex: 'description',
-    //   width: 150,
-    //   render: (html: string) => (
-    //     <div
-    //       dangerouslySetInnerHTML={{ __html: html }}
-    //       style={{
-    //         maxWidth: '150px',
-    //         overflow: 'hidden',
-    //         textOverflow: 'ellipsis', //khi bị tràn, thay vì ẩn hoàn toàn thì hiển thị ....
-    //         display: '-webkit-box',
-    //         WebkitLineClamp: 2,
-    //         WebkitBoxOrient: 'vertical',
-    //         whiteSpace: 'normal',
-    //       }}
-    //     />
-    //   ),
-    // },
     {
       title: 'Sách giáo khoa',
       width: 90,
@@ -154,7 +135,7 @@ export const SubjectTable = () => {
       title: 'Đề kiểm tra',
       width: 70,
       render: (_, record) => (
-        <a href={`manage_exam?subject=${encodeURIComponent(record.name)}`}>
+        <a href={`/web/admin/manage_exam?subject=${encodeURIComponent(record.name)}`}>
           Xem ngay
         </a>
       )

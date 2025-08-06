@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   });
 
   const subjects = res?.data || [];
-
+  console.log('subject',subjects)
   return subjects.length ? subjects.map((subject: any) => ({
     id: subject.id.toString(),
   })) : [{id: '3'}];

@@ -5,6 +5,8 @@ import styles from './LessonDetail.module.scss';
 import { ILessonDetail } from '@/types/home';
 import parse from 'html-react-parser';
 import { formatDateVN } from '@/utils/date';
+import { useRouter } from 'next/navigation';
+import { LESSON_DETAIL_PATH } from '@/path';
 
 const { Title } = Typography;
 
@@ -13,7 +15,11 @@ interface LessonDetailProps {
   relatedLessons?: any[];
 }
 export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProps) {
-    console.log('Lesson relatedLessons:', relatedLessons);
+  const router = useRouter();  
+  console.log('Lesson relatedLessons:', relatedLessons);
+  const handleDetailLesson=(id:string)=>{
+         router.push(`${LESSON_DETAIL_PATH}/${id}`);
+    }
   return (
     <div className={styles.lessonWrapper}>
       <div className={styles.leftContent}>
@@ -35,7 +41,7 @@ export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProp
           size="small"
           dataSource={relatedLessons}
           renderItem={(item) => (
-            <List.Item className={styles.lessonItem}>
+            <List.Item className={styles.lessonItem} onClick={()=>handleDetailLesson(item.id)}>
               {item.name}
             </List.Item>
           )}

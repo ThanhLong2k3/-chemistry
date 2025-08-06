@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { Layout, Row, Col, Typography, Space, Divider } from 'antd';
 import {
@@ -13,30 +14,31 @@ import {
   EnvironmentOutlined,
   GlobalOutlined,
 } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 
 const { Footer } = Layout;
-const { Title, Paragraph, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
-const Footer_User = () => {
+const Footer_User = ({ menuItems }: { menuItems: any[] }) => {
+  const router = useRouter();
+
+  const handleClick = (key: string) => {
+    if (key === 'facebook-link') {
+      window.open('https://www.facebook.com/diendanhoahoc.2023', '_blank');
+    } else {
+      router.push(key);
+    }
+  };
+
   return (
-    <Footer
-      style={{
-        background: '#1f2937',
-        color: 'white',
-        padding: '60px 0 30px', // bỏ padding ngang vì dùng container 80% rồi
-      }}
-    >
-      {/* Container chiếm 80% và căn giữa */}
-      <div style={{ width: '80%', margin: '0 auto' ,padding:'24px'}}>
+    <Footer style={{ background: '#1f2937', color: 'white', padding: '60px 0 30px' }}>
+      <div style={{ width: '80%', margin: '0 auto', padding: '24px' }}>
         <Row gutter={[48, 32]}>
-          {/* Cột 1: Liên hệ */}
           <Col xs={24} md={8}>
             <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
               Liên hệ
             </Title>
-            <div
-              style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-            >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <Space align="start">
                 <EnvironmentOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
                 <Text style={{ color: '#9ca3af', lineHeight: '1.6' }}>
@@ -54,63 +56,33 @@ const Footer_User = () => {
             </div>
           </Col>
 
-          {/* Cột 2: Danh mục */}
           <Col xs={24} md={8}>
             <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
               Danh mục
             </Title>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <Space>
-                <HomeOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Trang chủ</Text>
-              </Space>
-              <Space>
-                <UserOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Ban tư vấn</Text>
-              </Space>
-              <Space>
-                <FacebookOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Hoạt động</Text>
-              </Space>
-              <Space>
-                <FileTextOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Blog</Text>
-              </Space>
-              <Space>
-                <ExperimentOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Bảng tuần hoàn</Text>
-              </Space>
-              <Space>
-                <BookOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Hóa 10</Text>
-              </Space>
-              <Space>
-                <BookOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Hóa 11</Text>
-              </Space>
-              <Space>
-                <BookOutlined style={{ color: '#9ca3af', fontSize: '14px' }} />
-                <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Hóa 12</Text>
-              </Space>
+              {menuItems.map((item) => (
+                <Space key={item.key} onClick={() => handleClick(item.key)} style={{ cursor: 'pointer' }}>
+                  {item.icon || <BookOutlined style={{ fontSize: '14px', color: '#9ca3af' }} />}
+                  <Text style={{ color: '#9ca3af' }}>{item.label}</Text>
+                </Space>
+              ))}
             </div>
           </Col>
 
-          {/* Cột 3: Theo dõi chúng tôi */}
           <Col xs={24} md={8}>
             <Title level={4} style={{ color: 'white', marginBottom: '24px' }}>
               Theo dõi chúng tôi
             </Title>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <iframe
-                  src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fdiendanhoahoc.2023&tabs=timeline,events,messages&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-                  width="100%"
-                  height="125"
-                  style={{ border: 'none', overflow: 'hidden' }}
-                  allowFullScreen
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                />
-              </div>
+              <iframe
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fdiendanhoahoc.2023&tabs=timeline,events,messages&width=340&height=125&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                width="100%"
+                height="125"
+                style={{ border: 'none', overflow: 'hidden' }}
+                allowFullScreen
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              />
               <Space>
                 <GlobalOutlined style={{ color: '#1890ff', fontSize: '20px', cursor: 'pointer' }} />
                 <Text style={{ color: '#9ca3af', cursor: 'pointer' }}>Website</Text>
@@ -122,7 +94,6 @@ const Footer_User = () => {
           </Col>
         </Row>
 
-        {/* Divider và bản quyền cũng trong container 80% */}
         <Divider style={{ borderColor: '#374151', margin: '40px 0 20px' }} />
         <div style={{ textAlign: 'center' }}>
           <Text style={{ color: '#9ca3af' }}>

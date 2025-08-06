@@ -95,7 +95,7 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
 
   const handleBlogClick = (id: string) => {
     router.push(`${BLOG_DETAIL_PATH}/${id}`);
-  }
+  };
   return (
     <div className={styles.blogContainer}>
       <div className={styles.sectionHeader}>
@@ -123,10 +123,16 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
           onScroll={checkScrollButtons}
         >
           {blogData.map((blog) => (
-            <div key={blog.id} className={styles.blogCard} onClick={()=>handleBlogClick(blog.id)}>
+            <div
+              key={blog.id}
+              className={styles.blogCard}
+              onClick={() => handleBlogClick(blog.id)}
+            >
               <div className={styles.blogImageWrapper}>
                 <img
-                  src={`${env.BASE_URL}${blog.image}`}
+                  src={
+                    blog.image ? `${env.BASE_URL}${blog.image}` : '/default.png'
+                  }
                   alt={blog.title}
                   className={styles.blogImage}
                 />
@@ -146,13 +152,7 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
 
               <div className={styles.blogContent}>
                 <h3 className={styles.blogTitle}>{blog.title}</h3>
-                {blog.description && (
-                  <p className={styles.blogDescription}>
-                    {parse(blog.description.length > 100
-                      ? `${blog.description.substring(0, 100)}...`
-                      : blog.description)}
-                  </p>
-                )}
+                
                 <div className={styles.blogMeta}>
                   <span className={styles.metaItem}>
                     <CalendarOutlined className={styles.metaIcon} />

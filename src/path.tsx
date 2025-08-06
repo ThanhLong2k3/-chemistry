@@ -17,6 +17,7 @@ export const AUTH_PATH = 'auth';
 export const REGISTER_PATH = `${BASE_PATH}/${AUTH_PATH}/register`;
 export const LOGIN_PATH = `${BASE_PATH}/${AUTH_PATH}/login`;
 export const FOGOTPASS_PATH = `${BASE_PATH}/${AUTH_PATH}/forgotpass`;
+export const ADMIN_MANAGE_PROFILE_PATH = `${BASE_PATH}/${AUTH_PATH}/profile/`;
 
 // path ADMIN
 export const ADMIN_PATH = 'admin';
@@ -28,3 +29,4 @@ export const ADMIN_MANAGE_EXAM_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_exam/`;
 export const ADMIN_MANAGE_LESSON_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_lesson/`;
 export const ADMIN_MANAGE_ROLE_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_role/`;
 export const ADMIN_MANAGE_SUBJECT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_subject/`;
+

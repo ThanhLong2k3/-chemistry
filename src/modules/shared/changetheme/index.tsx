@@ -1,27 +1,31 @@
-import { useColorState } from '@/stores/color.store';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Dropdown, Avatar } from 'antd';
+import { Dropdown, Avatar, Spin } from 'antd';
+import {
+  UserOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
+import styles from '@/modules/shared/header/Header.module.scss';
+import { useRouter } from 'next/navigation';
+import { usePermissions } from '@/contexts/PermissionContext';
+import { IDecodedToken } from '@/types/decodedToken';
+import { getAccountLogin } from '@/env/getInfor_token';
+import { authAPI } from '@/services/auth.service';
+import env from '@/env';
+import { useDisclosure } from '@/components/hooks/useDisclosure';
+import { useColorState } from '@/stores/color.store'; // Giữ lại các import của bạn
 import {
   themeOrangeConfig,
   themeBlueConfig,
   themeDarkConfig,
   themeBrownConfig,
 } from '@/constants/theme';
+import { ProfileModal } from '../ProfileModal';
 
-import {
-  UserOutlined,
-  SettingOutlined,
-  LogoutOutlined,
-} from '@ant-design/icons';
-import { useEffect, useState } from 'react';
-import styles from '@/modules/shared/header/Header.module.scss';
-import { usePathname, useRouter } from 'next/navigation';
-import { usePermissions } from '@/contexts/PermissionContext';
-import { IDecodedToken } from '@/types/decodedToken';
-import { getAccountLogin } from '@/env/getInfor_token';
-import { authAPI } from '@/services/auth.service';
-import env from '@/env';
-
+// --- Style Objects ---
 const buttonStyle = (color: string) => ({
   backgroundColor: color,
   borderRadius: '50%',
@@ -31,7 +35,7 @@ const buttonStyle = (color: string) => ({
   cursor: 'pointer',
 });
 
-const imageStyle = {
+const imageStyle: React.CSSProperties = {
   marginLeft: '10px',
   borderRadius: '50%',
   border: '1px black solid',
@@ -40,41 +44,37 @@ const imageStyle = {
 
 const ThemeChanger = () => {
   const { push } = useRouter();
-  const pathname = usePathname();
   const { setThemeColor } = useColorState();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { refreshPermissions } = usePermissions();
   // Sửa lại state để lưu thông tin tài khoản
   const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(
     null
   );
 
+  // State để quản lý ProfileModal
+  const { isOpen: isProfileOpen, open: openProfile, close: closeProfile } = useDisclosure();
+
   useEffect(() => {
     const account = getAccountLogin();
-    if (!account) {
-      // Điều hướng về trang đăng nhập nếu chưa login
-      push('/web/auth/login');
-    } else {
-      // Nếu đã đăng nhập, lưu thông tin vào state
+    if (account) {
       setCurrentAccount(account);
     }
-  }, [push]);
+  }, []);
 
   const handleMenuClick = (e: { key: string }) => {
     if (e.key === 'logout') {
       authAPI.logout();
-      //cập nhật lại state quyền thành rỗng
       refreshPermissions();
 
       //điều hướng về trang login
       push('/web/auth/login');
     } else if (e.key === 'settings') {
-      push('/web/auth/resetPassword');
+      openProfile();
     }
   };
 
   if (!currentAccount) {
-    return;
+    return <Spin />; // Hiển thị loading nếu chưa có thông tin
   }
 
   const menuItems = [
@@ -93,71 +93,46 @@ const ThemeChanger = () => {
   ];
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '10px',
-        lineHeight: '30px',
-        alignItems: 'center',
-      }}
-    >
-      <button
-        onClick={() => setThemeColor(themeBlueConfig)}
-        style={buttonStyle('#0d448a')}
-      />
-      <button
-        onClick={() => setThemeColor(themeDarkConfig)}
-        style={buttonStyle('#52c41a')}
-      />
-      <button
-        onClick={() => setThemeColor(themeOrangeConfig)}
-        style={buttonStyle('#ff6b35')}
-      />
-      <button
-        onClick={() => setThemeColor(themeBrownConfig)}
-        style={buttonStyle('#48433d')}
-      />
+    <>
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        {/* Các nút đổi theme */}
+        <button onClick={() => setThemeColor(themeBlueConfig)} style={buttonStyle('#0d448a')} />
+        <button onClick={() => setThemeColor(themeDarkConfig)} style={buttonStyle('#52c41a')} />
+        <button onClick={() => setThemeColor(themeOrangeConfig)} style={buttonStyle('#ff6b35')} />
+        <button onClick={() => setThemeColor(themeBrownConfig)} style={buttonStyle('#48433d')} />
 
-      <h1>/</h1>
-      <Dropdown
-        menu={{ items: menuItems, onClick: handleMenuClick }}
-        onOpenChange={setIsMenuOpen}
-        open={isMenuOpen}
-        trigger={['click']}
-      >
-        <div className={styles.rightContent}>
-          {/* Kiểm tra nếu có currentAccount.image thì mới dùng Next/Image */}
-          {currentAccount.image ? (
-            <Image
-              src={`${env.BASE_URL}${currentAccount.image}`}
-              alt="Avatar"
-              width={40}
-              height={40}
-              className="h-12"
-              objectFit="cover"
-              style={{
-                marginLeft: '10px',
-                borderRadius: '50%',
-                border: '1px black solid',
-              }}
-            />
-          ) : (
-            <Avatar
-              size={40}
-              icon={<UserOutlined />}
-              style={{
-                marginLeft: '10px',
-                borderRadius: '50%',
-                border: '1px black solid',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            />
-          )}
-        </div>
-      </Dropdown>
-    </div>
+        <h1>/</h1>
+
+        <Dropdown menu={{ items: menuItems, onClick: handleMenuClick }} trigger={['click']}>
+          <a onClick={(e) => e.preventDefault()} style={{ cursor: 'pointer' }}>
+            <div className={styles.rightContent}>
+              {currentAccount.image ? (
+                <Image
+                  src={`${env.BASE_URL}${currentAccount.image}`}
+                  alt="Avatar"
+                  width={40}
+                  height={40}
+                  style={imageStyle}
+                  onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }}
+                />
+              ) : (
+                <Avatar
+                  size={40}
+                  icon={<UserOutlined />}
+                  style={{ ...imageStyle, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                />
+              )}
+            </div>
+          </a>
+        </Dropdown>
+      </div>
+
+      {/* Render Modal ở đây */}
+      <ProfileModal
+        isOpen={isProfileOpen}
+        onClose={closeProfile}
+      />
+    </>
   );
 };
 
