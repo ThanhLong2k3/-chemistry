@@ -144,13 +144,14 @@ export const LessonTable = () => {
       title: 'Ảnh đại diện',
       width: 80,
       dataIndex: 'image',
+      align: 'center',
       render: (imageUrl) => (
         <Image
           width={45}
-          height={45}
+          height={55}
           src={imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_lesson.png'}
           alt="Avatar"
-          style={{ width: '80px', height: 'auto' }}
+          style={{ width: 'auto' }}
         />
       ),
     },
@@ -245,6 +246,7 @@ export const LessonTable = () => {
       </Flex>
 
       <Table
+        size="small"
         bordered
         columns={columns}
         dataSource={listLesson}

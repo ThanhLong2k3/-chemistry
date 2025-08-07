@@ -2,7 +2,7 @@
 
 import { useDisclosure } from '@/components/hooks/useDisclosure';
 import { Button, Col, Form, Input, Modal, Row, Select, Upload, UploadFile } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createAdvisoryMember, updateAdvisoryMember } from '@/services/advisory_member.service';
 import { IAdvisoryMember } from '@/types/advisory_member';
 import { useNotification } from '@/components/UI_shared/Notification';
@@ -35,6 +35,8 @@ export const AdvisoryMemberModal = ({
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
   const { show } = useNotification();
+  const [description, setDescription] = useState('');
+
 
   const imageFileList = Form.useWatch('image', form);
   const hasImage = imageFileList && imageFileList.length > 0;
@@ -43,9 +45,8 @@ export const AdvisoryMemberModal = ({
     if (isOpen) {
       if (isCreate) {
         form.resetFields();
+        setDescription('');
       } else if (row) {
-        // --- Xử lý hiển thị dữ liệu cũ khi SỬA ---
-
         // 1. Chuyển đổi URL ảnh tương đối thành URL tuyệt đối để hiển thị
         const convertImageToUploadFile = (url: string | null): UploadFile[] => {
           if (!url) return [];
@@ -66,6 +67,7 @@ export const AdvisoryMemberModal = ({
           image: convertImageToUploadFile(row.image),
           in_charge: inChargeArray,
         });
+        setDescription(row.description || '');
       }
     }
   }, [isOpen, isCreate, row, form]);
@@ -217,8 +219,19 @@ export const AdvisoryMemberModal = ({
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả chi tiết">
-            <ReactQuill theme="snow" style={{ height: '200px', marginBottom: '40px' }} />
+          <Form.Item name="description" label="Mô tả">
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+                style={{ height: '200px', marginBottom: '20px' }}
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>
