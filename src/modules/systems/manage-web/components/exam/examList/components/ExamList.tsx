@@ -100,7 +100,7 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
   const filteredExams = displayExams
     .filter(exam => 
       exam.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      exam.description.toLowerCase().includes(searchTerm.toLowerCase())
+      exam.description?.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(exam => selectedSubject === 'all' || exam.subject_id === selectedSubject)
     .sort((a, b) => {
@@ -211,7 +211,7 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
               </div>
 
               <div className={styles.examDescription}>
-                {parse(exam.description)}
+                {parse(exam.description?exam.description:"")}
               </div>
 
               <div className={styles.examMeta}>

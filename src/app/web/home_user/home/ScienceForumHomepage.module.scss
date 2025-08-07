@@ -222,6 +222,36 @@ $card-background: #ffffff;
     }
   }
 }
+
+/* LAPTOP NHỎ: 992px – 1199px */
+@media (min-width: 992px) and (max-width: 1199px){
+  .featureMeta {
+        padding: 10px;
+
+        .ant-card-meta-title {
+          font-size: 0.95em;
+        }
+
+        .ant-card-meta-description {
+          font-size: 0.85em;
+        }
+      }
+}
+
+/* DESKTOP: 1200px – 1439px */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .featureMeta {
+        padding: 10px;
+
+        .ant-card-meta-title {
+          font-size: 0.95em;
+        }
+
+        .ant-card-meta-description {
+          font-size: 0.85em;
+        }
+      }
+}
 /* Biến màu */
 $primary-color: #7a52aa;
 $secondary-color: #6c757d;

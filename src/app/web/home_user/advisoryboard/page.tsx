@@ -1,7 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Card, Tag, Row, Col, Typography, Avatar, Space } from 'antd';
+import {
+  Card,
+  Tag,
+  Row,
+  Col,
+  Typography,
+  Avatar,
+  Space,
+  Pagination,
+} from 'antd';
 import {
   UserOutlined,
   BookOutlined,
@@ -87,28 +96,31 @@ const advisoryMembers: AdvisoryMember[] = [
 ];
 
 const AdvisoryBoard: React.FC = () => {
-  const [advisoryMembers,setadvisoryMembers]=useState<IAdvisoryMember[]>([]);
-  useEffect(()=>{
-    document.title='Ban tư vấn'
+  const [advisoryMembers, setadvisoryMembers] = useState<IAdvisoryMember[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [TotalRecords, setTotalRecords] = useState();
+  useEffect(() => {
+    document.title = 'Ban tư vấn';
     getAllAdvisoryMember();
-  })
+  },[currentPage]);
+
   const getAllAdvisoryMember = async () => {
-        const data: any = await searchAdvisoryMember({
-          page_index: 1,
-          page_size: 6,
-          order_type: 'ASC',
-          search_content_1: null,
-        });
-        setadvisoryMembers(data.data || []);
-    }
-  
-  const getDegreeColor = (degree?: string | null ) => {
+    const data: any = await searchAdvisoryMember({
+      page_index: currentPage,
+      page_size: 6,
+      order_type: 'ASC',
+      search_content_1: null,
+    });
+    setadvisoryMembers(data.data || []);
+    setTotalRecords(data.data[0].TotalRecords);
+  };
+
+  const getDegreeColor = (degree?: string | null) => {
     if (degree?.includes('Phó Giáo sư')) return '#1890ff';
     if (degree?.includes('Tiến sĩ')) return '#1890ff';
     if (degree?.includes('Thạc sĩ')) return '#52c41a';
     return '#1890ff';
   };
-
 
   const getExperienceColor = (years: number) => {
     if (years >= 15) return '#ff4d4f';
@@ -116,7 +128,10 @@ const AdvisoryBoard: React.FC = () => {
     if (years >= 5) return '#1890ff';
     return '#1890ff';
   };
-
+  const handlePageChange = (page: number, pageSize: number) => {
+    setCurrentPage(page);
+   
+  };
   return (
     <>
       <HeaderTitle title={'Ban tư vấn'} />
@@ -139,7 +154,11 @@ const AdvisoryBoard: React.FC = () => {
                 <div className={styles.cardHeader}>
                   <Avatar
                     size={100}
-                     src={member.image ? `${env.BASE_URL}${member.image}` : '/default.png'}
+                    src={
+                      member.image
+                        ? `${env.BASE_URL}${member.image}`
+                        : '/default.png'
+                    }
                     className={styles.avatar}
                   />
                 </div>
@@ -165,9 +184,7 @@ const AdvisoryBoard: React.FC = () => {
                   <div className={styles.infoRow}>
                     <TeamOutlined className={styles.icon} />
                     <Text strong>Bộ môn:</Text>
-                    <Text className={styles.department}>
-                      {member.subject}
-                    </Text>
+                    <Text className={styles.department}>{member.subject}</Text>
                   </div>
 
                   <div className={styles.infoRow}>
@@ -184,13 +201,9 @@ const AdvisoryBoard: React.FC = () => {
                       Lớp phụ trách:
                     </Text>
                     <div className={styles.classesContainer}>
-                     
-                        <Tag
-                          color="#f0f0f0"
-                          className={styles.classTag}
-                        >
-                          {member.in_charge}
-                        </Tag>
+                      <Tag color="#f0f0f0" className={styles.classTag}>
+                        {member.in_charge}
+                      </Tag>
                     </div>
                   </div>
                 </div>
@@ -208,6 +221,15 @@ const AdvisoryBoard: React.FC = () => {
             </Col>
           ))}
         </Row>
+        <div className={styles.paginationWrapper}>
+          <Pagination
+            current={currentPage}
+            total={TotalRecords}
+            pageSize={6}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+          />
+        </div>
       </div>
     </>
   );

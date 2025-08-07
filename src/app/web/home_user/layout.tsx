@@ -44,7 +44,6 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
       const staticMenuItems = [
         { key: HOME_PATH, icon: <HomeOutlined />, label: 'TRANG CHỦ' },
         { key: ADVISORY_BOARD_PATH, icon: <UserOutlined />, label: 'BAN TƯ VẤN' },
-        { key: 'facebook-link', icon: <FacebookOutlined />, label: 'HOẠT ĐỘNG' },
         { key: BLOG_LIST_PATH, icon: <FileTextOutlined />, label: 'BÀI VIẾT' },
         { key: PERIODIC_TABLE_PATH, icon: <ExperimentOutlined />, label: 'BẢNG TUẦN HOÀN' },
       ];
@@ -53,8 +52,8 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
         const subjectKey = subject.subject_name.toLowerCase().replace(/\s+/g, '-');
         const children = [
           { key: `${EXAM_LIST_PATH}/${subject.subject_id}`, label: 'Đề kiểm tra' },
-          { key: subject.flip_workbook  ? `${subject.flip_workbook }`:`${env.BASE_URL}${subject.workbook}`, label: 'Vở bài tập' },
-          { key:  subject.flip_exercise_book   ? `${subject.flip_exercise_book  }`:`${env.BASE_URL}${subject.exercise_book}`, label: 'Sách bài tập' },
+          { key: subject.flip_exercise_book   ? `${subject.flip_exercise_book  }`:`${env.BASE_URL}${subject.exercise_book}`, label: 'Vở bài tập' },
+          { key:  subject.flip_workbook  ? `${subject.flip_workbook }`:`${env.BASE_URL}${subject.workbook}`, label: 'Sách bài tập' },
           { key: subject.flip_textbook    ? `${subject.flip_textbook   }`:`${env.BASE_URL}${subject.textbook }`, label: 'Sách giáo khoa' },
         ];
 
