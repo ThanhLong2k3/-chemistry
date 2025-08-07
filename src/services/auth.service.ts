@@ -53,10 +53,6 @@ export const authAPI = {
         headers: {
           'Content-Type': 'application/json',
         },
-        // 3. Gửi dữ liệu người dùng nhập. Backend sẽ tự xử lý role_id.
-        // Mật khẩu gửi đi ở dạng plain text hoặc đã được mã hóa ở client (tùy vào logic của bạn).
-        // Dựa trên luồng của bạn, mật khẩu cần được mã hóa bằng hàm encrypt() trước khi gọi hàm này,
-        // hoặc mã hóa trực tiếp bên trong nó.
         body: JSON.stringify({ username, password, name, email, image }),
       });
 

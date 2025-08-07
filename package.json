@@ -17,6 +17,7 @@
     "bcryptjs": "^3.0.2",
     "crypto-js": "^4.2.0",
     "d3": "^7.9.0",
+    "dotenv": "^17.2.1",
     "framer-motion": "^12.5.0",
     "googleapis": "^153.0.0",
     "html-react-parser": "^5.2.6",

@@ -9,8 +9,6 @@ export const actionsAccess = {
 };
 
 export const encrypt = (value: any) => {
-  console.log(env.ENCRYPTION_KEY, 'ssssssssssssssssssssss');
-
   return CryptoJS.AES.encrypt(
     JSON.stringify(value),
     env.ENCRYPTION_KEY

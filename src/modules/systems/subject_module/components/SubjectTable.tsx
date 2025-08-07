@@ -135,7 +135,7 @@ export const SubjectTable = () => {
       title: 'Đề kiểm tra',
       width: 70,
       render: (_, record) => (
-        <a href={`/ web / admin / manage_exam ? subject = ${encodeURIComponent(record.name)}`}>
+        <a href={`/web/admin/manage_exam?subject=${encodeURIComponent(record.name)}`}>
           Xem ngay
         </a>
       )
