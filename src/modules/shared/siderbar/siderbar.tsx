@@ -120,6 +120,7 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
       <ConfigProvider
         theme={{ token: { colorBgContainer: sidebarBg, colorText: textColor } }}
       >
+        <div style={{ height: '15px' }}></div>
         <Menu
           onClick={onClick}
           defaultOpenKeys={collapsed ? [] : ['sub1', 'sub2', 'sub4']}

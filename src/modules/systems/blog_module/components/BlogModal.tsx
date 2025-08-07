@@ -183,6 +183,7 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
                   form.setFieldsValue({ description: value });
                 }}
                 className="custom-quill"
+                style={{ height: '200px', marginBottom: '20px' }}
               />
             </div>
           </Form.Item>

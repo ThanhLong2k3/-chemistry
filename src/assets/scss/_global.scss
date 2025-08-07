@@ -32,7 +32,7 @@ body {
   * {
     // font-family: "Montserrat", sans-serif !important;
     // font-family: 'SF Pro Display', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.4rem; //đây
   }
 
   label,
@@ -281,6 +281,6 @@ body {
   border-color: #23275c;
 }
 
-.ql-container {
-  min-height: 150px;
+.ql-editor {
+  max-height: 170px;
 }

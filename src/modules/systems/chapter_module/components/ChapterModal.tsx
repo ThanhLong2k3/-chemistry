@@ -223,6 +223,7 @@ export const ChapterModal = ({
                   form.setFieldsValue({ description: value });
                 }}
                 className="custom-quill"
+                style={{ height: '200px', marginBottom: '20px' }}
               />
             </div>
           </Form.Item>
