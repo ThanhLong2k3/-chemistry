@@ -39,14 +39,17 @@ const imageStyle: React.CSSProperties = {
   marginLeft: '10px',
   borderRadius: '50%',
   border: '1px black solid',
-  objectFit: 'cover'
+  objectFit: 'cover',
 };
 
 const ThemeChanger = () => {
   const { push } = useRouter();
   const { setThemeColor } = useColorState();
   const { refreshPermissions } = usePermissions();
-  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+  // Sửa lại state để lưu thông tin tài khoản
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(
+    null
+  );
 
   // State để quản lý ProfileModal
   const { isOpen: isProfileOpen, open: openProfile, close: closeProfile } = useDisclosure();
@@ -62,6 +65,9 @@ const ThemeChanger = () => {
     if (e.key === 'logout') {
       authAPI.logout();
       refreshPermissions();
+
+      //điều hướng về trang login
+      push('/web/auth/login');
     } else if (e.key === 'settings') {
       openProfile();
     }
@@ -72,9 +78,17 @@ const ThemeChanger = () => {
   }
 
   const menuItems = [
-    { key: 'user', icon: <UserOutlined />, label: `Xin chào, ${currentAccount.name}` },
-    { type: 'divider' as const },
-    { key: 'settings', icon: <SettingOutlined />, label: 'Cài đặt thông tin cá nhân' },
+    {
+      key: 'user',
+      icon: <UserOutlined />,
+      label: `Xin chào, ${currentAccount.name}`,
+    },
+    { type: 'divider' as const }, // Thêm đường kẻ phân cách cho đẹp
+    {
+      key: 'settings',
+      icon: <SettingOutlined />,
+      label: 'Cài đặt thông tin cá nhân',
+    },
     { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
   ];
 

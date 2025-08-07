@@ -6,6 +6,8 @@ import styles from './LessonList.module.scss';
 import { IChapter_Home } from '@/types/home';
 import { useRouter } from 'next/navigation';
 import { LESSON_DETAIL_PATH } from '@/path';
+import env from '@/env';
+import parse from 'html-react-parser';
 
 const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
@@ -23,12 +25,16 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
 
   return (
     <div className={styles.lessonListWrapper}>
-      <Title level={2} className={styles.pageTitle}>Danh sách bài học</Title>
-      <Collapse style={{ width: '80%', margin: 'auto' }}>
+      <Title level={2} className={styles.pageTitle}>
+        Danh sách bài học
+      </Title>
+      <Collapse className={styles.Collapse}>
         {chapters.map((chapter) => (
           <Panel header={chapter.chapter_name} key={chapter.chapter_id}>
             {chapter.chapter_description && (
-              <Paragraph className={styles.chapterDesc}>{chapter.chapter_description}</Paragraph>
+              <Paragraph className={styles.chapterDesc}>
+                {parse(chapter.chapter_description)}
+              </Paragraph>
             )}
             <div className={styles.lessonCards}>
               {chapter.lessons.map((lesson) => (
@@ -38,14 +44,21 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
                   className={styles.lessonCard}
                   onClick={() => handleLessonClick(lesson.id)} // 👈 Click để chuyển trang
                   cover={
-                    lesson.image ? (
-                      <Image alt={lesson.name} src={lesson.image} preview={false} />
-                    ) : null
+                    <Image
+                      alt={lesson.name}
+                      height={250}
+                      src={
+                        lesson.image
+                          ? `${env.BASE_URL}${lesson.image}`
+                          : '/default.png'
+                      }
+                      preview={false}
+                    />
                   }
                 >
                   <Card.Meta
                     title={lesson.name}
-                    description={lesson.description?.slice(0, 100) + '...'}
+                    description={parse(lesson.description?.slice(0, 100) + '...')}
                   />
                 </Card>
               ))}

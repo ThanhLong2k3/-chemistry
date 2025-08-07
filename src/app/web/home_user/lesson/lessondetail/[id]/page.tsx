@@ -10,6 +10,7 @@ export async function generateStaticParams() {
   });
 
   const lessons = res?.data || [];
+    console.log('generateStaticParams is running',lessons);
 
   return lessons.length ? lessons.map((lesson: any) => ({
     id: lesson.id.toString(),

@@ -23,6 +23,7 @@ import {
   FOGOTPASS_PATH,
   BLOG_LIST_PATH,
   BLOG_DETAIL_PATH,
+  EXAM_LIST_PATH,
 } from '@/path';
 
 const { Sider, Content } = Layout;
@@ -39,6 +40,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const isLessonDetailPage = normalizedPath.startsWith(LESSON_DETAIL_PATH);
   const isBlogDetailPage = normalizedPath.startsWith(BLOG_DETAIL_PATH);
   const isOpenPDFPage = normalizedPath.startsWith(REVIEW_FILE_PDF_PATH);
+  const isExamListPage = normalizedPath.startsWith(EXAM_LIST_PATH);
+
 
   const staticAuthPaths = [
     BASE_PATH,
@@ -56,7 +59,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     staticAuthPaths.includes(normalizedPath) ||
     isLessonListPage ||
     isLessonDetailPage ||
-    isOpenPDFPage || isBlogDetailPage
+    isOpenPDFPage || isBlogDetailPage ||isExamListPage;
 
   const siderStyle: React.CSSProperties = {
     position: 'fixed',

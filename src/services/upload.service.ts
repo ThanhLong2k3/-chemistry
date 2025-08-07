@@ -1,6 +1,6 @@
 import env from "@/env";
 import axios from "axios";
-const prefix = `${env.BASE_URL}/api/upload`;
+const prefix = `${env.BASE_URL}/upload`;
 
 export const UpLoadImage = async (
   files: File[],

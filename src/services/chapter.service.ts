@@ -2,7 +2,7 @@ import env from '@/env';
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IChapter } from '@/types/chapter';
 import axios from 'axios';
-const prefix = `${env.BASE_URL}/api/chapter`;
+const prefix = `${env.BASE_URL}/chapter`;
 
 
 export const createChapter = async (request: IChapter): Promise<ResponseProps> => {

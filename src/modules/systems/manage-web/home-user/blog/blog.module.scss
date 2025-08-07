@@ -117,6 +117,7 @@
   height: 200px;
   overflow: hidden;
   position: relative;
+  flex-shrink: 0; 
 }
 
 .blogImage {

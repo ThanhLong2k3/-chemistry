@@ -4,11 +4,12 @@ import { searchBlog } from '@/services/blog.service';
 export async function generateStaticParams() {
   const res: any = await searchBlog({
     page_index: 1,
-    page_size: 1000000,
+    page_size: 1000000, // đủ lớn là được
     order_type: 'ASC',
   });
 
   const blogs = res?.data || [];
+
   return blogs.length ? blogs.map((blog: any) => ({
     id: blog.id.toString(),
   })) : [{id: 'exam'}]; // fallback nếu không có blog nào

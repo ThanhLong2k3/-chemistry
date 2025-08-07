@@ -3,7 +3,10 @@
   padding-top: 50px;
   min-height: 100vh;
   background-color: #f9f9fb;
-
+.Collapse{
+  width: 80%;
+  margin: auto;
+}
   .pageTitle {
     margin-bottom: 16px;
     color: #7a52aa;
@@ -31,6 +34,7 @@
 
   .lessonCard {
     border-radius: 12px;
+    height: 400px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s;
@@ -40,8 +44,49 @@
     }
 
     .ant-card-cover img {
-      height: 160px;
+      height: 100px;
       object-fit: cover;
     }
   }
 }
+
+
+/* MOBILE MINI: iPhone SE, 320–375px */
+@media (max-width: 375px) {
+  .Collapse{width: 100% !important;}
+  .lessonListWrapper{padding: 10px;padding-top: 50px;}
+}
+
+/* MOBILE PHỔ BIẾN: 376px – 575px */
+@media (max-width: 575px) {
+ .Collapse{width: 100% !important;}
+  .lessonListWrapper{padding: 10px;padding-top: 50px;}
+}
+
+
+/* TABLET ĐỨNG: 576px – 767px */
+@media (min-width: 576px) and (max-width: 767px) {
+  .Collapse{width: 90% !important;}
+  .lessonListWrapper{padding: 10px;padding-top: 50px;}
+
+}
+
+/* TABLET NGANG: 768px – 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+  .blogWrapper{width: 100%;}
+  .rightSidebar{padding: 10px;}
+}
+/* LAPTOP NHỎ: 992px – 1199px */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+
+/* DESKTOP: 1200px – 1439px */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .blogWrapper{width: 95%;}
+
+}
+
+/* 4K, TV: ≥ 1440px */
+@media (min-width: 1440px) {}

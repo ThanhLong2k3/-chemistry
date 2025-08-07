@@ -97,7 +97,8 @@
     
     .classesSection {
       margin-top: 16px;
-      
+      display: flex;
+      justify-content:space-evenly;
       .classesTitle {
         color: #1890ff;
         display: block;
@@ -155,71 +156,6 @@
   }
 }
 
-// Responsive Design
-@media (max-width: 768px) {
-  .container {
-    padding: 20px 16px;
-  }
-  
-  .header {
-    .title {
-      font-size: 24px !important;
-    }
-    
-    .subtitle {
-      font-size: 14px;
-    }
-  }
-  
-  .memberCard {
-    margin-bottom: 20px;
-    
-    .cardHeader {
-      padding: 20px;
-      margin: -24px -24px 16px -24px;
-      
-      .avatar {
-        width: 60px !important;
-        height: 60px !important;
-      }
-    }
-    
-    .memberName {
-      font-size: 16px !important;
-    }
-    
-    .infoSection {
-      .infoRow {
-        flex-direction: column;
-        align-items: flex-start;
-        
-        .icon {
-          margin-bottom: 2px;
-        }
-        
-        .degreeTag, .department, .workplace {
-          margin-left: 0;
-          margin-top: 2px;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 576px) {
-  .grid {
-    margin: 0 -8px;
-  }
-  
-  .memberCard {
-    .cardHeader {
-      .avatar {
-        width: 50px !important;
-        height: 50px !important;
-      }
-    }
-  }
-}
 
 // Animation
 @keyframes fadeIn {
@@ -255,5 +191,204 @@
     break-inside: avoid;
     box-shadow: none;
     border: 1px solid #ccc;
+  }
+}
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+
+  // Tùy chỉnh màu tím nhẹ cho Pagination
+  :global(.ant-pagination-item-active) {
+    background-color: #e6e0ff; // tím nhẹ
+    border-color: #b197fc;
+  }
+
+  :global(.ant-pagination-item-active a) {
+    color: #5f3dc4; // màu chữ tím đậm hơn
+  }
+
+  :global(.ant-pagination-item a:hover) {
+    color: #5f3dc4; // màu tím khi hover
+  }
+
+  :global(.ant-pagination-item:hover) {
+    border-color: #b197fc;
+  }
+
+  :global(.ant-pagination-next:hover .ant-pagination-item-link),
+  :global(.ant-pagination-prev:hover .ant-pagination-item-link) {
+    color: #5f3dc4;
+    border-color: #b197fc;
+  }
+}
+
+
+/* --- Extra small devices (phones <=375px) --- */
+@media (max-width: 375px) {
+  .header {
+    .title {
+      font-size: 20px !important;
+    }
+
+    .subtitle {
+      font-size: 12px;
+    }
+  }
+
+  .memberCard {
+    .cardHeader {
+      .avatar {
+        width: 40px !important;
+        height: 40px !important;
+      }
+    }
+
+    .memberName {
+      font-size: 14px !important;
+    }
+
+    .infoSection {
+    .infoRow {
+      align-items: flex-start !important;
+      gap: 4px;
+
+      .icon {
+        margin: 0 !important;
+      }
+
+      .degreeTag, .department, .workplace {
+        margin-left: 0 !important;
+        margin-top: 2px !important;
+        word-break: break-word; // 👈 Ngăn chữ dài tràn ra ngoài
+      }
+    }
+  }
+
+    .cardFooter {
+      .footerText {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+/* --- Small devices (phones <=575px) --- */
+@media (max-width: 575px) {
+  .container {
+    margin-left: 4%;
+    width: 92%;
+  }
+
+  .grid {
+    padding: 12px;
+  }
+
+  .memberCard {
+    .cardHeader {
+      padding: 16px;
+    }
+
+    .infoSection {
+      .infoRow {
+        align-items: flex-start;
+        font-size: 13px;
+      }
+
+      .degreeTag,
+      .department,
+      .workplace {
+        margin-left: 0;
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+/* --- Medium devices (tablets: 576px–767px) --- */
+@media (min-width: 576px) and (max-width: 767px) {
+  .container {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .header .title {
+    font-size: 24px !important;
+  }
+
+  .memberCard {
+    .memberName {
+      font-size: 16px !important;
+    }
+
+    .cardHeader {
+      .avatar {
+        width: 60px !important;
+        height: 60px !important;
+      }
+    }
+  }
+}
+
+/* --- Tablets landscape (768px–991px) --- */
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .header .title {
+    font-size: 26px !important;
+  }
+
+  .memberCard {
+    .memberName {
+      font-size: 17px !important;
+    }
+
+    .cardHeader {
+      .avatar {
+        width: 70px !important;
+        height: 70px !important;
+      }
+    }
+  }
+}
+
+/* --- Laptop (992px–1199px) --- */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    width: 85%;
+    margin-left: 7.5%;
+  }
+
+  .memberCard {
+    .memberName {
+      font-size: 18px !important;
+    }
+
+    .cardHeader {
+      .avatar {
+        width: 80px !important;
+        height: 80px !important;
+      }
+    }
+  }
+}
+
+/* --- Desktop Medium (1200px–1439px) --- */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .container {
+    width: 80%;
+    margin-left: 10%;
+  }
+
+  .memberCard {
+    .cardHeader {
+      .avatar {
+        width: 90px !important;
+        height: 90px !important;
+      }
+    }
   }
 }
