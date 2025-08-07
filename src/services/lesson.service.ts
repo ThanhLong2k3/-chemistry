@@ -2,7 +2,7 @@ import env from '@/env';
 import { IBaseSearch, ResponseProps } from '@/types/base';
 import { ILesson } from '@/types/lesson';
 import axios from 'axios';
-const prefix = `${env.BASE_URL}/api/lesson`;
+const prefix = `${env.BASE_URL}/lesson`;
 
 export const createLesson = async (request: ILesson): Promise<ResponseProps> => {
     const token = localStorage.getItem('TOKEN');

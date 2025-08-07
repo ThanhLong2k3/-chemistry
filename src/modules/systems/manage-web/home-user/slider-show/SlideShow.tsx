@@ -8,8 +8,8 @@ import styles from './sliderShowSection.module.scss';
 
 const images = [
   '/Slider/slider1.png',
-  'https://www.shutterstock.com/image-vector/chemistry-dark-blue-word-concept-260nw-2505113625.jpg',
-  'https://standoutinternational.net/upload/filemanager/ho%C3%A1cc.jpg',
+  '/Slider/slider2.jpg',
+  '/Slider/slider3.jpg',
 ];
 const { Title } = Typography;
 
@@ -53,7 +53,7 @@ const SliderShowSection = () => {
             </div>
             <div className={styles.aboutText}>
               <p>
-                Diễn đàn hóa hóa ( Chemistry Forum ) là nền tảng thiết lập nhằm
+                Diễn đàn hóa học (Chemistry Forum) là nền tảng nhằm
                 cung cấp tư liệu dưới nhiều hình thức đa dạng dành cho học sinh
                 THPT. Nội dung chính gồm: Lý thuyết các bài học; bộ câu hỏi trắc
                 nghiệm phục vụ cho việc ôn tập kiến thức và những trò chơi bổ

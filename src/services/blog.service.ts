@@ -4,7 +4,7 @@ import { IBaseSearch, ResponseProps } from '@/types/base';
 import { IBlog } from '@/types/blog';
 import axios from 'axios';
 
-const prefix = `${env.BASE_URL}/api/blog`;
+const prefix = `${env.BASE_URL}/blog`;
 
 
 export const createBlog = async (request: IBlog): Promise<ResponseProps> => {

@@ -222,6 +222,36 @@ $card-background: #ffffff;
     }
   }
 }
+
+/* LAPTOP NHỎ: 992px – 1199px */
+@media (min-width: 992px) and (max-width: 1199px){
+  .featureMeta {
+        padding: 10px;
+
+        .ant-card-meta-title {
+          font-size: 0.95em;
+        }
+
+        .ant-card-meta-description {
+          font-size: 0.85em;
+        }
+      }
+}
+
+/* DESKTOP: 1200px – 1439px */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .featureMeta {
+        padding: 10px;
+
+        .ant-card-meta-title {
+          font-size: 0.95em;
+        }
+
+        .ant-card-meta-description {
+          font-size: 0.85em;
+        }
+      }
+}
 /* Biến màu */
 $primary-color: #7a52aa;
 $secondary-color: #6c757d;
@@ -285,11 +315,9 @@ $card-background: #ffffff;
   // Image Section - 30% width
   .subject_image_section {
     width: 30%;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
 
     .image_container {
       width: 100%;
@@ -373,7 +401,7 @@ $card-background: #ffffff;
   // Lesson List Section - 30% width
   .subject_lesson_section {
     width: 29%;
-    height: 90%;
+    max-height: 60vh;
     background-color: white;
     border-radius: 20px;
     padding: 10px;
@@ -392,7 +420,7 @@ $card-background: #ffffff;
     .lessonList {
       height: 100%;
       overflow-y: auto;
-
+      padding-bottom: 10px;
       .lessonItem {
         display: flex;
         align-items: center;
@@ -438,147 +466,6 @@ $card-background: #ffffff;
     }
   }
 }
-
-// /* Responsive Design */
-// @media (max-width: 1024px) {
-//   .subjectsection {
-//     height: auto;
-//     padding: 40px 20px;
-
-//     .subjectconten {
-//       width: 90%;
-//       gap: 20px;
-//     }
-
-//     .sectionTitle {
-//       font-size: 2em;
-//     }
-
-//     .subject_main_content {
-//       flex-direction: column;
-//       align-items: center;
-//       height: auto;
-//       gap: 30px; /* Tăng gap để tránh ảnh đè chữ */
-//     }
-
-//     .subject_image_section {
-//       width: 100%;
-//       max-width: 250px; /* Giảm từ 500px để không quá to */
-//       height: 300px; /* Giảm từ 350px để cân đối */
-//       margin-bottom: 20px; /* Thêm khoảng cách dưới ảnh */
-//       padding: 10px;
-
-//       .image_container {
-//         height: 100%;
-//       }
-//     }
-
-//     .subject_content_section {
-//       width: 100%;
-//       max-width: 600px;
-//       height: auto;
-//       padding: 10px;
-//       text-align: center;
-
-//       .content_body {
-//         gap: 10px;
-//         background-color: #ffffff;
-//         padding: 20px;
-//         border-radius: 20px;
-//         .subjectDescription {
-//           font-size: 15px;
-//         }
-//       }
-
-//       .subjectButton {
-//         align-self: center;
-//         width: 100%;
-//         max-width: 200px;
-//       }
-//     }
-
-//     .subject_lesson_section {
-//       display: none; 
-//     }
-//   }
-// }
-
-// @media (max-width: 768px) {
-//   .subjectsection {
-//     padding: 30px 15px;
-
-//     .subjectconten {
-//       width: 100%;
-//       gap: 15px;
-//     }
-
-//     .sectionTitle {
-//       font-size: 1.8em;
-//     }
-
-//     .subject_image_section {
-//       max-width: 250px; /* Giảm từ 400px */
-//       height: 300px; /* Giảm từ 300px */
-//       margin-bottom: 15px; /* Giảm khoảng cách */
-//     }
-
-//     .subject_content_section {
-//       max-width: 500px;
-
-//       .content_body {
-//         .subjectDescription {
-//           font-size: 14px;
-//         }
-//       }
-
-//       .subjectButton {
-//         font-size: 14px;
-//         padding: 10px 20px;
-//       }
-//     }
-
-//     .subject_lesson_section {
-//       display: none; /* Tiếp tục ẩn mục lục */
-//     }
-//   }
-// }
-
-// @media (max-width: 576px) {
-//   .subjectsection {
-//     padding: 20px 10px;
-
-//     .sectionTitle {
-//       font-size: 1.6em;
-//     }
-
-//     .subject_image_section {
-//       max-width: 150px; /* Giảm từ 320px */
-//       height: 200px; /* Giữ nguyên */
-//       margin-bottom: 10px; /* Giảm khoảng cách */
-//     }
-
-//     .subject_content_section {
-//       max-width: 400px;
-
-//       .content_body {
-//         .subjectDescription {
-//           font-size: 13px;
-//         }
-//       }
-
-//       .subjectButton {
-//         font-size: 13px;
-//         padding: 8px 16px;
-//       }
-//     }
-
-//     .subject_lesson_section {
-//       display: none; /* Tiếp tục ẩn mục lục */
-//     }
-//   }
-// }
-
-
 
 //      MỚI================================================
 /* ==== MAX-WIDTH: 375px ==== */
@@ -737,14 +624,19 @@ $card-background: #ffffff;
     
     .subject_image_section {
       width: 30%;
+      height: 80% !important;
     }
 
     .subject_content_section {
       width: 40%;
+      height: 80% !important;
+
     }
 
     .subject_lesson_section {
       width: 28%;
+      height: 80% !important;
+
     }
   }
 }

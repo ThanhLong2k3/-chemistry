@@ -5,7 +5,7 @@ const PeriodicTable: React.FC = () => {
   return (
     <Image
       preview={false}
-      style={{ marginTop: '64px' }}
+      style={{ marginTop: '64px', height:'93vh' }}
       src="/BangTuanHoan.jpg"
       alt="Bảng tuần hoàn"
     />

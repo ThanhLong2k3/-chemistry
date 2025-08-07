@@ -5,7 +5,7 @@ import env from '@/env';
 
 // Nếu đang chạy phía server (API route), cần URL tuyệt đối
 
-const prefix = `${env.BASE_URL}/api/account`;
+const prefix = `${env.BASE_URL}/account`;
 
 export const createAccount = async (request: IAccount): Promise<ResponseProps> => {
   const token = localStorage.getItem('TOKEN');

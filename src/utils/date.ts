@@ -20,3 +20,16 @@ export const showDateFormat = (date: string | null) => {
   const dataShow = date ? date.split('T')[0] : null;
   return dataShow;
 };
+
+  export const formatDateVN = (dateStr?: string) => {
+  if (!dateStr) return 'Không xác định';
+  return new Date(dateStr).toLocaleString('vi-VN', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+};
