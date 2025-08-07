@@ -213,19 +213,18 @@ export const ChapterModal = ({
             </Col>
           </Row>
 
-          <Form.Item
-            name="description"
-            label="Mô tả"
-          >
-            <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-              style={{ height: '200px', marginBottom: '40px' }}
-            />
+          <Form.Item name="description" label="Mô tả">
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

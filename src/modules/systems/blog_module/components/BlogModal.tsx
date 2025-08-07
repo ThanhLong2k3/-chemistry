@@ -174,15 +174,17 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
           </Row>
 
           <Form.Item name="description" label="Mô tả">
-            <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-              style={{ height: '200px', marginBottom: '40px' }}
-            />
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

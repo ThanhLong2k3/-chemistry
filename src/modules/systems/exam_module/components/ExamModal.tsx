@@ -36,6 +36,8 @@ export const ExamModal = ({
   const [form] = Form.useForm();
   const { show } = useNotification();
   const [subjects, setSubjects] = useState<ISubject[]>([]);
+  const [description, setDescription] = useState('');
+
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -51,6 +53,7 @@ export const ExamModal = ({
       fetchSubjects();
       if (isCreate) {
         form.resetFields();
+        setDescription('');
       } else if (row) {
         // --- ÁP DỤNG LOGIC HIỂN THỊ FILE CŨ TỪ SUBJECTMODAL ---
         const convertUrlToFile = (url: string | null): UploadFile[] => {
@@ -67,6 +70,7 @@ export const ExamModal = ({
           ...row,
           file: convertUrlToFile(row.file), // Áp dụng hàm chuyển đổi
         });
+        setDescription(row.description || '');
       }
     }
   }, [isOpen, isCreate, row, form]);
@@ -184,7 +188,17 @@ export const ExamModal = ({
           </Form.Item>
 
           <Form.Item name="description" label="Mô tả">
-            <ReactQuill theme="snow" style={{ height: '200px', marginBottom: '40px' }} />
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>
