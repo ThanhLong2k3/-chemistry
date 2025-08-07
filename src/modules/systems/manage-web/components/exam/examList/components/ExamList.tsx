@@ -90,32 +90,7 @@ const mockExams: IExam[] = [
 
 const ExamList: React.FC<ExamListProps> = ({ exams }) => {
   const router = useRouter();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
-  const [selectedSubject, setSelectedSubject] = useState('all');
-
-  const displayExams = exams && exams.length > 0 ? exams : mockExams;
-
-  // Lọc và sắp xếp đề thi
-  const filteredExams = displayExams
-    .filter(exam => 
-      exam.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      exam.description?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter(exam => selectedSubject === 'all' || exam.subject_id === selectedSubject)
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'newest':
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        case 'oldest':
-          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-        case 'name':
-          return a.name.localeCompare(b.name);
-        default:
-          return 0;
-      }
-    });
-
+ 
   const handleExamClick = (fileName: string) => {
     router.push(`${env.BASE_URL}${fileName}`);
   };
@@ -169,8 +144,8 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
     <div className={styles.examListWrapper}>
       
       <div className={styles.examGrid}>
-        {filteredExams.length > 0 ? (
-          filteredExams.map((exam) => (
+        {exams.length > 0 ? (
+          exams.map((exam) => (
             <Card
               key={exam.id}
               className={styles.examCard}
@@ -241,15 +216,6 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
                 </div>
               }
             >
-              <Button 
-                type="primary" 
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedSubject('all');
-                }}
-              >
-                Xóa bộ lọc
-              </Button>
             </Empty>
           </div>
         )}

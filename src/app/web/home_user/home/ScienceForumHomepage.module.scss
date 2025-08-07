@@ -401,7 +401,7 @@ $card-background: #ffffff;
   // Lesson List Section - 30% width
   .subject_lesson_section {
     width: 29%;
-    height: 90%;
+    max-height: 60vh;
     background-color: white;
     border-radius: 20px;
     padding: 10px;

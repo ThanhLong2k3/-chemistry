@@ -4,16 +4,14 @@ import {
   LeftOutlined,
   RightOutlined,
   CalendarOutlined,
-  EyeOutlined,
   UserOutlined,
-  EditOutlined,
 } from '@ant-design/icons';
 import styles from './blog.module.scss';
 import { IBlog } from '@/types/blog';
-import parse from 'html-react-parser';
 import { useRouter } from 'next/navigation';
 import { BLOG_DETAIL_PATH } from '@/path';
 import env from '@/env';
+
 const { Title } = Typography;
 
 const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
@@ -21,7 +19,8 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const router = useRouter();
-  // Function để kiểm tra blog mới (trong vòng 7 ngày)
+
+  // Kiểm tra blog mới trong 7 ngày
   const isNewBlog = (createdAt: Date | string): boolean => {
     const now = new Date();
     const blogDate = new Date(createdAt);
@@ -30,8 +29,8 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
     return diffDays <= 7;
   };
 
-  // Function format date
-  const formatDate = (dateString: Date) => {
+  // Format ngày
+  const formatDate = (dateString: Date | string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('vi-VN', {
       year: 'numeric',
@@ -39,33 +38,64 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
       day: 'numeric',
     });
   };
+
+  // Tính khoảng scroll theo kích thước thực tế
+  const getScrollAmount = () => {
+    const container = scrollRef.current;
+    const card = container?.querySelector(`.${styles.blogCard}`) as HTMLElement;
+    const cardWidth = card?.offsetWidth || 320;
+    const gap = 24;
+    return cardWidth + gap;
+  };
+
+  // Hàm scroll theo hướng
+  const scrollByDirection = (direction: 'left' | 'right') => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const scrollAmount = getScrollAmount();
+    const scrollValue = direction === 'right' ? scrollAmount : -scrollAmount;
+
+    container.scrollBy({ left: scrollValue, behavior: 'smooth' });
+    setTimeout(checkScrollButtons, 300);
+  };
+
+  const scrollLeft = () => scrollByDirection('left');
+  const scrollRight = () => scrollByDirection('right');
+
+  // Kiểm tra trạng thái scroll
+  const checkScrollButtons = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = container;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5); // trừ 5 tránh lỗi float
+  };
+
+  // Auto scroll
   useEffect(() => {
     const interval = setInterval(() => {
-      if (scrollRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        const atEnd = scrollLeft + clientWidth >= scrollWidth - 1;
+      const container = scrollRef.current;
+      if (!container) return;
 
-        if (atEnd) {
-          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          scrollRef.current.scrollBy({ left: 320, behavior: 'smooth' });
-        }
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const atEnd = scrollLeft + clientWidth >= scrollWidth - 5;
 
-        setTimeout(checkScrollButtons, 300);
+      if (atEnd) {
+        container.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        const scrollAmount = getScrollAmount();
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       }
-    }, 4000); // Auto-scroll every 4s
+
+      setTimeout(checkScrollButtons, 300);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const checkScrollButtons = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    }
-  };
-
+  // Lắng nghe resize
   useEffect(() => {
     checkScrollButtons();
     const handleResize = () => checkScrollButtons();
@@ -73,29 +103,10 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: -320,
-        behavior: 'smooth',
-      });
-      setTimeout(checkScrollButtons, 300);
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: 320,
-        behavior: 'smooth',
-      });
-      setTimeout(checkScrollButtons, 300);
-    }
-  };
-
   const handleBlogClick = (id: string) => {
     router.push(`${BLOG_DETAIL_PATH}/${id}`);
   };
+
   return (
     <div className={styles.blogContainer}>
       <div className={styles.sectionHeader}>
@@ -152,7 +163,7 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
 
               <div className={styles.blogContent}>
                 <h3 className={styles.blogTitle}>{blog.title}</h3>
-                
+
                 <div className={styles.blogMeta}>
                   <span className={styles.metaItem}>
                     <CalendarOutlined className={styles.metaIcon} />
