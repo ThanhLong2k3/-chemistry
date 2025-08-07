@@ -41,10 +41,17 @@ export const ChapterTable = () => {
     fetchSubjects();
   }, []);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [nameChapter, selectedSubject]);
+
+
   useEffect(() => {
     getAllChapter();
   }, [pageIndex, pageSize, ordertype, nameChapter, selectedSubject]);
 
+  //lấy tài khoản để lưu created_by hoặc updated_by nếu có
   useEffect(() => {
     const account = getAccountLogin();
     setCurrentAccount(account);

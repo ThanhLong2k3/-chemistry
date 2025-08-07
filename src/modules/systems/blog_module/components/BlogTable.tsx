@@ -43,6 +43,11 @@ export const BlogTable = () => {
     fetchAuthors();
   }, []);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [titleBlog, selectedAuthor]);
+
   useEffect(() => {
     getAllBlog();
   }, [pageIndex, pageSize, ordertype, titleBlog, selectedAuthor]);

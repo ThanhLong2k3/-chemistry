@@ -24,51 +24,51 @@ export const decrypt = (encrypted: string) => {
   return result ? JSON.parse(result) : '';
 };
 
-export const generateToken = async (
-  payload: JWTPayload,
-  expiresIn: string = env.JWT_EXPIRES_IN
-): Promise<string> => {
-  const secret = new TextEncoder().encode(env.JWT_SECRET);
-  const token = await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime(expiresIn)
-    .sign(secret);
+// export const generateToken = async (
+//   payload: JWTPayload,
+//   expiresIn: string = env.JWT_EXPIRES_IN
+// ): Promise<string> => {
+//   const secret = new TextEncoder().encode(env.JWT_SECRET);
+//   const token = await new SignJWT(payload)
+//     .setProtectedHeader({ alg: 'HS256' })
+//     .setIssuedAt()
+//     .setExpirationTime(expiresIn)
+//     .sign(secret);
 
-  return token;
-};
+//   return token;
+// };
 
-export const verifyToken = async (token: string): Promise<object | null> => {
-  try {
-    const secret = new TextEncoder().encode(env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret); // Verify the token
-    return payload; // JWT payload if valid
-  } catch {
-    return null;
-  }
-};
+// export const verifyToken = async (token: string): Promise<object | null> => {
+//   try {
+//     const secret = new TextEncoder().encode(env.JWT_SECRET);
+//     const { payload } = await jwtVerify(token, secret); // Verify the token
+//     return payload; // JWT payload if valid
+//   } catch {
+//     return null;
+//   }
+// };
 
-export const generateRefreshToken = async (
-  payload: JWTPayload
-): Promise<string> => {
-  const secret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
-  const token = await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime(env.JWT_REFRESH_EXPIRES_IN)
-    .sign(secret);
+// export const generateRefreshToken = async (
+//   payload: JWTPayload
+// ): Promise<string> => {
+//   const secret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
+//   const token = await new SignJWT(payload)
+//     .setProtectedHeader({ alg: 'HS256' })
+//     .setIssuedAt()
+//     .setExpirationTime(env.JWT_REFRESH_EXPIRES_IN)
+//     .sign(secret);
 
-  return token;
-};
+//   return token;
+// };
 
-export const verifyRefreshToken = async (
-  token: string
-): Promise<object | null> => {
-  try {
-    const secret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
-    const { payload } = await jwtVerify(token, secret); // Verify the token
-    return payload; // JWT payload if valid
-  } catch {
-    return null;
-  }
-};
+// export const verifyRefreshToken = async (
+//   token: string
+// ): Promise<object | null> => {
+//   try {
+//     const secret = new TextEncoder().encode(env.JWT_REFRESH_SECRET);
+//     const { payload } = await jwtVerify(token, secret); // Verify the token
+//     return payload; // JWT payload if valid
+//   } catch {
+//     return null;
+//   }
+// };
