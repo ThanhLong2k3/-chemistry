@@ -20,14 +20,21 @@ export const AdvisoryMemberTable = () => {
   const [total, settotal] = useState<number>(10);
   const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
   useEffect(() => {
-    getAllAdvisoryMember();
-  }, [pageIndex, pageSize, ordertype, nameAdvisoryMember]);
+    setPageIndex(1);
+  }, [nameAdvisoryMember]);
 
+  //lấy tài khoản để lưu created_by hoặc updated_by nếu có
   useEffect(() => {
     const account = getAccountLogin();
     setCurrentAccount(account);
   }, []);
+
+  useEffect(() => {
+    getAllAdvisoryMember();
+  }, [pageIndex, pageSize, ordertype, nameAdvisoryMember]);
+
 
   const getAllAdvisoryMember = async () => {
     try {

@@ -70,6 +70,11 @@ export const ExamTable = () => {
     fetchSubjects();
   }, []);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [nameExam, selectedSubject, selectedCreatedByName]);
+
   useEffect(() => {
     getAllExam();
   }, [pageIndex, pageSize, ordertype, nameExam, selectedSubject, selectedCreatedByName]);

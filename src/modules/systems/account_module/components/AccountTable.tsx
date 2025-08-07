@@ -19,6 +19,11 @@ export const AccountTable = () => {
   const [listAccount, setListAccount] = useState<IAccount[]>([]);
   const [total, settotal] = useState<number>(10);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [name]);
+
   useEffect(() => {
     getAllAccount();
   }, [pageIndex, pageSize, ordertype, name]);

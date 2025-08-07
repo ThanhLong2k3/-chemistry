@@ -75,6 +75,11 @@ export const LessonTable = () => {
     fetchChapters();
   }, [searchNameChapter, selectedSubject]);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [nameLesson, selectedSubject, selectedChapter]);
+
 
   useEffect(() => {
     getAllLesson();
