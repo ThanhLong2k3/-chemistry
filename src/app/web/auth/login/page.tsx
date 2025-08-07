@@ -13,6 +13,7 @@ import { jwtDecode } from 'jwt-decode';
 import { IDecodedToken } from '@/types/decodedToken';
 import { usePermissions } from '@/contexts/PermissionContext';
 import { authAPI } from '@/services/auth.service';
+import env from '@/env';
 
 const { Title, Text } = Typography;
 
@@ -23,10 +24,12 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const { show } = useNotification();
   const { refreshPermissions } = usePermissions();
-  const ID_ROLE_STUDENT = 'ade9dcaa-ee35-42a4-8855-3ba1506fa65a';
+  const ID_ROLE_STUDENT = env.ID_ROLE_STUDENT;
 
   useEffect(() => {
     document.title = "Đăng nhập";
+    console.log(env);
+
   }, []);
 
   const onFinish = async (values: any) => {

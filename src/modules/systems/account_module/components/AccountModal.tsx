@@ -123,8 +123,6 @@ export const AccountModal = ({
         image: imageUrl,
       };
 
-
-
       if (isCreate) {
         const data: any = await createAccount({ ...dataToSubmit, created_by: currentAccount.username });
 
