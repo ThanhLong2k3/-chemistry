@@ -103,16 +103,6 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
     }).format(new Date(date));
   };
 
-  const getSubjectTag = (subjectId: string) => {
-    const subjects: { [key: string]: { name: string; color: string } } = {
-      'sub-101': { name: 'Hóa 10', color: 'blue' },
-      'sub-102': { name: 'Hóa 11', color: 'green' },
-      'sub-103': { name: 'THPT QG', color: 'red' },
-      'sub-104': { name: 'Hóa 12', color: 'orange' }
-    };
-    const subject = subjects[subjectId] || { name: 'Khác', color: 'default' };
-    return <Tag color={subject.color}>{subject.name}</Tag>;
-  };
 
   const handleDownload = (fileName: string, examName: string) => {
     try {
@@ -178,10 +168,9 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
             >
               <div className={styles.examHeader}>
                 <div className={styles.examTitle}>
-                  <Title level={4} className={styles.examName}>
+                  <Title level={2} className={styles.examName}>
                     {exam.name}
                   </Title>
-                  {getSubjectTag(exam.subject_id)}
                 </div>
               </div>
 

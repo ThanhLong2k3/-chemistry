@@ -179,7 +179,7 @@ const ScienceForumHomepage: React.FC = () => {
 
                 {/* Lesson List Section */}
                 <div className={styles.subject_lesson_section}>
-                  <div className={styles.lesson_title}>Danh sách bài học</div>
+                  <div className={styles.lesson_title}>DANH SÁCH BÀI HỌC</div>
 
                   <List
                     className={styles.lessonList}
@@ -201,6 +201,7 @@ const ScienceForumHomepage: React.FC = () => {
                     type="primary"
                     className={styles.subjectButton}
                     onClick={() => handleOpenLessonList(subject.subject_id)}
+                    style={{paddingTop:'5px', paddingBottom:'5px'}}
                   >
                     Xem bài học
                   </Button>

@@ -6,12 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './header.module.scss';
 import {
-  ADVISORY_BOARD_PATH,
-  BLOG_LIST_PATH,
-  EXAM_LIST_PATH,
-  HOME_PATH,
   LOGIN_PATH,
-  PERIODIC_TABLE_PATH,
 } from '@/path';
 import GoogleTranslate from '@/modules/shared/GoogleTranslate';
 
@@ -20,26 +15,13 @@ const { Header } = Layout;
 const Header_User = ({ menuItems }: { menuItems: any[] }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const router = useRouter();
- 
-  const internalPaths = [
-  HOME_PATH,
-  ADVISORY_BOARD_PATH,
-  BLOG_LIST_PATH,
-  PERIODIC_TABLE_PATH,
-];
 
-const handleMenuClick = ({ key }: { key: string }) => {
-   if (
-    internalPaths.includes(key) ||
-    key.startsWith(`${EXAM_LIST_PATH}/`) 
-  ) {
+
+  const handleMenuClick = ({ key }: { key: string }) => {
     router.push(key);
-  } else {
-    window.open(key, '_blank');
-  }
-  setDrawerVisible(false);
-};
 
+    setDrawerVisible(false);
+  };
 
   return (
     <Header className={styles.header}>
