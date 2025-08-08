@@ -125,7 +125,9 @@ export const ExamModal = ({
       if (responseData?.success) {
         show({ result: 0, messageDone: isCreate ? 'Thêm bài kiểm tra thành công!' : 'Cập nhật thành công!' });
         getAll();
-        close();
+        setTimeout(() => {
+          close();
+        }, 1000);
       } else {
         show({ result: 1, messageError: responseData?.message || (isCreate ? 'Thêm thất bại.' : 'Cập nhật thất bại.') });
       }
@@ -182,7 +184,20 @@ export const ExamModal = ({
             valuePropName="fileList"
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
           >
-            <Upload name="examFile" maxCount={1} beforeUpload={() => false} accept=".pdf">
+            <Upload
+              name="examFile"
+              maxCount={1}
+              beforeUpload={(file) => {
+                if (file.name.length > 70) {
+                  show({
+                    result: 1,
+                    messageError: 'Tên file không được vượt quá 70 ký tự.',
+                  });
+                  return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                }
+                return false; // Giữ nguyên hành vi upload thủ công
+              }}
+              accept=".pdf">
               <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
             </Upload>
           </Form.Item>
