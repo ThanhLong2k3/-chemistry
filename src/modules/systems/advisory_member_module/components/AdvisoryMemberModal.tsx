@@ -125,11 +125,13 @@ export const AdvisoryMemberModal = ({
 
       if (responseData?.success) {
         show({ result: 0, messageDone: isCreate ? 'Thêm thành viên thành công!' : 'Cập nhật thành công!' });
-        getAll();
-        close();
       } else {
         show({ result: 1, messageError: responseData?.message || (isCreate ? 'Thêm thất bại.' : 'Cập nhật thất bại.') });
       }
+      getAll();
+      setTimeout(() => {
+        close();
+      }, 1000);
 
     } catch (error: any) {
       if (error?.errorFields) return; // Bỏ qua lỗi validation của Antd
@@ -170,7 +172,16 @@ export const AdvisoryMemberModal = ({
                   name="avatar"
                   listType="picture"
                   maxCount={1}
-                  beforeUpload={() => false}
+                  beforeUpload={(file) => {
+                    if (file.name.length > 70) {
+                      show({
+                        result: 1,
+                        messageError: 'Tên ảnh không được vượt quá 70 ký tự.',
+                      });
+                      return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                    }
+                    return false; // Giữ nguyên hành vi upload thủ công
+                  }}
                   accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
                   <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}>

@@ -123,7 +123,9 @@ export const ChapterModal = ({
         }
       }
       getAll();
-      close();
+      setTimeout(() => {
+        close();
+      }, 1000);
     } catch (error: any) {
       //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
       // Antd sẽ tự động hiển thị lỗi trên form.
