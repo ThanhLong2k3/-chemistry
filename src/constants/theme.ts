@@ -81,7 +81,7 @@ export const themeBlueConfig: ThemeConfig = {
       colorBgElevated: 'rgb(13,68,138)', // bg child menu when hover or active li parent
       colorText: '#ffffff',
       colorBorder: '#e1e1e1',
-      colorPrimary: '#000000ff',
+      colorPrimary: '#eeeeee',
       controlItemBgActive: 'rgb(138,112,179)',
     },
     Typography: {

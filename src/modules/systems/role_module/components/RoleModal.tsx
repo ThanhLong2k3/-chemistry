@@ -105,7 +105,9 @@ export const RoleModal = ({
         }
       }
       getAll();
-      close();
+      setTimeout(() => {
+        close();
+      }, 1000);
     } catch (error: any) {
       //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
       // Antd sẽ tự động hiển thị lỗi trên form.
@@ -171,19 +173,19 @@ export const RoleModal = ({
             </Col>
           </Row>
 
-          <Form.Item
-            name="description"
-            label="Mô tả"
-          >
-            <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-              style={{ height: '200px', marginBottom: '40px' }}
-            />
+          <Form.Item name="description" label="Mô tả">
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+                style={{ height: '200px', marginBottom: '20px' }}
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

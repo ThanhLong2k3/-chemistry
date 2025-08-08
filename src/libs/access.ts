@@ -38,15 +38,15 @@ export const decrypt = (encrypted: string) => {
 //   return token;
 // };
 
-export const verifyToken = async (token: string): Promise<object | null> => {
-  try {
-    const secret = new TextEncoder().encode(env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret); // Verify the token
-    return payload; // JWT payload if valid
-  } catch {
-    return null;
-  }
-};
+// export const verifyToken = async (token: string): Promise<object | null> => {
+//   try {
+//     const secret = new TextEncoder().encode(env.JWT_SECRET);
+//     const { payload } = await jwtVerify(token, secret); // Verify the token
+//     return payload; // JWT payload if valid
+//   } catch {
+//     return null;
+//   }
+// };
 
 // export const generateRefreshToken = async (
 //   payload: JWTPayload

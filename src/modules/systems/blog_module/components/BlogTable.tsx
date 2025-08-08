@@ -16,7 +16,7 @@ import env from '@/env';
 export const BlogTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [ordertype, setOrderType] = useState<string>('ASC');
+  const [ordertype, setOrderType] = useState<string>('DESC');
   const [titleBlog, setTitleBlog] = useState<string | null>(null);
   const [listBlog, setListBlog] = useState<IBlog[]>([]);
   const [total, settotal] = useState<number>(10);
@@ -42,6 +42,11 @@ export const BlogTable = () => {
     };
     fetchAuthors();
   }, []);
+
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [titleBlog, selectedAuthor]);
 
   useEffect(() => {
     getAllBlog();
@@ -87,35 +92,54 @@ export const BlogTable = () => {
   const columns: TableColumnsType<IBlog> = [
     {
       title: 'STT',
-      width: 40,
+      width: 30,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
     },
     {
       title: 'Ảnh đại diện',
-      width: 80,
+      width: 70,
       dataIndex: 'image',
       align: 'center',
       render: (imageUrl) => (
         <Image
-          width={45}
-          height={45}
+          width={70}
+          height={70}
           src={imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_blog.png'}
           alt="Avatar"
-          style={{ width: '180px', height: 'auto' }}
+          style={{ height: '70px', width: 'auto' }}
         />
       ),
     },
     {
       title: 'Tiêu đề bài viết',
-      width: 150,
+      width: 120,
       dataIndex: 'title',
     },
     {
       title: 'Lượt xem',
       width: 50,
       dataIndex: 'views',
+      align: 'center'
+    },
+    {
+      title: 'Ngày đăng',
+      width: 50,
+      dataIndex: 'created_at',
+      align: 'center',
+      render: (date: string) => {
+        const d = new Date(date);
+        const day = d.getDate().toString().padStart(2, '0');
+        const month = (d.getMonth() + 1).toString().padStart(2, '0'); // tháng bắt đầu từ 0
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+    },
+    {
+      title: 'Người đăng',
+      width: 100,
+      dataIndex: 'created_by_name',
       align: 'center'
     },
     // {
@@ -139,7 +163,7 @@ export const BlogTable = () => {
     // },
     {
       title: 'Thao tác',
-      width: 120,
+      width: 80,
       align: 'center',
       render: (_, record) => (
         <Flex gap={8} justify="center">

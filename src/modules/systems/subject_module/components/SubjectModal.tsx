@@ -17,6 +17,7 @@ import { showSessionExpiredModal } from '@/utils/session-handler';
 import { UpLoadImage } from '@/services/upload.service';
 import env from '@/env';
 
+
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface Props {
@@ -131,7 +132,9 @@ export const SubjectModal = ({
       }
 
       getAll();
-      close();
+      setTimeout(() => {
+        close();
+      }, 1000);
     } catch (error: any) {
       if (error?.errorFields) return;
 
@@ -182,7 +185,16 @@ export const SubjectModal = ({
                   name="avatar"
                   listType="picture"
                   maxCount={1}
-                  beforeUpload={() => false}
+                  beforeUpload={(file) => {
+                    if (file.name.length > 70) {
+                      show({
+                        result: 1,
+                        messageError: 'Tên ảnh không được vượt quá 70 ký tự.',
+                      });
+                      return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                    }
+                    return false; // Giữ nguyên hành vi upload thủ công
+                  }}
                   accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
                   <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}>
@@ -240,15 +252,18 @@ export const SubjectModal = ({
           </Row>
 
           <Form.Item name="description" label="Mô tả">
-            <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-              style={{ height: '200px', marginBottom: '40px' }}
-            />
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+                style={{ height: '200px', marginBottom: '20px' }}
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

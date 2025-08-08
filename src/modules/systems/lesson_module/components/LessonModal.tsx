@@ -207,7 +207,9 @@ export const LessonModal = ({
         }
       }
       getAll();
-      close();
+      setTimeout(() => {
+        close();
+      }, 1000);
     } catch (error: any) {
       //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
       // Antd sẽ tự động hiển thị lỗi trên form.
@@ -259,7 +261,7 @@ export const LessonModal = ({
         cancelText="Hủy"
         width={900}
         style={{ top: 30 }}
-        styles={{ body: { height: '75vh' } }}
+        styles={{ body: { height: '93vh' } }}
       >
         <Form layout="vertical" form={form}>
           <Row gutter={24}>
@@ -277,7 +279,16 @@ export const LessonModal = ({
                   name="avatar"
                   listType="picture"
                   maxCount={1}
-                  beforeUpload={() => false}
+                  beforeUpload={(file) => {
+                    if (file.name.length > 70) {
+                      show({
+                        result: 1,
+                        messageError: 'Tên ảnh không được vượt quá 70 ký tự.',
+                      });
+                      return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                    }
+                    return false; // Giữ nguyên hành vi upload thủ công
+                  }}
                   accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
                   <Button
@@ -345,20 +356,24 @@ export const LessonModal = ({
             </Col>
           </Row>
 
-          <Form.Item
-            name="description"
-            label="Mô tả"
-          >
-            <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-              style={{ height: '180px' }}
-            />
-          </Form.Item>
+          <Row gutter={24}>
+            <Col span={24}>
+              <Form.Item name="description" label="Mô tả">
+                <div className="custom-quill-wrapper">
+                  <ReactQuill
+                    theme="snow"
+                    value={description}
+                    onChange={(value) => {
+                      setDescription(value);
+                      form.setFieldsValue({ description: value });
+                    }}
+                    className="custom-quill"
+                    style={{ height: '200px', marginBottom: '20px' }}
+                  />
+                </div>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </>

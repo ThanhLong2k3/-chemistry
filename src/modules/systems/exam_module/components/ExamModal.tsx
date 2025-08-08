@@ -36,6 +36,8 @@ export const ExamModal = ({
   const [form] = Form.useForm();
   const { show } = useNotification();
   const [subjects, setSubjects] = useState<ISubject[]>([]);
+  const [description, setDescription] = useState('');
+
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -51,6 +53,7 @@ export const ExamModal = ({
       fetchSubjects();
       if (isCreate) {
         form.resetFields();
+        setDescription('');
       } else if (row) {
         // --- ÁP DỤNG LOGIC HIỂN THỊ FILE CŨ TỪ SUBJECTMODAL ---
         const convertUrlToFile = (url: string | null): UploadFile[] => {
@@ -67,6 +70,7 @@ export const ExamModal = ({
           ...row,
           file: convertUrlToFile(row.file), // Áp dụng hàm chuyển đổi
         });
+        setDescription(row.description || '');
       }
     }
   }, [isOpen, isCreate, row, form]);
@@ -121,7 +125,9 @@ export const ExamModal = ({
       if (responseData?.success) {
         show({ result: 0, messageDone: isCreate ? 'Thêm bài kiểm tra thành công!' : 'Cập nhật thành công!' });
         getAll();
-        close();
+        setTimeout(() => {
+          close();
+        }, 1000);
       } else {
         show({ result: 1, messageError: responseData?.message || (isCreate ? 'Thêm thất bại.' : 'Cập nhật thất bại.') });
       }
@@ -178,13 +184,37 @@ export const ExamModal = ({
             valuePropName="fileList"
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
           >
-            <Upload name="examFile" maxCount={1} beforeUpload={() => false} accept=".pdf">
+            <Upload
+              name="examFile"
+              maxCount={1}
+              beforeUpload={(file) => {
+                if (file.name.length > 70) {
+                  show({
+                    result: 1,
+                    messageError: 'Tên file không được vượt quá 70 ký tự.',
+                  });
+                  return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                }
+                return false; // Giữ nguyên hành vi upload thủ công
+              }}
+              accept=".pdf">
               <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
             </Upload>
           </Form.Item>
 
           <Form.Item name="description" label="Mô tả">
-            <ReactQuill theme="snow" style={{ height: '200px', marginBottom: '40px' }} />
+            <div className="custom-quill-wrapper">
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={(value) => {
+                  setDescription(value);
+                  form.setFieldsValue({ description: value });
+                }}
+                className="custom-quill"
+                style={{ height: '200px', marginBottom: '20px' }}
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

@@ -19,6 +19,11 @@ export const RoleTable = () => {
   const [total, settotal] = useState<number>(10);
   const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
 
+  //reset lại pageindex khi có dữ liệu tìm kiếm
+  useEffect(() => {
+    setPageIndex(1);
+  }, [nameRole]);
+
   useEffect(() => {
     getAllRole();
   }, [pageIndex, pageSize, ordertype, nameRole]);
