@@ -309,7 +309,10 @@ export const LessonModal = ({
               <Form.Item
                 name="name"
                 label="Tên bài học"
-                rules={RULES_FORM.required}
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.noSpecialChars,
+                ]}
               >
                 <Input />
               </Form.Item>

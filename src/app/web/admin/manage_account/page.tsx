@@ -1,7 +1,7 @@
 import { ManageAccount } from "@/modules/systems/account_module/account";
 
-export default function MenuPage() {
+export default function ManageAccountPage() {
   return (
-  <ManageAccount />
-);
+    <ManageAccount />
+  );
 }

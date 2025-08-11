@@ -166,7 +166,16 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                             showUploadList={false}
                             onChange={handleImageChange}
                             maxCount={1}
-                            beforeUpload={() => false}
+                            beforeUpload={(file) => {
+                                if (file.name.length > 70) {
+                                    show({
+                                        result: 1,
+                                        messageError: 'Tên ảnh không được vượt quá 70 ký tự.',
+                                    });
+                                    return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                                }
+                                return false; // Giữ nguyên hành vi upload thủ công
+                            }}
                             accept=".jpg,.jpeg,.png,.gif,.webp"
                         >
                             <Avatar size={100} src={previewImageUrl} icon={!previewImageUrl ? <CameraOutlined /> : undefined} />

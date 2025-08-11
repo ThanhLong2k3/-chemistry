@@ -194,17 +194,23 @@ export const AdvisoryMemberModal = ({
                 <Input />
               </Form.Item>
 
-              <Form.Item name="years_of_experience" label="Số năm kinh nghiệm">
+              <Form.Item name="years_of_experience" label="Số năm kinh nghiệm" rules={RULES_FORM.years_of_experience}>
                 <Input type="number" min={1} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
 
             <Col span={12}>
-              <Form.Item name="teacher_name" label="Tên thành viên" rules={RULES_FORM.required}>
+              <Form.Item
+                name="teacher_name"
+                label="Tên thành viên"
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.noSpecialChars,
+                ]}>
                 <Input />
               </Form.Item>
 
-              <Form.Item name="qualification" label="Trình độ">
+              <Form.Item name="qualification" label="Trình độ" rules={RULES_FORM.required}>
                 <Select placeholder="Chọn trình độ" allowClear>
                   {qualifications.map(level => (
                     <Select.Option key={level} value={level}>
@@ -224,7 +230,7 @@ export const AdvisoryMemberModal = ({
                 </Select>
               </Form.Item>
 
-              <Form.Item name="workplace" label="Nơi công tác">
+              <Form.Item name="workplace" label="Nơi công tác" rules={RULES_FORM.noSpecialChars}>
                 <Input />
               </Form.Item>
             </Col>

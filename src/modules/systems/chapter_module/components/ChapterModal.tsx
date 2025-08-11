@@ -184,7 +184,10 @@ export const ChapterModal = ({
               <Form.Item
                 name="name"
                 label="Tên chương"
-                rules={RULES_FORM.required}
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.noSpecialChars,
+                ]}
               >
                 <Input />
               </Form.Item>
