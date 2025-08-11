@@ -16,7 +16,8 @@ import env from '@/env';
 export const BlogTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [ordertype, setOrderType] = useState<string>('DESC');
+  // `ordertype` bây giờ sẽ quản lý cả sắp xếp theo ngày và theo lượt xem
+  const [ordertype, setOrderType] = useState<string>('DESC'); // Mặc định: Mới nhất
   const [titleBlog, setTitleBlog] = useState<string | null>(null);
   const [listBlog, setListBlog] = useState<IBlog[]>([]);
   const [total, settotal] = useState<number>(10);
@@ -177,6 +178,19 @@ export const BlogTable = () => {
   return (
     <Card >
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
+        {/* === SẮP XẾP === */}
+        <Select
+          defaultValue="DESC" // Giá trị mặc định
+          style={{ width: 240 }}
+          onChange={(value) => setOrderType(value)}
+          options={[
+            { value: 'DESC', label: 'Mới nhất' },
+            { value: 'ASC', label: 'Cũ nhất' },
+            { value: 'views_desc', label: 'Xem nhiều nhất' },
+            { value: 'views_asc', label: 'Xem ít nhất' },
+          ]}
+        />
+
         {/* SELECT LỌC THEO TÁC GIẢ */}
         <Select
           placeholder="Lọc theo người đăng"

@@ -55,10 +55,10 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       max: 255,
       message: 'Không được vượt quá 255 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự đặc biệt
+    // 2. Quy tắc kiểm tra ký tự đặc biệt (chỉ cho phép thêm dấu :)
     {
-      pattern: /^[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ_.-]*$/,
-      message: 'Không được chứa ký tự đặc biệt.',
+      pattern: /^[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ:_.-]*$/,
+      message: 'Không được chứa ký tự đặc biệt (chỉ cho phép dấu ":").',
     },
   ],
 
