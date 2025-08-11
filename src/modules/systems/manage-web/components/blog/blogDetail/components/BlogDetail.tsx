@@ -28,7 +28,7 @@ const { Title } = Typography;
 const { TextArea } = Input;
 
 interface BlogDetailProps {
-  blog?: IBlog_Get;
+  blog?: any;
   listBlog?: IBlog_Get[];
   comments?: any[];
   SearchComment: () => void;
@@ -135,7 +135,8 @@ export default function BlogDetail({
             <span>
               <strong>Ngày tạo: </strong>
               {formatDateVN(blog?.created_at)} - <strong>Người tạo:</strong>{' '}
-              {blog?.created_by_name}
+              {blog?.created_by_name}  - <strong>Lượt xem:</strong>{' '}
+              {blog?.views} 
             </span>
           </div>
           <div

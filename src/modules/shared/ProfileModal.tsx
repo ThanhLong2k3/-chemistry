@@ -187,8 +187,10 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
       open={isOpen}
       onCancel={onClose}
       footer={null}
-      width={800}
+      width="100%"
+      style={{ maxWidth: 800 }} // Giới hạn max width
       centered
+      bodyStyle={{ padding: 16 }} // Nhỏ hơn trên mobile
     >
       {!currentUser ? (
         <div style={{ textAlign: 'center', padding: '48px' }}>
@@ -224,9 +226,10 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
               />
             </Upload>
           </Form.Item>
-          <Row gutter={16}>
+
+          <Row gutter={[16, 16]}>
             {/* Cột 1 */}
-            <Col span={12}>
+            <Col xs={24} md={12}>
               <Form.Item label="Tên đăng nhập">
                 <Input
                   prefix={<UserOutlined />}
@@ -259,7 +262,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
             </Col>
 
             {/* Cột 2 */}
-            <Col span={12}>
+            <Col xs={24} md={12}>
               <Form.Item
                 name="currentPassword"
                 label="Mật khẩu hiện tại"

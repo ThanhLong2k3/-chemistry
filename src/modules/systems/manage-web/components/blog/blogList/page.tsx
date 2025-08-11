@@ -98,15 +98,6 @@ const BlogList: React.FC<BlogListProps> = ({
 
               <div className={styles.blogContent}>
                 <h3 className={styles.blogTitle}>{blog.title}</h3>
-                {blog.description && (
-                  <p className={styles.blogDescription}>
-                    {parse(
-                      blog.description.length > 100
-                        ? `${blog.description.substring(0, 100)}...`
-                        : blog.description
-                    )}
-                  </p>
-                )}
                 <div className={styles.blogMeta}>
                   <span className={styles.metaItem}>
                     <CalendarOutlined className={styles.metaIcon} />

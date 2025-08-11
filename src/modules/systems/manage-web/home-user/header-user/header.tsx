@@ -98,14 +98,22 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
+                gap: 8,
               }}
             >
               <Avatar
                 src={`${env.BASE_URL}${currentAccount.image}`}
                 icon={<UserOutlined />}
-                style={{ marginRight: 8 }}
+                size={40} // to hơn
+                shape="circle"
+                style={{
+                  border: '2px solid #1890ff',
+                  backgroundColor: '#f0f0f0',
+                }}
               />
-              <span>{currentAccount.name || currentAccount.username}</span>
+              <span 
+              className={styles.avatarContainer}
+              >{currentAccount.name || currentAccount.username}</span>
             </div>
           </Dropdown>
         ) : (

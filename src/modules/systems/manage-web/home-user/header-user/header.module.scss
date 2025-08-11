@@ -33,7 +33,7 @@ $border-color: #e0e0e0;
     @include flex-between;
     height: 64px;
     max-width: 80%;
-    margin:  auto;
+    margin: auto;
   }
 
   .logo {
@@ -95,10 +95,11 @@ $border-color: #e0e0e0;
         color: $hover-color !important;
       }
     }
+
     :global(.ant-menu-submenu-popup .ant-menu-item-selected) {
-    background-color: #fff !important;
-    color: $selected-color !important;
-  }
+      background-color: #fff !important;
+      color: $selected-color !important;
+    }
   }
 
   .headerActions {
@@ -120,6 +121,7 @@ $border-color: #e0e0e0;
 @media (max-width: 375px) {
   .header {
     display: flex;
+
     .logoText {
       font-size: 16px;
     }
@@ -129,6 +131,7 @@ $border-color: #e0e0e0;
       width: 100%;
       margin: 0px;
       max-width: 100%;
+
       .headerActions {
         width: 100%;
         justify-content: space-between;
@@ -139,12 +142,19 @@ $border-color: #e0e0e0;
   .hamburger {
     font-size: 20px;
   }
+
+  .avatarContainer {
+    span {
+      display: none; // ẩn tên người dùng, chỉ để avatar
+    }
+  }
 }
 
 /* MOBILE PHỔ BIẾN: 376px – 575px */
 @media (max-width: 575px) {
   .header {
     padding: 0 12px;
+
     .logoText {
       font-size: 17px;
     }
@@ -157,12 +167,17 @@ $border-color: #e0e0e0;
   .menu {
     display: none;
   }
+
+  .avatarContainer {
+    display: none;
+  }
 }
 
 /* TABLET ĐỨNG: 576px – 767px */
 @media (min-width: 576px) and (max-width: 767px) {
   .header {
     padding: 0 16px;
+
     .logoText {
       font-size: 18px;
     }
@@ -175,12 +190,19 @@ $border-color: #e0e0e0;
   .menu {
     display: none;
   }
+
+  .avatarContainer {
+
+    display: none; // ẩn tên người dùng, chỉ để avatar
+
+  }
 }
 
 /* TABLET NGANG: 768px – 991px */
 @media (min-width: 768px) and (max-width: 991px) {
   .header {
     padding: 0 20px;
+
     .logoText {
       font-size: 19px;
     }
@@ -208,6 +230,7 @@ $border-color: #e0e0e0;
   .menu {
     display: none;
   }
+
   .logoText {
     font-size: 20px;
   }
@@ -240,7 +263,7 @@ $border-color: #e0e0e0;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
-  z-index: 999; 
+  z-index: 999;
   height: 100%;
   width: 100%;
 }
