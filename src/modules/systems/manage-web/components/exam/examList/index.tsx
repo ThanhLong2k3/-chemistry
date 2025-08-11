@@ -20,7 +20,6 @@ const ExamListPageClient = ({ id }: Props) => {
 
   const GetExamtBy_IdSubject = async (id: string) => {
     const Lesson_Subject: any = await Home_Api.getExamByIdSubject(id);
-    console.log('lesson',Lesson_Subject.data.data || []);
     setSupject(Lesson_Subject.data.data || []);
   };
 

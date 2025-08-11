@@ -14,8 +14,8 @@ interface Props {
 const BlogDetailPageClient = ({ id }: Props) => {
   const [blogDetail, setBlogDetail] = useState<IBlog_Get>();
   const [listBlog, setListBlog] = useState<IBlog_Get[]>([]);
-  const [comments,setComments]=useState<IComment[]>();
-  const [TotalRecords, setTotalRecords]=useState<number>(1);
+  const [comments, setComments] = useState<IComment[]>();
+  const [TotalRecords, setTotalRecords] = useState<number>(1);
 
   useEffect(() => {
     GetListBlog();
@@ -25,12 +25,12 @@ const BlogDetailPageClient = ({ id }: Props) => {
       SearchComment();
     }
   }, [id]);
-  const SearchComment = async () => {
+  const SearchComment = async (page_size?:number, page_index?:number) => {
     const comment: any = await searchComment({
-      page_index: 1,
-      page_size: 10,
+      page_index:page_index?page_index: 1,
+      page_size: page_size?page_size:10,
       order_type: 'ASC',
-      search_content_1:id
+      search_content_1: id,
     });
     setComments(comment.data || []);
     setTotalRecords(comment.data[0].TotalRecords);
@@ -48,7 +48,18 @@ const BlogDetailPageClient = ({ id }: Props) => {
     setBlogDetail(blogDetailData.data.data[0]);
   };
 
-  return <BlogDetail blog={blogDetail} listBlog={listBlog} comments={comments} SearchComment={SearchComment} />;
+  return (
+    <BlogDetail
+      blog={blogDetail}
+      listBlog={listBlog}
+      comments={comments}
+      SearchComment={SearchComment}
+      TotalRecords={TotalRecords}
+      onPageChange={(page, pageSize) => {
+        SearchComment(page, pageSize);
+      }}
+    />
+  );
 };
 
 export default BlogDetailPageClient;

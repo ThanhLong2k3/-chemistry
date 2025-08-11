@@ -1,26 +1,71 @@
 'use client';
 
-import { MenuOutlined } from '@ant-design/icons';
-import { Button, Drawer, Image, Layout, Menu } from 'antd';
-import { useState } from 'react';
+import { MenuOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Drawer, Image, Layout, Menu, Dropdown } from 'antd';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './header.module.scss';
-import {
-  LOGIN_PATH,
-} from '@/path';
+import { LOGIN_PATH } from '@/path';
 import GoogleTranslate from '@/modules/shared/GoogleTranslate';
+import { getAccountLogin } from '@/env/getInfor_token';
+import { useNotification } from '@/components/UI_shared/Notification';
+import { authAPI } from '@/services/auth.service';
+import { usePermissions } from '@/contexts/PermissionContext';
+import { ProfileModal } from '@/modules/shared/ProfileModal';
+import { useDisclosure } from '@/components/hooks/useDisclosure';
+import env from '@/env';
 
 const { Header } = Layout;
 
 const Header_User = ({ menuItems }: { menuItems: any[] }) => {
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState<any>(null);
   const router = useRouter();
+  const show = useNotification();
+  const { refreshPermissions } = usePermissions();
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const {
+    isOpen: isProfileOpen,
+    open: openProfile,
+    close: closeProfile,
+  } = useDisclosure();
 
-
+  useEffect(() => {
+    const acc = getAccountLogin();
+    if (!acc) {
+      setCurrentAccount(null);
+    } else {
+      setCurrentAccount(acc);
+    }
+  }, []);
   const handleMenuClick = ({ key }: { key: string }) => {
     router.push(key);
-
     setDrawerVisible(false);
+  };
+  const handelProfile = () => {
+    openProfile();
+  };
+  const handleLogout = () => {
+    authAPI.logout();
+    refreshPermissions();
+    show.show({ result: 0, messageDone: 'Đăng xuất thành công' });
+    setCurrentAccount(null);
+    router.push(LOGIN_PATH);
+  };
+
+  const userMenu = {
+    items: [
+      {
+        key: 'profile',
+        label: 'Trang cá nhân',
+        onClick: handelProfile,
+      },
+      {
+        key: 'logout',
+        label: 'Đăng xuất',
+        onClick: handleLogout,
+      },
+    ],
   };
 
   return (
@@ -34,28 +79,51 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
             preview={false}
           />
         </div>
-
+        {overlayVisible && <div className="menu-overlay" />}
         <Menu
           theme="light"
+          onMouseEnter={() => setOverlayVisible(true)}
+          onMouseLeave={() => setOverlayVisible(false)}
           mode="horizontal"
           items={menuItems}
           className={styles.menu}
           onClick={handleMenuClick}
         />
         <GoogleTranslate />
-        <a href={LOGIN_PATH}>
-          <Button
-            style={{ marginRight: '10px', marginLeft: '10px' }}
-            type="primary"
-          >
-            Đăng nhập
-          </Button>
-        </a>
+
+        {currentAccount ? (
+          <Dropdown menu={userMenu} placement="bottomRight">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <Avatar
+                src={`${env.BASE_URL}${currentAccount.image}`}
+                icon={<UserOutlined />}
+                style={{ marginRight: 8 }}
+              />
+              <span>{currentAccount.name || currentAccount.username}</span>
+            </div>
+          </Dropdown>
+        ) : (
+          <a href={LOGIN_PATH}>
+            <Button
+              style={{ marginRight: '10px', marginLeft: '10px' }}
+              type="primary"
+            >
+              Đăng nhập
+            </Button>
+          </a>
+        )}
 
         <MenuOutlined
           className={styles.hamburger}
           onClick={() => setDrawerVisible(true)}
         />
+        <ProfileModal isOpen={isProfileOpen} onClose={closeProfile} />
       </div>
 
       <Drawer

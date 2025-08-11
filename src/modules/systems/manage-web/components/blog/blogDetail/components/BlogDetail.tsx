@@ -9,6 +9,7 @@ import {
   Button,
   Popconfirm,
   message,
+  Pagination,
 } from 'antd';
 import styles from './BlogDetail.module.scss';
 import parse from 'html-react-parser';
@@ -30,21 +31,33 @@ interface BlogDetailProps {
   blog?: IBlog_Get;
   listBlog?: IBlog_Get[];
   comments?: any[];
-  SearchComment:()=>void;
+  SearchComment: () => void;
+  TotalRecords: number;
+  pageSize?: number;
+  onPageChange?: (page: number, pageSize: number) => void;
 }
 
 export default function BlogDetail({
   blog,
   listBlog,
   comments,
-  SearchComment
+  SearchComment,
+  TotalRecords,
+  pageSize = 10,
+  onPageChange,
 }: BlogDetailProps) {
+  const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   const [newComment, setNewComment] = useState('');
   const { show } = useNotification();
 
   const handleDetailBlog = (id: string) => {
     router.push(`${BLOG_DETAIL_PATH}/${id}`);
+  };
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setCurrentPage(page);
+    if (onPageChange) onPageChange(page, pageSize);
   };
 
   const handleAddComment = async () => {
@@ -69,10 +82,10 @@ export default function BlogDetail({
       };
       const res = await createComment(request);
       show({
-              result: res.success ? 0 : 1,
-              messageDone:'Thêm bình luận thành công!',
-              messageError:'có lỗi khi thêm bình luận !',
-            })
+        result: res.success ? 0 : 1,
+        messageDone: 'Thêm bình luận thành công!',
+        messageError: 'có lỗi khi thêm bình luận !',
+      });
       SearchComment();
     } catch (err) {
       message.error('Lỗi khi thêm bình luận');
@@ -83,13 +96,16 @@ export default function BlogDetail({
     try {
       const currentAccount = getAccountLogin();
       if (!currentAccount) {
-      show({
-        result: 1,
-        messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+        show({
+          result: 1,
+          messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+        });
+        return;
+      }
+      const res = await deleteComment({
+        id,
+        deleted_by: currentAccount.username,
       });
-      return;
-    }
-      const res = await deleteComment({ id, deleted_by: currentAccount.username }); 
       if (res.success) {
         show({
           result: 0, // Mã thành công
@@ -155,7 +171,7 @@ export default function BlogDetail({
           <List
             itemLayout="horizontal"
             dataSource={comments}
-            renderItem={(item,index) => (
+            renderItem={(item, index) => (
               <List.Item
                 actions={[
                   <Popconfirm
@@ -181,7 +197,9 @@ export default function BlogDetail({
                   }
                   title={
                     <div>
-                      <strong style={{fontSize: '15px' }}>{item.author_name}</strong>{' '}
+                      <strong style={{ fontSize: '15px' }}>
+                        {item.author_name}
+                      </strong>{' '}
                       <span style={{ color: '#888', fontSize: 12 }}>
                         {formatDateVN(item.created_at)}
                       </span>
@@ -193,6 +211,16 @@ export default function BlogDetail({
             )}
           />
         </Card>
+        {/* Pagination Control */}
+        <div className={styles.paginationWrapper}>
+          <Pagination
+            current={currentPage}
+            total={TotalRecords}
+            pageSize={pageSize}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+          />
+        </div>
       </div>
 
       <div className={styles.rightSidebar}>

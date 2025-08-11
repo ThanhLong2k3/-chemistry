@@ -28,8 +28,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     document.title = "Đăng nhập";
-    console.log(env);
-
   }, []);
 
   const onFinish = async (values: any) => {

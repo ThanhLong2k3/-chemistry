@@ -82,6 +82,8 @@ $border-color: #e0e0e0;
     :global(.ant-menu-submenu-popup) {
       background-color: #fff !important;
       border: 1px solid $border-color;
+      background-color: #e41313;
+
     }
 
     :global(.ant-menu-submenu-popup .ant-menu-item) {
@@ -93,6 +95,10 @@ $border-color: #e0e0e0;
         color: $hover-color !important;
       }
     }
+    :global(.ant-menu-submenu-popup .ant-menu-item-selected) {
+    background-color: #fff !important;
+    color: $selected-color !important;
+  }
   }
 
   .headerActions {
@@ -227,4 +233,14 @@ $border-color: #e0e0e0;
   .logoText {
     font-size: 22px;
   }
+}
+
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999; 
+  height: 100%;
+  width: 100%;
 }

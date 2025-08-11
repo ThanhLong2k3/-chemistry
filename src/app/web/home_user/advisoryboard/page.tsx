@@ -225,7 +225,7 @@ const AdvisoryBoard: React.FC = () => {
           <Pagination
             current={currentPage}
             total={TotalRecords}
-            pageSize={6}
+            pageSize={9}
             onChange={handlePageChange}
             showSizeChanger={false}
           />

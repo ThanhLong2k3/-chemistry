@@ -103,31 +103,19 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
     }).format(new Date(date));
   };
 
-
-  const handleDownload = (fileName: string, examName: string) => {
-    try {
-      // Tạo URL download
-      const downloadUrl = `${env.BASE_URL}${fileName}`;
-      
-      // Tạo element a để trigger download
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = fileName; // Tên file khi download
-      link.target = '_blank'; // Mở tab mới nếu không thể download trực tiếp
-      
-      // Thêm vào DOM, click và xóa
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Có thể thêm notification thành công ở đây
-      console.log(`Đang tải xuống: ${examName}`);
-    } catch (error) {
-      console.error('Lỗi khi tải file:', error);
-      // Fallback: mở file trong tab mới
-      window.open(`${env.BASE_URL}${fileName}`, '_blank');
-    }
+  const handleDownload = async (exemfile:string, examName:string) => {
+    const res = await fetch(`${env.BASE_URL}${exemfile}`);
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = exemfile.split('/').pop() || 'file.pdf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
   };
+  
   return (
     <>
     <HeaderTitle title={"Danh sách đề thi"} />
@@ -147,6 +135,7 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
                     icon={<EyeOutlined />}
                     onClick={() => handleExamClick(exam.file)}
                     className={styles.actionBtn}
+                    style={{marginLeft:'20px'}}
                   >
                     Xem đề
                   </Button>
