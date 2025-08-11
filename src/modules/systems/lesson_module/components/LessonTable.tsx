@@ -239,7 +239,7 @@ export const LessonTable = () => {
         <Input
           placeholder="Nhập tên bài học để tìm kiếm..."
           value={nameLesson ?? ''}
-          onChange={(e) => setNameLesson(e.target.value)}
+          onChange={(e) => setNameLesson(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <LessonModal isCreate={true} getAll={getAllLesson} />

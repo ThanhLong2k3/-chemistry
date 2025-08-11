@@ -203,7 +203,13 @@ export const SubjectModal = ({
                 </Upload>
               </Form.Item>
 
-              <Form.Item name="name" label="Tên môn học" rules={RULES_FORM.required}>
+              <Form.Item
+                name="name"
+                label="Tên môn học"
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.noSpecialChars,
+                ]}>
                 <Input />
               </Form.Item>
 

@@ -128,7 +128,7 @@ export const RoleTable = () => {
         <Input
           placeholder=" Nhập tên nhóm quyền để tìm kiếm..."
           value={nameRole ?? ''}
-          onChange={(e) => setNameRole(e.target.value)}
+          onChange={(e) => setNameRole(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <RoleModal isCreate={true} getAll={getAllRole} />

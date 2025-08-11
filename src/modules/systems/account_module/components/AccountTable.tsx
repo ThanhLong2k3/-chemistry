@@ -129,7 +129,7 @@ export const AccountTable = () => {
         <Input
           placeholder="Nhập người dùng để tìm kiếm..."
           value={name ?? ''}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <AccountModal isCreate getAll={getAllAccount} />

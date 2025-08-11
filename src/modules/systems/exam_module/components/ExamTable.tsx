@@ -206,7 +206,7 @@ export const ExamTable = () => {
         <Input
           placeholder="Nhập tên bài kiểm tra để tìm kiếm..."
           value={nameExam ?? ''}
-          onChange={(e) => setNameExam(e.target.value)}
+          onChange={(e) => setNameExam(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <ExamModal isCreate getAll={getAllExam} />

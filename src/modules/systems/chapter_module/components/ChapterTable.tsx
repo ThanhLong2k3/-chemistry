@@ -168,7 +168,7 @@ export const ChapterTable = () => {
         <Input
           placeholder="Nhập tên chương để tìm kiếm..."
           value={nameChapter ?? ''}
-          onChange={(e) => setNameChapter(e.target.value)}
+          onChange={(e) => setNameChapter(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <ChapterModal isCreate getAll={getAllChapter} />
