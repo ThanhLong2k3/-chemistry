@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Form, Input, Button, Upload, Avatar, Typography, Spin, Modal, Divider } from 'antd';
+import { Form, Input, Button, Upload, Avatar, Typography, Spin, Modal, Divider, Row, Col } from 'antd';
 import type { UploadProps, RcFile, UploadFile } from 'antd/es/upload';
 import {
     UserOutlined,
@@ -153,7 +153,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
             open={isOpen}
             onCancel={onClose}
             footer={null}
-            width={600}
+            width={800}
             centered
         >
             {!currentUser ? <div style={{ textAlign: 'center', padding: '48px' }}><Spin /></div> : (
@@ -181,52 +181,56 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                             <Avatar size={100} src={previewImageUrl} icon={!previewImageUrl ? <CameraOutlined /> : undefined} />
                         </Upload>
                     </Form.Item>
+                    <Row gutter={24}>
+                        <Col span={12}>
 
-                    <Form.Item label="Tên đăng nhập">
-                        <Input prefix={<UserOutlined />} size="large" value={currentUser.username} disabled />
-                    </Form.Item>
+                            <Form.Item label="Tên đăng nhập">
+                                <Input prefix={<UserOutlined />} size="large" value={currentUser.username} disabled />
+                            </Form.Item>
 
-                    <Form.Item label="Họ và Tên" name="name" rules={RULES_FORM.required}>
-                        <Input prefix={<SmileOutlined />} placeholder="Ví dụ: Nguyễn Văn A" size="large" />
-                    </Form.Item>
+                            <Form.Item label="Họ và Tên" name="name" rules={RULES_FORM.required}>
+                                <Input prefix={<SmileOutlined />} placeholder="Ví dụ: Nguyễn Văn A" size="large" />
+                            </Form.Item>
 
-                    <Form.Item label="Email" name="email" rules={RULES_FORM.email}>
-                        <Input prefix={<MailOutlined />} placeholder="Nhập địa chỉ email" size="large" type="email" />
-                    </Form.Item>
+                            <Form.Item label="Email" name="email" rules={RULES_FORM.email}>
+                                <Input prefix={<MailOutlined />} placeholder="Nhập địa chỉ email" size="large" type="email" />
+                            </Form.Item>
+                        </Col>
 
-                    <Divider>Đổi mật khẩu (để trống nếu không đổi)</Divider>
+                        <Col span={12}>
+                            <Form.Item
+                                name="currentPassword"
+                                label="Mật khẩu hiện tại (để trống nếu không đổi mật khẩu)"
+                                rules={[{ required: !!form.getFieldValue('newPassword'), message: 'Vui lòng nhập mật khẩu hiện tại!' }]}
+                            >
+                                <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu hiện tại" size="large" />
+                            </Form.Item>
 
-                    <Form.Item
-                        name="currentPassword"
-                        label="Mật khẩu hiện tại"
-                        rules={[{ required: !!form.getFieldValue('newPassword'), message: 'Vui lòng nhập mật khẩu hiện tại!' }]}
-                    >
-                        <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu hiện tại" size="large" />
-                    </Form.Item>
+                            <Form.Item name="newPassword" label="Mật khẩu mới">
+                                <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu mới" size="large" />
+                            </Form.Item>
 
-                    <Form.Item name="newPassword" label="Mật khẩu mới">
-                        <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu mới" size="large" />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="confirmPassword"
-                        label="Xác nhận mật khẩu mới"
-                        dependencies={['newPassword']}
-                        rules={[
-                            { required: !!form.getFieldValue('newPassword'), message: 'Vui lòng xác nhận mật khẩu mới!' },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (!value && !getFieldValue('newPassword')) return Promise.resolve();
-                                    if (getFieldValue('newPassword') !== value) {
-                                        return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
-                                    }
-                                    return Promise.resolve();
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input.Password prefix={<LockOutlined />} placeholder="Nhập lại mật khẩu mới" size="large" />
-                    </Form.Item>
+                            <Form.Item
+                                name="confirmPassword"
+                                label="Xác nhận mật khẩu mới"
+                                dependencies={['newPassword']}
+                                rules={[
+                                    { required: !!form.getFieldValue('newPassword'), message: 'Vui lòng xác nhận mật khẩu mới!' },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value && !getFieldValue('newPassword')) return Promise.resolve();
+                                            if (getFieldValue('newPassword') !== value) {
+                                                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                                            }
+                                            return Promise.resolve();
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input.Password prefix={<LockOutlined />} placeholder="Nhập lại mật khẩu mới" size="large" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
 
                     <Form.Item style={{ marginTop: 24 }}>
                         <Button type="primary" htmlType="submit" size="large" loading={loading} block icon={<SaveOutlined />}>
