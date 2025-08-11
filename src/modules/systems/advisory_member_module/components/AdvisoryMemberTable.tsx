@@ -145,7 +145,7 @@ export const AdvisoryMemberTable = () => {
         <Input
           placeholder="Nhập tên thành viên ban tư vấn để tìm kiếm..."
           value={nameAdvisoryMember ?? ''}
-          onChange={(e) => setNameAdvisoryMember(e.target.value)}
+          onChange={(e) => setNameAdvisoryMember(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <AdvisoryMemberModal isCreate getAll={getAllAdvisoryMember} />

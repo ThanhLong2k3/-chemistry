@@ -169,7 +169,7 @@ export const SubjectTable = () => {
         <Input
           placeholder="Nhập tên môn học để tìm kiếm..."
           value={nameSubject ?? ''}
-          onChange={(e) => setNameSubject(e.target.value)}
+          onChange={(e) => setNameSubject(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <SubjectModal isCreate getAll={getAllSubject} />
