@@ -160,7 +160,11 @@ export const ExamModal = ({
         <Form layout="vertical" form={form} initialValues={{ description: '' }}>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name="name" label="Tên bài kiểm tra" rules={RULES_FORM.required}>
+              <Form.Item name="name" label="Tên bài kiểm tra"
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.noSpecialChars,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>

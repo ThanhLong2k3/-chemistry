@@ -14,6 +14,8 @@ interface keyValidator {
   department_name?: any;
   required_max50?: any;
   Description_max50?: any;
+  years_of_experience?: any;
+  noSpecialChars?: any
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -46,6 +48,49 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       message: 'Không nhập quá 50 ký tự',
     },
   ],
+
+  noSpecialChars: [
+    // 1. Quy tắc kiểm tra độ dài tối đa
+    {
+      max: 255,
+      message: 'Không được vượt quá 255 ký tự.',
+    },
+    // 2. Quy tắc kiểm tra ký tự đặc biệt
+    {
+      pattern: /^[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ_.-]*$/,
+      message: 'Không được chứa ký tự đặc biệt.',
+    },
+  ],
+
+  years_of_experience: [
+    {
+      required: true,
+      message: 'Không được để trống',
+    },
+    {
+      // pattern để đảm bảo chỉ nhập số nguyên
+      pattern: /^\d+$/,
+      message: 'Chỉ được nhập số nguyên dương.',
+    },
+    {
+      // validator tùy chỉnh để kiểm tra logic phức tạp hơn
+      validator: (_, value) => {
+
+        const numValue = Number(value);
+        if (isNaN(numValue)) {
+          return Promise.reject(new Error('Vui lòng nhập một số hợp lệ.'));
+        }
+        if (numValue < 0) {
+          return Promise.reject(new Error('Số năm kinh nghiệm không thể là số âm.'));
+        }
+        if (numValue > 80) { // Giới hạn hợp lý
+          return Promise.reject(new Error('Số năm kinh nghiệm không thể lớn hơn 80.'));
+        }
+        return Promise.resolve(); // Hợp lệ
+      },
+    }
+  ],
+
   phone: [
     {
       min: 9,

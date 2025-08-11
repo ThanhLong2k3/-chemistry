@@ -21,7 +21,7 @@ export const ADMIN_MANAGE_PROFILE_PATH = `${BASE_PATH}/${AUTH_PATH}/profile/`;
 
 // path ADMIN
 export const ADMIN_PATH = 'admin';
-export const ADMIN_OVERVIEW_PATH = `${BASE_PATH}/${ADMIN_PATH}/overview/`;
+export const ADMIN_DASHBOARD_PATH = `${BASE_PATH}/${ADMIN_PATH}/dashboard/`;
 export const ADMIN_MANAGE_ACCOUNT_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_account/`;
 export const ADMIN_MANAGE_ADVISORY_MEMBER_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_advisory_member/`;
 export const ADMIN_MANAGE_BLOG_PATH = `${BASE_PATH}/${ADMIN_PATH}/manage_blog/`;
