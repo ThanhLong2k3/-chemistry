@@ -9,7 +9,6 @@ export const getAccountLogin = () => {
         const accountInfo = jwtDecode<IDecodedToken>(token);
         return accountInfo;
     } catch (error) {
-        console.error("Lỗi giải mã token:", error);
         localStorage.removeItem('TOKEN');
         return null;
     }

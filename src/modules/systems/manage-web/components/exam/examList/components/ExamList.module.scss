@@ -259,7 +259,7 @@
 .examName {
   margin: 0 !important;
   color: #1a1a1a !important;
-  font-size: 1.25rem !important;
+  font-size: 2rem !important;
   font-weight: 600 !important;
   line-height: 1.4;
   flex: 1;
@@ -330,7 +330,7 @@
 .actionBtn {
   display: flex !important;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 6px;
   height: 36px;
   border-radius: 6px !important;

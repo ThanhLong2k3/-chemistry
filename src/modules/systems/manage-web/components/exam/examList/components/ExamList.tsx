@@ -103,41 +103,19 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
     }).format(new Date(date));
   };
 
-  const getSubjectTag = (subjectId: string) => {
-    const subjects: { [key: string]: { name: string; color: string } } = {
-      'sub-101': { name: 'Hóa 10', color: 'blue' },
-      'sub-102': { name: 'Hóa 11', color: 'green' },
-      'sub-103': { name: 'THPT QG', color: 'red' },
-      'sub-104': { name: 'Hóa 12', color: 'orange' }
-    };
-    const subject = subjects[subjectId] || { name: 'Khác', color: 'default' };
-    return <Tag color={subject.color}>{subject.name}</Tag>;
+  const handleDownload = async (exemfile:string, examName:string) => {
+    const res = await fetch(`${env.BASE_URL}${exemfile}`);
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = exemfile.split('/').pop() || 'file.pdf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
   };
-
-  const handleDownload = (fileName: string, examName: string) => {
-    try {
-      // Tạo URL download
-      const downloadUrl = `${env.BASE_URL}${fileName}`;
-      
-      // Tạo element a để trigger download
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = fileName; // Tên file khi download
-      link.target = '_blank'; // Mở tab mới nếu không thể download trực tiếp
-      
-      // Thêm vào DOM, click và xóa
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Có thể thêm notification thành công ở đây
-      console.log(`Đang tải xuống: ${examName}`);
-    } catch (error) {
-      console.error('Lỗi khi tải file:', error);
-      // Fallback: mở file trong tab mới
-      window.open(`${env.BASE_URL}${fileName}`, '_blank');
-    }
-  };
+  
   return (
     <>
     <HeaderTitle title={"Danh sách đề thi"} />
@@ -157,6 +135,7 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
                     icon={<EyeOutlined />}
                     onClick={() => handleExamClick(exam.file)}
                     className={styles.actionBtn}
+                    style={{marginLeft:'20px'}}
                   >
                     Xem đề
                   </Button>
@@ -178,10 +157,9 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
             >
               <div className={styles.examHeader}>
                 <div className={styles.examTitle}>
-                  <Title level={4} className={styles.examName}>
+                  <Title level={2} className={styles.examName}>
                     {exam.name}
                   </Title>
-                  {getSubjectTag(exam.subject_id)}
                 </div>
               </div>
 

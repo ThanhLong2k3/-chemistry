@@ -33,7 +33,7 @@ $border-color: #e0e0e0;
     @include flex-between;
     height: 64px;
     max-width: 80%;
-    margin:  auto;
+    margin: auto;
   }
 
   .logo {
@@ -51,49 +51,11 @@ $border-color: #e0e0e0;
       color: $primary-color;
     }
   }
-
-  .menu {
-    flex: 1;
-    background-color: transparent;
-    border-bottom: none;
-
-    :global(.ant-menu-item),
-    :global(.ant-menu-submenu) {
-      color: $text-color !important;
-      font-weight: 500;
-      padding: 0 16px;
-      transition: color 0.2s;
-    }
-
-    :global(.ant-menu-item:hover),
-    :global(.ant-menu-submenu:hover) {
-      color: $hover-color !important;
-    }
-
-    :global(.ant-menu-item-selected),
-    :global(.ant-menu-submenu-selected) {
-      color: $selected-color !important;
-    }
-
-    :global(.ant-menu-submenu-title) {
-      color: $text-color !important;
-    }
-
-    :global(.ant-menu-submenu-popup) {
-      background-color: #fff !important;
-      border: 1px solid $border-color;
-    }
-
-    :global(.ant-menu-submenu-popup .ant-menu-item) {
-      color: $text-color !important;
-      background-color: #fff !important;
-
-      &:hover {
-        background-color: #f5f5f5 !important;
-        color: $hover-color !important;
-      }
-    }
-  }
+.menu {
+  flex: 1;
+  background-color: transparent;
+  border-bottom: none;
+}
 
   .headerActions {
     @include flex-center;
@@ -114,6 +76,7 @@ $border-color: #e0e0e0;
 @media (max-width: 375px) {
   .header {
     display: flex;
+
     .logoText {
       font-size: 16px;
     }
@@ -123,6 +86,7 @@ $border-color: #e0e0e0;
       width: 100%;
       margin: 0px;
       max-width: 100%;
+
       .headerActions {
         width: 100%;
         justify-content: space-between;
@@ -133,12 +97,19 @@ $border-color: #e0e0e0;
   .hamburger {
     font-size: 20px;
   }
+
+  .avatarContainer {
+    span {
+      display: none; // ẩn tên người dùng, chỉ để avatar
+    }
+  }
 }
 
 /* MOBILE PHỔ BIẾN: 376px – 575px */
 @media (max-width: 575px) {
   .header {
     padding: 0 12px;
+
     .logoText {
       font-size: 17px;
     }
@@ -151,12 +122,17 @@ $border-color: #e0e0e0;
   .menu {
     display: none;
   }
+
+  .avatarContainer {
+    display: none;
+  }
 }
 
 /* TABLET ĐỨNG: 576px – 767px */
 @media (min-width: 576px) and (max-width: 767px) {
   .header {
     padding: 0 16px;
+
     .logoText {
       font-size: 18px;
     }
@@ -169,12 +145,19 @@ $border-color: #e0e0e0;
   .menu {
     display: none;
   }
+
+  .avatarContainer {
+
+    display: none; // ẩn tên người dùng, chỉ để avatar
+
+  }
 }
 
 /* TABLET NGANG: 768px – 991px */
 @media (min-width: 768px) and (max-width: 991px) {
   .header {
     padding: 0 20px;
+
     .logoText {
       font-size: 19px;
     }
@@ -202,6 +185,7 @@ $border-color: #e0e0e0;
   .menu {
     display: none;
   }
+
   .logoText {
     font-size: 20px;
   }
@@ -227,4 +211,18 @@ $border-color: #e0e0e0;
   .logoText {
     font-size: 22px;
   }
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* màu tối */
+  z-index: 10000000000000; /* cao hơn menu */
+  display: none; /* mặc định ẩn */
+}
+.menu-overlay.active {
+  display: block;
 }

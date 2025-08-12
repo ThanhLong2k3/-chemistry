@@ -10,6 +10,8 @@ import {
   HOME_PATH,
   PERIODIC_TABLE_PATH,
   EXAM_LIST_PATH,
+  REVIEW_FILE_PDF_PATH,
+  LESSON_LIST_PATH,
 } from '@/path';
 import { Home_Api } from '@/services/home.service';
 import {
@@ -21,7 +23,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Layout } from 'antd';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import env from '@/env';
 
 const Home_User = ({ children }: { children: React.ReactNode }) => {
@@ -36,25 +38,52 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
       const res = await Home_Api.GetSubjectsWithLessons();
       const rawData = res?.data.data || [];
 
-      const cleaned = rawData.map((subject:any) => ({
+      const cleaned = rawData.map((subject: any) => ({
         ...subject,
         lessons: Array.isArray(subject.lessons) ? subject.lessons : [],
       }));
 
       const staticMenuItems = [
         { key: HOME_PATH, icon: <HomeOutlined />, label: 'TRANG CHỦ' },
-        { key: ADVISORY_BOARD_PATH, icon: <UserOutlined />, label: 'BAN TƯ VẤN' },
+        {
+          key: ADVISORY_BOARD_PATH,
+          icon: <UserOutlined />,
+          label: 'BAN TƯ VẤN',
+        },
         { key: BLOG_LIST_PATH, icon: <FileTextOutlined />, label: 'BÀI VIẾT' },
-        { key: PERIODIC_TABLE_PATH, icon: <ExperimentOutlined />, label: 'BẢNG TUẦN HOÀN' },
+        {
+          key: PERIODIC_TABLE_PATH,
+          icon: <ExperimentOutlined />,
+          label: 'BẢNG TUẦN HOÀN',
+        },
       ];
-      const dynamicMenuItems = cleaned.map((subject:any) => {
-
-        const subjectKey = subject.subject_name.toLowerCase().replace(/\s+/g, '-');
+      const dynamicMenuItems = cleaned.map((subject: any) => {
+        const subjectKey = `${LESSON_LIST_PATH}/${subject.subject_id}`
+          .toLowerCase()
+          .replace(/\s+/g, '-');
         const children = [
-          { key: `${EXAM_LIST_PATH}/${subject.subject_id}`, label: 'Đề kiểm tra' },
-          { key: subject.flip_exercise_book   ? `${subject.flip_exercise_book  }`:`${env.BASE_URL}${subject.exercise_book}`, label: 'Vở bài tập' },
-          { key:  subject.flip_workbook  ? `${subject.flip_workbook }`:`${env.BASE_URL}${subject.workbook}`, label: 'Sách bài tập' },
-          { key: subject.flip_textbook    ? `${subject.flip_textbook   }`:`${env.BASE_URL}${subject.textbook }`, label: 'Sách giáo khoa' },
+          {
+            key: `${EXAM_LIST_PATH}/?id=${subject.subject_id}`,
+            label: 'Đề kiểm tra',
+          },
+          {
+            key: `${REVIEW_FILE_PDF_PATH}/?id=${
+              subject.subject_id
+            }&type=${'VBT'}`,
+            label: 'Vở bài tập',
+          },
+          {
+            key: `${REVIEW_FILE_PDF_PATH}/?id=${
+              subject.subject_id
+            }&type=${'SBT'}`,
+            label: 'Sách bài tập',
+          },
+          {
+            key: `${REVIEW_FILE_PDF_PATH}/?id=${
+              subject.subject_id
+            }&type=${'SGK'}`,
+            label: 'Sách giáo khoa',
+          },
         ];
 
         return {
@@ -74,7 +103,8 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header_User menuItems={menuItems} />
-      {children}
+      <Suspense fallback={<div>Đang tải...</div>}>{children}</Suspense>
+
       <Footer_User menuItems={menuItems} />
       <SmartChatComponent />
     </Layout>
