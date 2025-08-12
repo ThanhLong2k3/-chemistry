@@ -8,7 +8,7 @@ import { UserOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, GoogleOut
 import { RULES_FORM } from '@/utils/validator';
 import { useNotification } from '@/components/UI_shared/Notification';
 import styles from './LoginPage.module.scss';
-import { ADMIN_MANAGE_ACCOUNT_PATH, FOGOTPASS_PATH, HOME_PATH, REGISTER_PATH } from '@/path';
+import { ADMIN_DASHBOARD_PATH, ADMIN_MANAGE_ACCOUNT_PATH, FOGOTPASS_PATH, HOME_PATH, REGISTER_PATH } from '@/path';
 import { jwtDecode } from 'jwt-decode';
 import { IDecodedToken } from '@/types/decodedToken';
 import { usePermissions } from '@/contexts/PermissionContext';
@@ -62,7 +62,7 @@ export default function LoginPage() {
         router.push(`${HOME_PATH}`);
       }
       else {
-        router.push(`${ADMIN_MANAGE_ACCOUNT_PATH}`);
+        router.push(`${ADMIN_DASHBOARD_PATH}`);
       }
 
     } catch (err: any) {
