@@ -21,7 +21,7 @@ export const usePermissions = () => useContext(PermissionContext);
 export const PermissionProvider = ({ children }: { children: ReactNode }) => {
     const [permissions, setPermissions] = useState<string[]>([]);
 
-    // 2. Tách logic đọc token ra hàm riêng, bọc trong useCallback
+    //Tách logic đọc token ra hàm riêng, bọc trong useCallback
     const updatePermissionsFromToken = useCallback(() => {
         const accountInfo = getAccountLogin();
         if (accountInfo && accountInfo.permissions) {

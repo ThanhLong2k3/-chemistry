@@ -15,7 +15,7 @@ export const ManageLesson = () => {
 
     return (
         <>
-            <Header_Children title={'Quản lý nội dung bài học/Quản lý bài học'} />
+            <Header_Children title={'Quản lý nội dung bài học/ Quản lý bài học'} />
             {
                 !hasPermission('LESSON_MANAGE') ? (
                     <div>

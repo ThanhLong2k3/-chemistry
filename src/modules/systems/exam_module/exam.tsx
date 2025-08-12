@@ -15,7 +15,7 @@ export const ManageExam = () => {
 
     return (
         <>
-            <Header_Children title={'Quản lý nội dung bài học/Quản lý đề kiểm tra'} />
+            <Header_Children title={'Quản lý nội dung bài học/ Quản lý đề kiểm tra'} />
             {
                 !hasPermission('EXAM_MANAGE') ? (
                     <div>
