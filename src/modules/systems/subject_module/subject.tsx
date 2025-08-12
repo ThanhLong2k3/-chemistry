@@ -15,7 +15,7 @@ export const ManageSubject = () => {
 
     return (
         <>
-            <Header_Children title={'Quản lý nội dung bài học/Quản lý môn học'} />
+            <Header_Children title={'Quản lý nội dung bài học/ Quản lý môn học'} />
             {
                 !hasPermission('SUBJECT_MANAGE') ?
                     (

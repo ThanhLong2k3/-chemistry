@@ -15,7 +15,7 @@ export const ManageChapter = () => {
 
     return (
         <>
-            <Header_Children title={'Quản lý nội dung bài học/Quản lý chương'} />
+            <Header_Children title={'Quản lý nội dung bài học/ Quản lý chương'} />
             {
                 !hasPermission('CHAPTER_MANAGE') ? (
                     <div>

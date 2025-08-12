@@ -33,6 +33,10 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
     const { show } = useNotification();
     const [form] = Form.useForm();
     const [currentUser, setCurrentUser] = useState<IDecodedToken | null>(null);
+    // 1. DÙNG Form.useWatch ĐỂ THEO DÕI MẬT KHẨU HIỆN TẠI
+    const currentPasswordValue = Form.useWatch('currentPassword', form);
+    // Biến này sẽ là true nếu người dùng đã nhập gì đó vào ô "Mật khẩu hiện tại"
+    const isChangingPassword = !!currentPasswordValue?.trim();
 
     const imageFileList = Form.useWatch('image', form);
 
@@ -206,7 +210,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                                 <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu hiện tại" size="large" />
                             </Form.Item>
 
-                            <Form.Item name="newPassword" label="Mật khẩu mới">
+                            <Form.Item name="newPassword" label="Mật khẩu mới" rules={isChangingPassword ? RULES_FORM.password : []}>
                                 <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu mới" size="large" />
                             </Form.Item>
 
@@ -214,18 +218,21 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                                 name="confirmPassword"
                                 label="Xác nhận mật khẩu mới"
                                 dependencies={['newPassword']}
-                                rules={[
-                                    { required: !!form.getFieldValue('newPassword'), message: 'Vui lòng xác nhận mật khẩu mới!' },
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (!value && !getFieldValue('newPassword')) return Promise.resolve();
-                                            if (getFieldValue('newPassword') !== value) {
-                                                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
-                                            }
-                                            return Promise.resolve();
-                                        },
-                                    }),
-                                ]}
+                                rules={
+                                    isChangingPassword
+                                        ? [ // Nếu đang đổi mật khẩu, áp dụng các quy tắc này
+                                            { required: true, message: 'Vui lòng xác nhận mật khẩu mới!' },
+                                            ({ getFieldValue }) => ({
+                                                validator(_, value) {
+                                                    if (!value || getFieldValue('newPassword') === value) {
+                                                        return Promise.resolve();
+                                                    }
+                                                    return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                                                },
+                                            }),
+                                        ]
+                                        : [] // Nếu không đổi mật khẩu, không áp dụng quy tắc nào
+                                }
                             >
                                 <Input.Password prefix={<LockOutlined />} placeholder="Nhập lại mật khẩu mới" size="large" />
                             </Form.Item>
