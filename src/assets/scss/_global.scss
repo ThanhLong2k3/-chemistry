@@ -25,6 +25,12 @@
 html {
   font-size: 62.5%;
 }
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
 
 body {
   font-family: 'Reddit Sans', sans-serif;
@@ -259,4 +265,4 @@ body {
 
 :global(.ant-table-body)::-webkit-scrollbar-track {
   background-color: transparent;
-}
+

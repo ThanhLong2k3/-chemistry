@@ -107,7 +107,7 @@ const AdvisoryBoard: React.FC = () => {
   const getAllAdvisoryMember = async () => {
     const data: any = await searchAdvisoryMember({
       page_index: currentPage,
-      page_size: 6,
+      page_size: 9,
       order_type: 'ASC',
       search_content_1: null,
     });
@@ -225,7 +225,7 @@ const AdvisoryBoard: React.FC = () => {
           <Pagination
             current={currentPage}
             total={TotalRecords}
-            pageSize={6}
+            pageSize={9}
             onChange={handlePageChange}
             showSizeChanger={false}
           />

@@ -16,9 +16,8 @@ interface LessonDetailProps {
 }
 export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProps) {
   const router = useRouter();  
-  console.log('Lesson relatedLessons:', relatedLessons);
   const handleDetailLesson=(id:string)=>{
-         router.push(`${LESSON_DETAIL_PATH}/${id}`);
+         router.push(`${LESSON_DETAIL_PATH}/?id=${id}`);
     }
   return (
     <div className={styles.lessonWrapper}>

@@ -13,7 +13,7 @@
 }
 
 .leftContent {
-  flex: 4; // 80%
+  flex: 3.5; // 80%
   text-align: justify;
   p{
     font-size: 18px;
@@ -59,7 +59,7 @@
 }
 
 .rightSidebar {
-  flex: 1; // 20%
+  flex: 1.5; // 20%
   
   .sidebarTitle {
     margin-bottom: 12px;
@@ -168,3 +168,34 @@
 
 /* 4K, TV: ≥ 1440px */
 @media (min-width: 1440px) {}
+
+
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+
+  // Tùy chỉnh màu tím nhẹ cho Pagination
+  :global(.ant-pagination-item-active) {
+    background-color: #e6e0ff; // tím nhẹ
+    border-color: #b197fc;
+  }
+
+  :global(.ant-pagination-item-active a) {
+    color: #5f3dc4; // màu chữ tím đậm hơn
+  }
+
+  :global(.ant-pagination-item a:hover) {
+    color: #5f3dc4; // màu tím khi hover
+  }
+
+  :global(.ant-pagination-item:hover) {
+    border-color: #b197fc;
+  }
+
+  :global(.ant-pagination-next:hover .ant-pagination-item-link),
+  :global(.ant-pagination-prev:hover .ant-pagination-item-link) {
+    color: #5f3dc4;
+    border-color: #b197fc;
+  }
+}
