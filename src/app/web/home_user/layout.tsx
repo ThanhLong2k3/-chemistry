@@ -23,7 +23,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Layout } from 'antd';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import env from '@/env';
 
 const Home_User = ({ children }: { children: React.ReactNode }) => {
@@ -63,19 +63,25 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
           .replace(/\s+/g, '-');
         const children = [
           {
-            key: `${EXAM_LIST_PATH}/${subject.subject_id}`,
+            key: `${EXAM_LIST_PATH}/?id=${subject.subject_id}`,
             label: 'Đề kiểm tra',
           },
           {
-            key: `${REVIEW_FILE_PDF_PATH}/${subject.subject_id}/VBT`,
+            key: `${REVIEW_FILE_PDF_PATH}/?id=${
+              subject.subject_id
+            }&type=${'VBT'}`,
             label: 'Vở bài tập',
           },
           {
-            key: `${REVIEW_FILE_PDF_PATH}/${subject.subject_id}/SBT`,
+            key: `${REVIEW_FILE_PDF_PATH}/?id=${
+              subject.subject_id
+            }&type=${'SBT'}`,
             label: 'Sách bài tập',
           },
           {
-            key: `${REVIEW_FILE_PDF_PATH}/${subject.subject_id}/SGK`,
+            key: `${REVIEW_FILE_PDF_PATH}/?id=${
+              subject.subject_id
+            }&type=${'SGK'}`,
             label: 'Sách giáo khoa',
           },
         ];
@@ -97,7 +103,8 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header_User menuItems={menuItems} />
-      {children}
+      <Suspense fallback={<div>Đang tải...</div>}>{children}</Suspense>
+
       <Footer_User menuItems={menuItems} />
       <SmartChatComponent />
     </Layout>

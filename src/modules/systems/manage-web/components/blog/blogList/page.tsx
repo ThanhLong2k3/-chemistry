@@ -36,7 +36,6 @@ const BlogList: React.FC<BlogListProps> = ({
     return diffDays <= 7;
   };
 
-  console.log('Blog Data trang con:', blogData);
 
   const formatDate = (dateString: Date) => {
     const date = new Date(dateString);
@@ -53,7 +52,7 @@ const BlogList: React.FC<BlogListProps> = ({
   };
 
   const handleBlogClick = (id: string) => {
-    router.push(`${BLOG_DETAIL_PATH}/${id}`);
+    router.push(`${BLOG_DETAIL_PATH}/?id=${id}`);
   };
   return (
     <>

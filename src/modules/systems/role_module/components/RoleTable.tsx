@@ -9,6 +9,7 @@ import { IDecodedToken } from '@/types/decodedToken';
 import { getAccountLogin } from '@/env/getInfor_token';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
+import env from '@/env';
 
 export const RoleTable = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -102,7 +103,7 @@ export const RoleTable = () => {
       align: 'center',
       render: (_, record) => {
         // Nếu id là mã đặc biệt thì không hiển thị nút sửa/xóa
-        if (record.id === 'ade9dcaa-ee35-42a4-8855-3ba1506fa65a') {
+        if (record.id === `${env.ID_ROLE_STUDENT }`) {
           return null;
         }
 

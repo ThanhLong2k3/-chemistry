@@ -89,10 +89,10 @@ const ScienceForumHomepage: React.FC = () => {
     },
   ];
   const handleOpenLessonList = (id: string) => {
-    router.push(`${LESSON_LIST_PATH}/${id}`);
+    router.push(`${LESSON_LIST_PATH}/?id=${id}`);
   };
   const handleOpenLessonDetail = (id: number | string) => {
-    router.push(`${LESSON_DETAIL_PATH}/${id}`);
+    router.push(`${LESSON_DETAIL_PATH}/?id=${id}`);
   };
   return (
     <Layout className={styles.layout}>

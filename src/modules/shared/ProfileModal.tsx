@@ -1,19 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Upload,
-  Avatar,
-  Typography,
-  Spin,
-  Modal,
-  Divider,
-  Col,
-  Row,
-} from 'antd';
+import { Form, Input, Button, Upload, Avatar, Typography, Spin, Modal, Divider, Row, Col } from 'antd';
 import type { UploadProps, RcFile, UploadFile } from 'antd/es/upload';
 import {
   UserOutlined,

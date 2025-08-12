@@ -51,56 +51,11 @@ $border-color: #e0e0e0;
       color: $primary-color;
     }
   }
-
-  .menu {
-    flex: 1;
-    background-color: transparent;
-    border-bottom: none;
-
-    :global(.ant-menu-item),
-    :global(.ant-menu-submenu) {
-      color: $text-color !important;
-      font-weight: 500;
-      padding: 0 16px;
-      transition: color 0.2s;
-    }
-
-    :global(.ant-menu-item:hover),
-    :global(.ant-menu-submenu:hover) {
-      color: $hover-color !important;
-    }
-
-    :global(.ant-menu-item-selected),
-    :global(.ant-menu-submenu-selected) {
-      color: $selected-color !important;
-    }
-
-    :global(.ant-menu-submenu-title) {
-      color: $text-color !important;
-    }
-
-    :global(.ant-menu-submenu-popup) {
-      background-color: #fff !important;
-      border: 1px solid $border-color;
-      background-color: #e41313;
-
-    }
-
-    :global(.ant-menu-submenu-popup .ant-menu-item) {
-      color: $text-color !important;
-      background-color: #fff !important;
-
-      &:hover {
-        background-color: #f5f5f5 !important;
-        color: $hover-color !important;
-      }
-    }
-
-    :global(.ant-menu-submenu-popup .ant-menu-item-selected) {
-      background-color: #fff !important;
-      color: $selected-color !important;
-    }
-  }
+.menu {
+  flex: 1;
+  background-color: transparent;
+  border-bottom: none;
+}
 
   .headerActions {
     @include flex-center;
@@ -258,12 +213,16 @@ $border-color: #e0e0e0;
   }
 }
 
-
 .menu-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
-  height: 100%;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* màu tối */
+  z-index: 10000000000000; /* cao hơn menu */
+  display: none; /* mặc định ẩn */
+}
+.menu-overlay.active {
+  display: block;
 }

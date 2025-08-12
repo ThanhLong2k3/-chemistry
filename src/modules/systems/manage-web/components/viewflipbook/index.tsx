@@ -2,7 +2,6 @@
 
 import env from '@/env';
 import { searchSubject } from '@/services/subject.service';
-import { px } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function ViewFlipBookPageClient({

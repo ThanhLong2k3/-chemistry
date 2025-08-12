@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
-  output: 'export', // Build thành static files
-  distDir: 'build', // Tùy chọn: thư mục output
+  output: 'export', 
+  distDir: 'build', 
   images: {
     unoptimized: true,
   },

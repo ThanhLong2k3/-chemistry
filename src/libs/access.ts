@@ -1,6 +1,4 @@
 import CryptoJS from 'crypto-js';
-import { SignJWT, jwtVerify } from 'jose';
-import type { JWTPayload } from 'jose';
 
 import env from '@/env';
 

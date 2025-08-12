@@ -12,13 +12,12 @@ import {
   Pagination,
 } from 'antd';
 import styles from './BlogDetail.module.scss';
-import parse from 'html-react-parser';
 import { IBlog_Get } from '@/types/blog';
 import env from '@/env';
 import { formatDateVN } from '@/utils/date';
 import { useRouter } from 'next/navigation';
 import { BLOG_DETAIL_PATH } from '@/path';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createComment, deleteComment } from '@/services/comment.service';
 import { getAccountLogin } from '@/env/getInfor_token';
 import { useNotification } from '@/components/UI_shared/Notification';
@@ -50,11 +49,21 @@ export default function BlogDetail({
   const router = useRouter();
   const [newComment, setNewComment] = useState('');
   const { show } = useNotification();
-
+  const [currentAccount, setAurrentAccount] = useState<any>();
   const handleDetailBlog = (id: string) => {
-    router.push(`${BLOG_DETAIL_PATH}/${id}`);
+    router.push(`${BLOG_DETAIL_PATH}/?id=${id}`);
   };
-
+  useEffect(() => {
+    const currentAccount = getAccountLogin();
+    if (!currentAccount) {
+      show({
+        result: 1,
+        messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+      });
+      return;
+    }
+    setAurrentAccount(currentAccount);
+  }, []);
   const handlePageChange = (page: number, pageSize: number) => {
     setCurrentPage(page);
     if (onPageChange) onPageChange(page, pageSize);
@@ -84,8 +93,9 @@ export default function BlogDetail({
       show({
         result: res.success ? 0 : 1,
         messageDone: 'Thêm bình luận thành công!',
-        messageError: 'có lỗi khi thêm bình luận !',
+        messageError: 'Có lỗi khi thêm bình luận!',
       });
+      setNewComment('');
       SearchComment();
     } catch (err) {
       message.error('Lỗi khi thêm bình luận');
@@ -108,12 +118,11 @@ export default function BlogDetail({
       });
       if (res.success) {
         show({
-          result: 0, // Mã thành công
+          result: 0,
           messageDone: 'Xóa bình luận thành công!',
         });
-        SearchComment(); // Tải lại dữ liệu
+        SearchComment();
       } else {
-        // Trường hợp API trả về success: false nhưng không ném lỗi
         show({
           result: 1,
           messageError: res.message || 'Có lỗi xảy ra!',
@@ -135,8 +144,7 @@ export default function BlogDetail({
             <span>
               <strong>Ngày tạo: </strong>
               {formatDateVN(blog?.created_at)} - <strong>Người tạo:</strong>{' '}
-              {blog?.created_by_name}  - <strong>Lượt xem:</strong>{' '}
-              {blog?.views} 
+              {blog?.created_by_name} - <strong>Lượt xem:</strong> {blog?.views}
             </span>
           </div>
           <div
@@ -172,46 +180,58 @@ export default function BlogDetail({
           <List
             itemLayout="horizontal"
             dataSource={comments}
-            renderItem={(item, index) => (
-              <List.Item
-                actions={[
-                  <Popconfirm
-                    key={index}
-                    title="Xóa bình luận này?"
-                    onConfirm={() => handleDeleteComment(item.id)}
-                    okText="Xóa"
-                    cancelText="Hủy"
-                  >
-                    <a>Xóa</a>
-                  </Popconfirm>,
-                ]}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      src={
-                        item.author_image
-                          ? `${env.BASE_URL}${item.author_image}`
-                          : '/image/default_avatar.png'
-                      }
-                    />
+            renderItem={(item, index) => {
+              const isAuthorComment =
+                currentAccount?.username === item.created_by;
+              const isAuthorBlog =
+                currentAccount?.username === blog?.created_by;
+              const canDelete = isAuthorComment || isAuthorBlog;
+
+              return (
+                <List.Item
+                  actions={
+                    canDelete
+                      ? [
+                          <Popconfirm
+                            key={index}
+                            title="Xóa bình luận này?"
+                            onConfirm={() => handleDeleteComment(item.id)}
+                            okText="Xóa"
+                            cancelText="Hủy"
+                          >
+                            <a>Xóa</a>
+                          </Popconfirm>,
+                        ]
+                      : []
                   }
-                  title={
-                    <div>
-                      <strong style={{ fontSize: '15px' }}>
-                        {item.author_name}
-                      </strong>{' '}
-                      <span style={{ color: '#888', fontSize: 12 }}>
-                        {formatDateVN(item.created_at)}
-                      </span>
-                    </div>
-                  }
-                  description={item.content}
-                />
-              </List.Item>
-            )}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        src={
+                          item.author_image? `${env.BASE_URL}${item.author_image}`: '/default-avatar.png'
+                        }
+                        alt="Avatar"
+                      />
+                    }
+                    title={
+                      <div>
+                        <strong style={{ fontSize: '15px' }}>
+                          {item.author_name}
+                        </strong>{' '}
+                        <span style={{ color: '#888', fontSize: 12 }}>
+                          {formatDateVN(item.created_at)}
+                        </span>
+                      </div>
+                    }
+                    description={item.content}
+                  />
+                </List.Item>
+              );
+            }}
           />
         </Card>
+
         {/* Pagination Control */}
         <div className={styles.paginationWrapper}>
           <Pagination

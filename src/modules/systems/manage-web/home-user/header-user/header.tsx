@@ -23,7 +23,7 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
   const router = useRouter();
   const show = useNotification();
   const { refreshPermissions } = usePermissions();
-  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayActive, setOverlayActive] = useState(false);
   const {
     isOpen: isProfileOpen,
     open: openProfile,
@@ -69,86 +69,88 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
   };
 
   return (
-    <Header className={styles.header}>
-      <div className={styles.headerContent}>
-        <div className={styles.logo}>
-          <Image
-            src="https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/395374478-648703620778409-6977458858086740057-n-01-01-1.png"
-            alt="Diễn đàn Hóa học"
-            className={styles.logoImage}
-            preview={false}
+    <>
+      <div className={`menu-overlay ${overlayActive ? 'active' : ''}`} />
+      <Header className={styles.header}>
+        <div className={styles.headerContent}>
+          <div className={styles.logo}>
+            <Image
+              src="https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/395374478-648703620778409-6977458858086740057-n-01-01-1.png"
+              alt="Diễn đàn Hóa học"
+              className={styles.logoImage}
+              preview={false}
+            />
+          </div>
+          <Menu
+            theme="light"
+            onMouseEnter={() => setOverlayActive(true)} // khi hover vào menu
+            onMouseLeave={() => setOverlayActive(false)} // khi rời khỏi menu
+            mode="horizontal"
+            items={menuItems}
+            className={styles.menu}
+            onClick={handleMenuClick}
           />
-        </div>
-        {overlayVisible && <div className="menu-overlay" />}
-        <Menu
-          theme="light"
-          onMouseEnter={() => setOverlayVisible(true)}
-          onMouseLeave={() => setOverlayVisible(false)}
-          mode="horizontal"
-          items={menuItems}
-          className={styles.menu}
-          onClick={handleMenuClick}
-        />
-        <GoogleTranslate />
+          <GoogleTranslate />
 
-        {currentAccount ? (
-          <Dropdown menu={userMenu} placement="bottomRight">
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                gap: 8,
-              }}
-            >
-              <Avatar
-                src={`${env.BASE_URL}${currentAccount.image}`}
-                icon={<UserOutlined />}
-                size={40} // to hơn
-                shape="circle"
+          {currentAccount ? (
+            <Dropdown menu={userMenu} placement="bottomRight">
+              <div
                 style={{
-                  border: '2px solid #1890ff',
-                  backgroundColor: '#f0f0f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  gap: 8,
                 }}
-              />
-              <span 
-              className={styles.avatarContainer}
-              >{currentAccount.name || currentAccount.username}</span>
-            </div>
-          </Dropdown>
-        ) : (
-          <a href={LOGIN_PATH}>
-            <Button
-              style={{ marginRight: '10px', marginLeft: '10px' }}
-              type="primary"
-            >
-              Đăng nhập
-            </Button>
-          </a>
-        )}
+              >
+                <Avatar
+                  src={`${env.BASE_URL}${currentAccount.image}`}
+                  icon={<UserOutlined />}
+                  size={40} // to hơn
+                  shape="circle"
+                  style={{
+                    border: '2px solid #1890ff',
+                    backgroundColor: '#f0f0f0',
+                  }}
+                />
+                <span className={styles.avatarContainer}>
+                  {currentAccount.name || currentAccount.username}
+                </span>
+              </div>
+            </Dropdown>
+          ) : (
+            <a href={LOGIN_PATH}>
+              <Button
+                style={{ marginRight: '10px', marginLeft: '10px' }}
+                type="primary"
+              >
+                Đăng nhập
+              </Button>
+            </a>
+          )}
 
-        <MenuOutlined
-          className={styles.hamburger}
-          onClick={() => setDrawerVisible(true)}
-        />
-        <ProfileModal isOpen={isProfileOpen} onClose={closeProfile} />
-      </div>
+          <MenuOutlined
+            className={styles.hamburger}
+            onClick={() => setDrawerVisible(true)}
+          />
+          <ProfileModal isOpen={isProfileOpen} onClose={closeProfile} />
+        </div>
 
-      <Drawer
-        title="Danh mục"
-        placement="right"
-        onClose={() => setDrawerVisible(false)}
-        open={drawerVisible}
-        bodyStyle={{ padding: 0 }}
-      >
-        <Menu
-          mode="inline"
-          items={menuItems}
-          onClick={handleMenuClick}
-          selectable={false}
-        />
-      </Drawer>
-    </Header>
+        <Drawer
+          title="Danh mục"
+          placement="right"
+          onClose={() => setDrawerVisible(false)}
+          open={drawerVisible}
+          style={{ padding: 0, backgroundColor: 'white', color: 'black' }}
+        >
+          <Menu
+            mode="inline"
+            items={menuItems}
+            onClick={handleMenuClick}
+            selectable={false}
+          />
+        </Drawer>
+      </Header>
+    </>
   );
 };
 
