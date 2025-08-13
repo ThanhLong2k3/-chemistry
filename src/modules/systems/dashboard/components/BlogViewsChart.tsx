@@ -41,7 +41,7 @@ const formatAPIDateJS = (date: Date) => {
 const defaultDateRange: RangeValue = [subDaysJS(new Date(), 6), new Date()];
 
 export const BlogViewsChart = () => {
-    const [data, setData] = useState<IBlogView[]>([]);
+    const [data, setData] = useState<any>([]);
     const [dateRange, setDateRange] = useState<RangeValue>(defaultDateRange);
     const [loading, setLoading] = useState(true);
     const { show } = useNotification();
@@ -79,7 +79,7 @@ export const BlogViewsChart = () => {
 
                     show({
                         result: 1,
-                        messageError: errorMessage
+                        messageError: errorMessage,
                     });
 
                     setDateRange(defaultDateRange);
@@ -135,3 +135,4 @@ export const BlogViewsChart = () => {
         </Card>
     );
 };
+

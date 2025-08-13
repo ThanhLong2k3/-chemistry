@@ -20,7 +20,7 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
   const router = useRouter();
 
   const handleLessonClick = (lessonId: string) => {
-    router.push(`${LESSON_DETAIL_PATH}/${lessonId}`);
+    router.push(`${LESSON_DETAIL_PATH}/?id=${lessonId}`);
   };
 
   return (

@@ -26,6 +26,14 @@ html {
   font-size: 62.5%;
 }
 
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
 body {
   font-family: 'Reddit Sans', sans-serif;
 

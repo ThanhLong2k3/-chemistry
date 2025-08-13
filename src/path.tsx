@@ -7,7 +7,7 @@ export const LESSON_LIST_PATH = `${HOME_BASE_PATH}/lesson/lessonlist`;
 export const LESSON_DETAIL_PATH = `${HOME_BASE_PATH}/lesson/lessondetail`;
 export const BLOG_LIST_PATH = `${HOME_BASE_PATH}/blog/bloglist`;
 export const BLOG_DETAIL_PATH = `${HOME_BASE_PATH}/blog/blogdetail`;
-export const REVIEW_FILE_PDF_PATH = `${HOME_BASE_PATH}/reviewfilepdf`;
+export const REVIEW_FILE_PDF_PATH = `${HOME_BASE_PATH}/viewflipbook`;
 export const EXAM_LIST_PATH = `${HOME_BASE_PATH}/exam/examList`;
 export const EXAM_DETAIL_PATH = `${HOME_BASE_PATH}/exam/examDetail`;
 

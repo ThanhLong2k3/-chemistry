@@ -3,11 +3,6 @@
 import React from 'react';
 import { Layout, Row, Col, Typography, Space, Divider } from 'antd';
 import {
-  HomeOutlined,
-  UserOutlined,
-  FacebookOutlined,
-  FileTextOutlined,
-  ExperimentOutlined,
   BookOutlined,
   PhoneOutlined,
   MailOutlined,
@@ -23,11 +18,8 @@ const Footer_User = ({ menuItems }: { menuItems: any[] }) => {
   const router = useRouter();
 
   const handleClick = (key: string) => {
-    if (key === 'facebook-link') {
-      window.open('https://www.facebook.com/diendanhoahoc.2023', '_blank');
-    } else {
+   
       router.push(key);
-    }
   };
 
   return (

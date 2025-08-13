@@ -60,7 +60,7 @@ $card-background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
-    width: 18%;
+    width: 19.5%;
     height: 280px; 
     display: flex;
     overflow: hidden;
@@ -196,7 +196,6 @@ $card-background: #ffffff;
 
     .featureCard {
       width: 100%;
-      max-width: 300px;
       height: 220px; 
 
       .featureIconContainer {
@@ -362,7 +361,7 @@ $card-background: #ffffff;
     .subjectButton {
       font-size: 16px;
       height: 50px;
-      padding: 12px 24px;
+      padding: 20px;
       border-radius: 10px; /* Bo góc mượt hơn thay vì 20% */
       border: 1px solid #ffffff;
       background: linear-gradient(

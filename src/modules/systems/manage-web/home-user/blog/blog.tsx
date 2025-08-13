@@ -104,7 +104,7 @@ const BlogItem = ({ blogData }: { blogData: IBlog[] }) => {
   }, []);
 
   const handleBlogClick = (id: string) => {
-    router.push(`${BLOG_DETAIL_PATH}/${id}`);
+    router.push(`${BLOG_DETAIL_PATH}?id=${id}`);
   };
 
   return (
