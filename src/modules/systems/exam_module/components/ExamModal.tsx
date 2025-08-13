@@ -208,6 +208,7 @@ export const ExamModal = ({
 
           <Form.Item name="description" label="Mô tả">
             <ReactQuill
+              className="custom-quill"
               theme="snow"
               value={description}
               onChange={(value) => {

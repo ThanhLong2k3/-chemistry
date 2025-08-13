@@ -103,7 +103,7 @@ export const RoleTable = () => {
       align: 'center',
       render: (_, record) => {
         // Nếu id là mã đặc biệt thì không hiển thị nút sửa/xóa
-        if (record.id === `${env.ID_ROLE_STUDENT }`) {
+        if (record.id === `${env.ID_ROLE_STUDENT}`) {
           return null;
         }
 

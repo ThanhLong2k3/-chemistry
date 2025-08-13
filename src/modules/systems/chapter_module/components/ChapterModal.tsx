@@ -220,6 +220,7 @@ export const ChapterModal = ({
 
           <Form.Item name="description" label="Mô tả">
             <ReactQuill
+              className="custom-quill"
               theme="snow"
               value={description}
               onChange={(value) => {

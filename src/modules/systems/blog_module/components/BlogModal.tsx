@@ -186,6 +186,7 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
 
           <Form.Item name="description" label="Mô tả">
             <ReactQuill
+              className="custom-quill"
               theme="snow"
               value={description}
               onChange={(value) => {
