@@ -35,7 +35,7 @@ const BlogDetailPageClient = ({ id }: Props) => {
       search_content_1: id,
     });
     setComments(comment.data || []);
-    setTotalRecords(comment.data[0].TotalRecords || []);
+    setTotalRecords(comment.data[0]?.TotalRecords || []);
   };
   const GetListBlog = async () => {
     const data: any = await searchBlog({

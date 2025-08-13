@@ -26,16 +26,18 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
   return (
     <div className={styles.lessonListWrapper}>
       <Title level={2} className={styles.pageTitle}>
-        Danh sách bài học
+        DANH SÁCH BÀI HỌC
       </Title>
       <Collapse className={styles.Collapse}>
         {chapters.map((chapter) => (
-          <Panel header={chapter.chapter_name} key={chapter.chapter_id}>
-            {chapter.chapter_description && (
-              <Paragraph className={styles.chapterDesc}>
-                {parse(chapter.chapter_description)}
-              </Paragraph>
-            )}
+          <Panel
+            header={
+              <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                {chapter.chapter_name}
+              </span>
+            }
+            key={chapter.chapter_id}
+          >
             <div className={styles.lessonCards}>
               {chapter.lessons.map((lesson) => (
                 <Card
@@ -56,10 +58,7 @@ const LessonList: React.FC<LessonListProps> = ({ chapters }) => {
                     />
                   }
                 >
-                  <Card.Meta
-                    title={lesson.name}
-                    description={parse(lesson.description?.slice(0, 100) + '...')}
-                  />
+                  <Card.Meta title={lesson.name} />
                 </Card>
               ))}
             </div>

@@ -98,7 +98,10 @@ export default function BlogDetail({
       setNewComment('');
       SearchComment();
     } catch (err) {
-      message.error('Lỗi khi thêm bình luận');
+      show({
+        result: 1,
+        messageError: 'Vui lòng đăng nhập để thực hiện chức năng này !',
+      });
     }
   };
 
@@ -141,10 +144,14 @@ export default function BlogDetail({
             {blog?.title}
           </Title>
           <div style={{ display: 'flex' }}>
-            <span>
-              <strong>Ngày tạo: </strong>
-              {formatDateVN(blog?.created_at)} - <strong>Người tạo:</strong>{' '}
-              {blog?.created_by_name} - <strong>Lượt xem:</strong> {blog?.views}
+            <span style={{ fontSize: '1.25rem', color: '#808080' }}>
+              <span style={{ marginRight: '20px',fontSize: '1.25rem', color: '#808080' }}>
+                Ngày tạo: {formatDateVN(blog?.created_at)}
+              </span>
+              <span style={{ marginRight: '20px',fontSize: '1.25rem', color: '#808080' }}>
+                Người tạo: {blog?.created_by_name}
+              </span>
+              <span style={{ fontSize: '1.25rem', color: '#808080'}} >Lượt xem: {blog?.views}</span>
             </span>
           </div>
           <div
@@ -209,7 +216,9 @@ export default function BlogDetail({
                     avatar={
                       <Avatar
                         src={
-                          item.author_image? `${env.BASE_URL}${item.author_image}`: '/default-avatar.png'
+                          item.author_image
+                            ? `${env.BASE_URL}${item.author_image}`
+                            : '/default-avatar.png'
                         }
                         alt="Avatar"
                       />

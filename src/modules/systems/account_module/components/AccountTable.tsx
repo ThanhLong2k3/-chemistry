@@ -70,7 +70,7 @@ export const AccountTable = () => {
     },
     {
       title: 'Ảnh đại diện',
-      width: 80,
+      width: 100,
       dataIndex: 'image',
       align: 'center',
 
@@ -140,7 +140,7 @@ export const AccountTable = () => {
         columns={columns}
         dataSource={listAccount}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="username"
         pagination={{
           current: pageIndex,

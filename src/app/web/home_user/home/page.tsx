@@ -94,6 +94,12 @@ const ScienceForumHomepage: React.FC = () => {
   const handleOpenLessonDetail = (id: number | string) => {
     router.push(`${LESSON_DETAIL_PATH}/?id=${id}`);
   };
+  const stripHtml = (html:any) => {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || '';
+  };
+
   return (
     <Layout className={styles.layout}>
       <Content className={styles.content}>
@@ -166,14 +172,9 @@ const ScienceForumHomepage: React.FC = () => {
                 {/* Content Section */}
                 <div className={styles.subject_content_section}>
                   <div className={styles.content_body}>
-                    {subject.description.split('\n').map((line, index) => (
-                      <Paragraph
-                        key={index}
-                        className={styles.subjectDescription}
-                      >
-                        {parse(line)}
-                      </Paragraph>
-                    ))}
+                    <Paragraph className={styles.subjectDescription}>
+                      {stripHtml(subject.description).slice(0, 900) + '...'}
+                    </Paragraph>
                   </div>
                 </div>
 
@@ -201,7 +202,7 @@ const ScienceForumHomepage: React.FC = () => {
                     type="primary"
                     className={styles.subjectButton}
                     onClick={() => handleOpenLessonList(subject.subject_id)}
-                    style={{paddingTop:'5px', paddingBottom:'5px'}}
+                    style={{ paddingTop: '5px', paddingBottom: '5px' }}
                   >
                     Xem bài học
                   </Button>

@@ -63,6 +63,10 @@ const Home_User = ({ children }: { children: React.ReactNode }) => {
           .replace(/\s+/g, '-');
         const children = [
           {
+            key: `${LESSON_LIST_PATH}/?id=${subject.subject_id}`,
+            label: 'Bài học',
+          },
+          {
             key: `${EXAM_LIST_PATH}/?id=${subject.subject_id}`,
             label: 'Đề kiểm tra',
           },
