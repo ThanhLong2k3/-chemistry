@@ -16,7 +16,7 @@ import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
 import { IDecodedToken } from '@/types/decodedToken';
 import { UpLoadImage } from '@/services/upload.service';
-import env from '@/env';
+import env from "@/env";
 import { getAccountLogin } from '@/env/getInfor_token';
 import { authAPI } from '@/services/auth.service';
 
@@ -43,9 +43,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   // Logic để tạo URL xem trước
   const previewImageUrl = imageFileList?.[0]?.url?.startsWith('blob:')
     ? imageFileList?.[0]?.url
-    : imageFileList?.[0]?.url
-      ? `${env.BASE_URL}${imageFileList?.[0]?.url}`
-      : imageFileList?.[0]?.thumbUrl;
+    : imageFileList?.[0]?.url ? `${env.BASE_URL}${imageFileList?.[0]?.url}` : imageFileList?.[0]?.thumbUrl;
 
   // useEffect để điền dữ liệu vào form khi Modal được mở
   useEffect(() => {
@@ -54,14 +52,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
       if (account) {
         setCurrentUser(account);
         const initialImage: UploadFile[] = account.image
-          ? [
-            {
-              uid: '-1',
-              name: 'avatar.png',
-              status: 'done',
-              url: account.image,
-            },
-          ]
+          ? [{ uid: '-1', name: 'avatar.png', status: 'done', url: account.image }]
           : [];
         form.setFieldsValue({
           ...account,
@@ -118,10 +109,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
       const updateResponse = await authAPI.updateProfile(dataToUpdate);
 
       if (updateResponse.success) {
-        show({
-          result: 0,
-          messageDone: updateResponse.message || 'Cập nhật thành công!',
-        });
+        show({ result: 0, messageDone: updateResponse.message || 'Cập nhật thành công!' });
         // --- XỬ LÝ TOKEN MỚI ---
         if (updateResponse.token) {
           // 1. Lấy token mới từ response
@@ -138,19 +126,13 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
           window.location.reload();
         }, 1500);
       } else {
-        show({
-          result: 1,
-          messageError: updateResponse.message || 'Cập nhật thất bại.',
-        });
+        show({ result: 1, messageError: updateResponse.message || 'Cập nhật thất bại.' });
       }
     } catch (err: any) {
       if (err.errorFields) {
         console.log('Lỗi validation:', err.errorFields);
       } else {
-        show({
-          result: 1,
-          messageError: err.message || 'Có lỗi xảy ra. Vui lòng thử lại.',
-        });
+        show({ result: 1, messageError: err.message || 'Có lỗi xảy ra. Vui lòng thử lại.' });
       }
     } finally {
       setLoading(false);
@@ -158,7 +140,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   };
 
   const handleImageChange: UploadProps['onChange'] = ({ fileList }) => {
-    const newFileList = fileList.map((file) => {
+    const newFileList = fileList.map(file => {
       if (!file.url && file.originFileObj) {
         file.url = URL.createObjectURL(file.originFileObj as RcFile);
       }
@@ -171,113 +153,61 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
 
   return (
     <Modal
-      title={
-        <Title level={4} style={{ textAlign: 'center', margin: 0 }}>
-          Chỉnh sửa thông tin cá nhân
-        </Title>
-      }
+      title={<Title level={4} style={{ textAlign: 'center', margin: 0 }}>Chỉnh sửa thông tin cá nhân</Title>}
       open={isOpen}
       onCancel={onClose}
       footer={null}
-      width="100%"
-      style={{ maxWidth: 800 }} // Giới hạn max width
+      width={800}
       centered
-      bodyStyle={{ padding: 16 }} // Nhỏ hơn trên mobile
     >
-      {!currentUser ? (
-        <div style={{ textAlign: 'center', padding: '48px' }}>
-          <Spin />
-        </div>
-      ) : (
-        <Form
-          name="profile"
-          form={form}
-          onFinish={handleOk}
-          layout="vertical"
-          autoComplete="off"
-        >
-          <Form.Item
-            name="image"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            style={{ display: 'flex', justifyContent: 'center' }}
-          >
+      {!currentUser ? <div style={{ textAlign: 'center', padding: '48px' }}><Spin /></div> : (
+        <Form name="profile" form={form} onFinish={handleOk} layout="vertical" autoComplete="off">
+
+          <Form.Item name="image" valuePropName="fileList" getValueFromEvent={normFile} style={{ display: 'flex', justifyContent: 'center' }}>
             <Upload
               name="avatar"
               listType="picture-circle"
               showUploadList={false}
               onChange={handleImageChange}
               maxCount={1}
-              beforeUpload={() => false}
+              beforeUpload={(file) => {
+                if (file.name.length > 70) {
+                  show({
+                    result: 1,
+                    messageError: 'Tên ảnh không được vượt quá 70 ký tự.',
+                  });
+                  return Upload.LIST_IGNORE; // Ngăn file được thêm vào danh sách
+                }
+                return false; // Giữ nguyên hành vi upload thủ công
+              }}
               accept=".jpg,.jpeg,.png,.gif,.webp"
             >
-              <Avatar
-                size={100}
-                src={previewImageUrl}
-                icon={!previewImageUrl ? <CameraOutlined /> : undefined}
-              />
+              <Avatar size={100} src={previewImageUrl} icon={!previewImageUrl ? <CameraOutlined /> : undefined} />
             </Upload>
           </Form.Item>
+          <Row gutter={24}>
+            <Col span={12}>
 
-          <Row gutter={[16, 16]}>
-            {/* Cột 1 */}
-            <Col xs={24} md={12}>
               <Form.Item label="Tên đăng nhập">
-                <Input
-                  prefix={<UserOutlined />}
-                  size="large"
-                  value={currentUser.username}
-                  disabled
-                />
+                <Input prefix={<UserOutlined />} size="large" value={currentUser.username} disabled />
               </Form.Item>
 
-              <Form.Item
-                label="Họ và Tên"
-                name="name"
-                rules={RULES_FORM.required}
-              >
-                <Input
-                  prefix={<SmileOutlined />}
-                  placeholder="Ví dụ: Nguyễn Văn A"
-                  size="large"
-                />
+              <Form.Item label="Họ và Tên" name="name" rules={RULES_FORM.required}>
+                <Input prefix={<SmileOutlined />} placeholder="Ví dụ: Nguyễn Văn A" size="large" />
               </Form.Item>
 
               <Form.Item label="Email" name="email" rules={RULES_FORM.email}>
-                <Input
-                  prefix={<MailOutlined />}
-                  placeholder="Nhập địa chỉ email"
-                  size="large"
-                  type="email"
-                />
+                <Input prefix={<MailOutlined />} placeholder="Nhập địa chỉ email" size="large" type="email" />
               </Form.Item>
             </Col>
 
-            {/* Cột 2 */}
-            <Col xs={24} md={12}>
+            <Col span={12}>
               <Form.Item
                 name="currentPassword"
-                label="Mật khẩu hiện tại"
-                rules={[
-                  {
-                    required: !!form.getFieldValue('newPassword'),
-                    message: 'Vui lòng nhập mật khẩu hiện tại!',
-                  },
-                ]}
+                label="Mật khẩu hiện tại (để trống nếu không đổi mật khẩu)"
+                rules={[{ required: !!form.getFieldValue('newPassword'), message: 'Vui lòng nhập mật khẩu hiện tại!' }]}
               >
-                <Input.Password
-                  prefix={<LockOutlined />}
-                  placeholder="Nhập mật khẩu hiện tại"
-                  size="large"
-                />
-              </Form.Item>
-
-              <Form.Item name="newPassword" label="Mật khẩu mới">
-                <Input.Password
-                  prefix={<LockOutlined />}
-                  placeholder="Nhập mật khẩu mới"
-                  size="large"
-                />
+                <Input.Password prefix={<LockOutlined />} placeholder="Nhập mật khẩu hiện tại" size="large" />
               </Form.Item>
 
               <Form.Item name="newPassword" label="Mật khẩu mới" rules={isChangingPassword ? RULES_FORM.password : []}>
