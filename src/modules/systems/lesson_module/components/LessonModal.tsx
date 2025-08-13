@@ -363,6 +363,7 @@ export const LessonModal = ({
             <Col span={24}>
               <Form.Item name="description" label="Mô tả">
                 <ReactQuill
+                  className="custom-quill"
                   theme="snow"
                   value={description}
                   onChange={(value) => {

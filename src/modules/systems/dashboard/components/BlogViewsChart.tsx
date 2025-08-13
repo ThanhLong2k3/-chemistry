@@ -3,20 +3,42 @@
 import { useEffect, useState } from 'react';
 import { Card, DatePicker, Spin } from 'antd';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format, subDays } from 'date-fns';
-import dayjs from 'dayjs';
-import type { Dayjs } from 'dayjs';
-import axios from 'axios'; // Import axios để kiểm tra lỗi
+import axios from 'axios';
 
 import { getBlogViews } from '@/services/dashboard.service';
 import { IBlogView } from '@/types/dashboard';
 import { useNotification } from '@/components/UI_shared/Notification';
+import dayjs from 'dayjs';
+
 
 const { RangePicker } = DatePicker;
-type RangeValue = [Dayjs | null, Dayjs | null] | null;
+type RangeValue = [Date | null, Date | null] | null;
 
-// Hằng số cho giá trị mặc định, giúp dễ dàng reset
-const defaultDateRange: RangeValue = [dayjs(subDays(new Date(), 6)), dayjs(new Date())];
+// Hàm lấy ngày trước đó
+const subDaysJS = (date: Date, days: number) => {
+    const copy = new Date(date);
+    copy.setDate(copy.getDate() - days);
+    return copy;
+};
+
+// Hàm format ngày sang chuỗi dd/MM/yyyy
+const formatDateJS = (date: Date) => {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+};
+
+// Hàm format ngày sang chuỗi yyyy-MM-dd
+const formatAPIDateJS = (date: Date) => {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+};
+
+// Giá trị mặc định: 7 ngày gần nhất
+const defaultDateRange: RangeValue = [subDaysJS(new Date(), 6), new Date()];
 
 export const BlogViewsChart = () => {
     const [data, setData] = useState<IBlogView[]>([]);
@@ -25,36 +47,33 @@ export const BlogViewsChart = () => {
     const { show } = useNotification();
 
     useEffect(() => {
-        // Chỉ fetch khi có đủ ngày bắt đầu và kết thúc
         if (dateRange && dateRange[0] && dateRange[1]) {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const startDate = dateRange[0]!.format('YYYY-MM-DD');
-                    const endDate = dateRange[1]!.format('YYYY-MM-DD');
+                    if (dateRange && dateRange[0] && dateRange[1]) {
+                        const startDate = formatAPIDateJS(dateRange[0]!);
+                        const endDate = formatAPIDateJS(dateRange[1]!);
 
-                    const response = await getBlogViews(startDate, endDate);
+                        const response = await getBlogViews(startDate, endDate);
 
-                    if (response.success) {
-                        const formattedData = response.data.map((item) => ({
-                            ...item,
-                            date: format(new Date(item.date), 'dd/MM/yyyy'),
-                        }));
-                        setData(formattedData);
-                    } else {
-                        throw new Error(response.message);
+                        if (response.success) {
+                            const formattedData = response.data.map((item) => ({
+                                ...item,
+                                date: formatDateJS(new Date(item.date)),
+                            }));
+                            setData(formattedData);
+                        } else {
+                            throw new Error(response.message);
+                        }
                     }
-                } catch (err: unknown) { // Dùng `unknown` cho an toàn kiểu dữ liệu
+                } catch (err: unknown) {
                     console.error("Lỗi khi tải dữ liệu biểu đồ:", err);
 
                     let errorMessage = 'Không thể tải dữ liệu.';
-
-                    // Kiểm tra xem đây có phải là lỗi của Axios không
                     if (axios.isAxiosError(err) && err.response) {
-                        // Nếu có, ưu tiên lấy message từ data của response
                         errorMessage = err.response.data.message || err.message;
                     } else if (err instanceof Error) {
-                        // Xử lý các lỗi js thông thường
                         errorMessage = err.message;
                     }
 
@@ -63,7 +82,6 @@ export const BlogViewsChart = () => {
                         messageError: errorMessage
                     });
 
-                    // Reset lại khoảng ngày về mặc định sau khi báo lỗi
                     setDateRange(defaultDateRange);
                 } finally {
                     setLoading(false);
@@ -71,19 +89,29 @@ export const BlogViewsChart = () => {
             };
             fetchData();
         }
-    }, [dateRange]); // Chạy lại mỗi khi người dùng thay đổi khoảng ngày
+    }, [dateRange]);
 
     return (
         <Card
             title="Thống kê lượt xem bài viết"
             extra={
                 <RangePicker
-                    value={dateRange}
-                    onChange={(dates) => setDateRange(dates)}
+                    value={
+                        dateRange
+                            ? [dateRange[0] ? dayjs(dateRange[0]) : null, dateRange[1] ? dayjs(dateRange[1]) : null]
+                            : null
+                    }
+                    onChange={(dates) => {
+                        if (dates && dates[0] && dates[1]) {
+                            setDateRange([dates[0].toDate(), dates[1].toDate()]);
+                        } else {
+                            setDateRange(null);
+                        }
+                    }}
                     presets={[
-                        { label: '7 ngày qua', value: [dayjs().subtract(6, 'd'), dayjs()] },
-                        { label: '30 ngày qua', value: [dayjs().subtract(29, 'd'), dayjs()] },
-                        { label: '90 ngày qua', value: [dayjs().subtract(89, 'd'), dayjs()] },
+                        { label: '7 ngày qua', value: [dayjs(subDaysJS(new Date(), 6)), dayjs(new Date())] },
+                        { label: '30 ngày qua', value: [dayjs(subDaysJS(new Date(), 29)), dayjs(new Date())] },
+                        { label: '90 ngày qua', value: [dayjs(subDaysJS(new Date(), 89)), dayjs(new Date())] },
                     ]}
                     format="DD/MM/YYYY"
                 />
@@ -91,9 +119,6 @@ export const BlogViewsChart = () => {
         >
             <div style={{ height: 400, position: 'relative' }}>
                 {loading && <Spin style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />}
-
-                {!loading}
-
                 {!loading && (
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

@@ -260,3 +260,15 @@ body {
 :global(.ant-table-body)::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
+.custom-quill .ql-container {
+  min-height: 200px;
+  max-height: 300px;
+  /* Giới hạn tối đa */
+  overflow-y: auto;
+  /* Cuộn khi quá cao */
+}
+
+.custom-quill .ql-editor {
+  min-height: 150px;
+}

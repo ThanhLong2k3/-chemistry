@@ -21,7 +21,7 @@ export const showDateFormat = (date: string | null) => {
   return dataShow;
 };
 
-  export const formatDateVN = (dateStr?: string) => {
+export const formatDateVN = (dateStr?: string) => {
   if (!dateStr) return 'Không xác định';
   return new Date(dateStr).toLocaleString('vi-VN', {
     timeZone: 'Asia/Ho_Chi_Minh',
