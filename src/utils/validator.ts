@@ -1,7 +1,6 @@
 import { useNotification } from '@/components/UI_shared/Notification';
 import { FormRule } from 'antd';
 
-
 interface keyValidator {
   required?: any;
   email?: any;
@@ -15,7 +14,7 @@ interface keyValidator {
   required_max50?: any;
   Description_max50?: any;
   years_of_experience?: any;
-  noSpecialChars?: any
+  noSpecialChars?: any;
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -26,9 +25,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
+      pattern: /^(?!\s+$).*/gm,
     },
-
   ],
   email: [
     {
@@ -41,7 +39,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
+      pattern: /^(?!\s+$).*/gm,
     },
     {
       max: 50,
@@ -57,8 +55,10 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     // 2. Quy tắc kiểm tra ký tự đặc biệt (chỉ cho phép thêm dấu :)
     {
-      pattern: /^[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ:_.-]*$/,
-      message: 'Không được chứa ký tự đặc biệt (chỉ cho phép dấu ":").',
+      pattern:
+        /^(?=.*[a-zA-ZÀ-ỹ])[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ:_.-]*$/,
+      message:
+        'Tên phải chứa ít nhất một chữ cái và không chỉ toàn số hoặc ký tự đặc biệt.',
     },
   ],
 
@@ -75,20 +75,24 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     {
       // validator tùy chỉnh để kiểm tra logic phức tạp hơn
       validator: (_, value) => {
-
         const numValue = Number(value);
         if (isNaN(numValue)) {
           return Promise.reject(new Error('Vui lòng nhập một số hợp lệ.'));
         }
         if (numValue < 0) {
-          return Promise.reject(new Error('Số năm kinh nghiệm không thể là số âm.'));
+          return Promise.reject(
+            new Error('Số năm kinh nghiệm không thể là số âm.')
+          );
         }
-        if (numValue > 80) { // Giới hạn hợp lý
-          return Promise.reject(new Error('Số năm kinh nghiệm không thể lớn hơn 80.'));
+        if (numValue > 80) {
+          // Giới hạn hợp lý
+          return Promise.reject(
+            new Error('Số năm kinh nghiệm không thể lớn hơn 80.')
+          );
         }
         return Promise.resolve(); // Hợp lệ
       },
-    }
+    },
   ],
 
   phone: [
@@ -100,7 +104,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
+      pattern: /^(?!\s+$).*/gm,
     },
   ],
   number: [
@@ -111,8 +115,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
   username: [
     {
@@ -123,8 +127,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
   password: [
     {
@@ -136,14 +140,13 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
   people_name: [
     {
       required: true,
       message: 'Không được để trống',
-
     },
     {
       pattern:
@@ -153,7 +156,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
+      pattern: /^(?!\s+$).*/gm,
     },
     {
       max: 50,
@@ -171,8 +174,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
   department_name: [
     {
@@ -188,14 +191,13 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
   required_max50: [
     {
       required: true,
       message: 'Không được để trống',
-
     },
     {
       min: 1,
@@ -207,8 +209,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
   Description_max50: [
     {
@@ -221,15 +223,15 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       message: 'Không được bỏ trống',
-      pattern: /^(?!\s+$).*/gm
-    }
+      pattern: /^(?!\s+$).*/gm,
+    },
   ],
 };
 
 export const validateDates = (
   startDate: string,
   endDate?: string | null,
-  show?: (msg: any) => void,
+  show?: (msg: any) => void
 ): boolean => {
   if (endDate && endDate < startDate) {
     show?.({
@@ -243,18 +245,18 @@ export const validateDates = (
 
 export const checkDateOfBirth = (
   DateOfBirth: string | null,
-  show?: (msg: any) => void,
+  show?: (msg: any) => void
 ) => {
   if (DateOfBirth) {
     const regex = /^(\d{4})-(\d{2})-(\d{2})$|^(\d{2})\/(\d{2})\/(\d{4})$/;
     if (!regex.test(DateOfBirth)) {
       show?.({
         result: 1,
-        messageError: 'Định dạng ngày sinh không hợp lệ (yyyy-mm-dd hoặc dd/mm/yyyy)',
+        messageError:
+          'Định dạng ngày sinh không hợp lệ (yyyy-mm-dd hoặc dd/mm/yyyy)',
       });
       return false;
     }
-
 
     const parsedDate = DateOfBirth.includes('-')
       ? new Date(DateOfBirth)
@@ -282,7 +284,10 @@ export const checkDateOfBirth = (
   return true;
 };
 
-export const checkNumber = (value: number | null, show?: (msg: any) => void,) => {
+export const checkNumber = (
+  value: number | null,
+  show?: (msg: any) => void
+) => {
   if (value && value < 0) {
     show?.({
       result: 1,
@@ -291,4 +296,4 @@ export const checkNumber = (value: number | null, show?: (msg: any) => void,) =>
     return false;
   }
   return true;
-}
+};

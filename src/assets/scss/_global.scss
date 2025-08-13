@@ -26,6 +26,7 @@ html {
   font-size: 62.5%;
 }
 
+
 body {
   font-family: 'Reddit Sans', sans-serif;
 
@@ -261,10 +262,12 @@ body {
   background-color: transparent;
 }
 
-
-.ql-toolbar.ql-snow,
-.ql-container.ql-snow {
-  border: none !important;
+.custom-quill .ql-container {
+  min-height: 200px;
+  max-height: 300px;
+  /* Giới hạn tối đa */
+  overflow-y: auto;
+  /* Cuộn khi quá cao */
 }
 
 .ql-toolbar.ql-snow {
@@ -287,3 +290,6 @@ body {
 }
 
 .ant-table-cell { white-space: nowrap; }
+.custom-quill .ql-editor {
+  min-height: 150px;
+}

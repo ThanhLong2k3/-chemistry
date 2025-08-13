@@ -20,12 +20,13 @@ interface Props {
   isCreate?: boolean;
   row?: IRole;
   getAll: () => void;
+  get_All_Role:()=>void;
 }
 
 export const RoleModal = ({
   isCreate = false,
   row,
-  getAll,
+  getAll,get_All_Role,
 }: Props): JSX.Element => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
@@ -105,6 +106,7 @@ export const RoleModal = ({
         }
       }
       getAll();
+      get_All_Role();
       setTimeout(() => {
         close();
       }, 1000);
@@ -174,18 +176,15 @@ export const RoleModal = ({
           </Row>
 
           <Form.Item name="description" label="Mô tả">
-            <div className="custom-quill-wrapper">
-              <ReactQuill
-                theme="snow"
-                value={description}
-                onChange={(value) => {
-                  setDescription(value);
-                  form.setFieldsValue({ description: value });
-                }}
-                className="custom-quill"
-                style={{ height: '200px', marginBottom: '20px' }}
-              />
-            </div>
+            <ReactQuill
+              className="custom-quill"
+              theme="snow"
+              value={description}
+              onChange={(value) => {
+                setDescription(value);
+                form.setFieldsValue({ description: value });
+              }}
+            />
           </Form.Item>
         </Form>
       </Modal>

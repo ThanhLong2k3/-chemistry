@@ -49,24 +49,18 @@ export default function BlogDetail({
   const router = useRouter();
   const [newComment, setNewComment] = useState('');
   const { show } = useNotification();
-  const [currentAccount, setAurrentAccount] = useState<any>();
+  const [currentAccount, setAurrentAccount] = useState<any>(null);
   const handleDetailBlog = (id: string) => {
     router.push(`${BLOG_DETAIL_PATH}/?id=${id}`);
   };
   useEffect(() => {
     const currentAccount = getAccountLogin();
-    if (!currentAccount) {
-      show({
-        result: 1,
-        messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
-      });
-      return;
-    }
     setAurrentAccount(currentAccount);
   }, []);
   const handlePageChange = (page: number, pageSize: number) => {
     setCurrentPage(page);
     if (onPageChange) onPageChange(page, pageSize);
+
   };
 
   const handleAddComment = async () => {
@@ -145,13 +139,27 @@ export default function BlogDetail({
           </Title>
           <div style={{ display: 'flex' }}>
             <span style={{ fontSize: '1.25rem', color: '#808080' }}>
-              <span style={{ marginRight: '20px',fontSize: '1.25rem', color: '#808080' }}>
+              <span
+                style={{
+                  marginRight: '20px',
+                  fontSize: '1.25rem',
+                  color: '#808080',
+                }}
+              >
                 Ngày tạo: {formatDateVN(blog?.created_at)}
               </span>
-              <span style={{ marginRight: '20px',fontSize: '1.25rem', color: '#808080' }}>
+              <span
+                style={{
+                  marginRight: '20px',
+                  fontSize: '1.25rem',
+                  color: '#808080',
+                }}
+              >
                 Người tạo: {blog?.created_by_name}
               </span>
-              <span style={{ fontSize: '1.25rem', color: '#808080'}} >Lượt xem: {blog?.views}</span>
+              <span style={{ fontSize: '1.25rem', color: '#808080' }}>
+                Lượt xem: {blog?.views}
+              </span>
             </span>
           </div>
           <div
@@ -188,11 +196,11 @@ export default function BlogDetail({
             itemLayout="horizontal"
             dataSource={comments}
             renderItem={(item, index) => {
-              const isAuthorComment =
-                currentAccount?.username === item.created_by;
-              const isAuthorBlog =
-                currentAccount?.username === blog?.created_by;
-              const canDelete = isAuthorComment || isAuthorBlog;
+              const isAuthorComment = currentAccount?.username === item.created_by;
+              const isAuthorBlog = currentAccount?.username === blog?.updated_by;
+              const isNameAuthorBlog = currentAccount?.name === blog?.created_by_name;
+
+              const canDelete = currentAccount && (isAuthorComment || isAuthorBlog || isNameAuthorBlog);
 
               return (
                 <List.Item

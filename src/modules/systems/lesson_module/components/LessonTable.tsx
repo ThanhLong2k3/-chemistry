@@ -137,8 +137,9 @@ export const LessonTable = () => {
     },
     {
       title: 'Tên bài học',
-      width: 200,
+      width: 150,
       dataIndex: 'name',
+       ellipsis: true, 
     },
     {
       title: 'Ảnh đại diện',
@@ -159,6 +160,7 @@ export const LessonTable = () => {
       title: 'Tên chương',
       width: 200,
       dataIndex: 'chapter_name',
+       ellipsis: true, 
     },
     // {
     //   title: 'Mô tả',
@@ -181,7 +183,7 @@ export const LessonTable = () => {
     // },
     {
       title: 'Sắp xếp',
-      width: 50,
+      width: 80,
       dataIndex: 'sort_order',
       align: 'center',
     },
@@ -251,8 +253,9 @@ export const LessonTable = () => {
         columns={columns}
         dataSource={listLesson}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+       scroll={{ x: 800, y: 380 }}
         rowKey="id"
+          tableLayout="fixed" 
         pagination={{
           current: pageIndex,
           pageSize: pageSize,

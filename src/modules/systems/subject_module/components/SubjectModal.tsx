@@ -258,19 +258,17 @@ export const SubjectModal = ({
           </Row>
 
           <Form.Item name="description" label="Mô tả">
-            <div className="custom-quill-wrapper">
-              <ReactQuill
-                theme="snow"
-                value={description}
-                onChange={(value) => {
-                  setDescription(value);
-                  form.setFieldsValue({ description: value });
-                }}
-                className="custom-quill"
-                style={{ height: '200px', marginBottom: '20px' }}
-              />
-            </div>
+            <ReactQuill
+              className="custom-quill"
+              theme="snow"
+              value={description}
+              onChange={(value) => {
+                setDescription(value);
+                form.setFieldsValue({ description: value });
+              }}
+            />
           </Form.Item>
+
         </Form>
       </Modal>
     </>

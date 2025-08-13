@@ -128,11 +128,15 @@ export const ExamTable = () => {
       title: 'Tên bài kiểm tra',
       width: 150,
       dataIndex: 'name',
+       ellipsis: true, 
+
     },
     {
       title: 'Tên môn học',
       width: 150,
       dataIndex: 'subject_name',
+       ellipsis: true, 
+
     },
     {
       title: 'Bài kiểm tra',
@@ -217,7 +221,7 @@ export const ExamTable = () => {
         columns={columns}
         dataSource={listExam}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+       scroll={{ x: 800, y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

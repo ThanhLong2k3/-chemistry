@@ -138,7 +138,8 @@ export const ExamModal = ({
         showSessionExpiredModal();
         return;
       }
-      show({ result: 1, messageError: error.response?.data?.message || error.message || 'Đã có lỗi xảy ra.' });
+            show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+
     }
   };
 
@@ -207,18 +208,15 @@ export const ExamModal = ({
           </Form.Item>
 
           <Form.Item name="description" label="Mô tả">
-            <div className="custom-quill-wrapper">
-              <ReactQuill
-                theme="snow"
-                value={description}
-                onChange={(value) => {
-                  setDescription(value);
-                  form.setFieldsValue({ description: value });
-                }}
-                className="custom-quill"
-                style={{ height: '200px', marginBottom: '20px' }}
-              />
-            </div>
+            <ReactQuill
+              className="custom-quill"
+              theme="snow"
+              value={description}
+              onChange={(value) => {
+                setDescription(value);
+                form.setFieldsValue({ description: value });
+              }}
+            />
           </Form.Item>
         </Form>
       </Modal>

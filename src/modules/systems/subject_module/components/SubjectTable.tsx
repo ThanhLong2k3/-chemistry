@@ -78,6 +78,8 @@ export const SubjectTable = () => {
       title: 'Tên môn học',
       width: 100,
       dataIndex: 'name',
+       ellipsis: true, 
+
     },
     {
       title: 'Ảnh đại diện',
@@ -180,7 +182,8 @@ export const SubjectTable = () => {
         columns={columns}
         dataSource={listSubject}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+         tableLayout="fixed" 
+       scroll={{ x: 800, y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

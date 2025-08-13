@@ -24,9 +24,17 @@ export default function LessonDetail({ lesson,relatedLessons }: LessonDetailProp
       <div className={styles.leftContent}>
         <Card>
           <Title level={3} className={styles.lessonTitle}>{lesson?.lesson_name}</Title>
-          <div style={{display:'flex'}}>
-              <span><strong>Ngày tạo: </strong>{formatDateVN(lesson?.created_at)} - <strong>Người tạo:</strong> {lesson?.created_by_name}</span> 
-          </div>
+          
+          <div style={{ display: 'flex' }}>
+                      <span style={{ fontSize: '1.25rem', color: '#808080' }}>
+                        <span style={{ marginRight: '20px',fontSize: '1.25rem', color: '#808080' }}>
+                          Ngày tạo: {formatDateVN(lesson?.created_at)}
+                        </span>
+                        <span style={{ marginRight: '20px',fontSize: '1.25rem', color: '#808080' }}>
+                          Người tạo: {lesson?.created_by_name}
+                        </span>
+                      </span>
+                    </div>
           <div
             className={styles.lessonDescription}
             dangerouslySetInnerHTML={{ __html: lesson?.description || 'Không có mô tả' }}
