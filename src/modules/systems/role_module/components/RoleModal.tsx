@@ -20,12 +20,13 @@ interface Props {
   isCreate?: boolean;
   row?: IRole;
   getAll: () => void;
+  get_All_Role:()=>void;
 }
 
 export const RoleModal = ({
   isCreate = false,
   row,
-  getAll,
+  getAll,get_All_Role,
 }: Props): JSX.Element => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
@@ -105,6 +106,7 @@ export const RoleModal = ({
         }
       }
       getAll();
+      get_All_Role();
       setTimeout(() => {
         close();
       }, 1000);

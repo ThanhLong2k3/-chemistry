@@ -128,7 +128,7 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
         errorMessage = error.message;
       }
 
-      show({ result: 1, messageError: errorMessage });
+      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
     }
   };
 

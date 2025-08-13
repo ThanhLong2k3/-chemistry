@@ -138,7 +138,8 @@ export const ExamModal = ({
         showSessionExpiredModal();
         return;
       }
-      show({ result: 1, messageError: error.response?.data?.message || error.message || 'Đã có lỗi xảy ra.' });
+            show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+
     }
   };
 

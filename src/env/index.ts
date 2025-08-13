@@ -7,8 +7,8 @@ const getEnvSafely = (envKey: string) => {
 /**
  * For server-used only
  */
-// const BASE_URL = "https://vuihochoa.edu.vn/api";
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://vuihochoa.edu.vn/api";
+// const BASE_URL = "http://localhost:3000/api";
 const ID_ROLE_STUDENT = "5bb89efe-f547-4892-b85d-3646b06ed5a8"
 const JWT_SECRET = "dinhthientruong21dinhthientruong09dinhthientruong2004!@#$%^&*()-_=+[{]}\|;:,<.>/?"
 

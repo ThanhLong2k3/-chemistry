@@ -11,7 +11,7 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import env from '@/env';
 
-export const RoleTable = () => {
+export const RoleTable = ({get_All_Role}:{get_All_Role:()=>void}) => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [ordertype, setOrderType] = useState<string>('ASC');
@@ -77,6 +77,8 @@ export const RoleTable = () => {
       title: 'Tên nhóm quyền',
       width: 200,
       dataIndex: 'name',
+       ellipsis: true, 
+
     },
     // {
     //   title: 'Mô tả',
@@ -109,12 +111,13 @@ export const RoleTable = () => {
 
         return (
           <Flex gap={8} justify="center">
-            <RoleModal row={record} getAll={getAllRole} />
+            <RoleModal row={record} getAll={getAllRole} get_All_Role={get_All_Role} />
             {currentAccount && (
               <RoleDelete
                 id={record.id}
                 deleted_by={currentAccount?.username}
                 getAllRole={getAllRole}
+                get_All_Role={get_All_Role}
               />
             )}
           </Flex>
@@ -132,7 +135,7 @@ export const RoleTable = () => {
           onChange={(e) => setNameRole(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
-        <RoleModal isCreate={true} getAll={getAllRole} />
+        <RoleModal isCreate={true} getAll={getAllRole} get_All_Role={get_All_Role} />
       </Flex>
 
       <Table
@@ -140,7 +143,7 @@ export const RoleTable = () => {
         columns={columns}
         dataSource={listRole}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+       scroll={{ x: 800, y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

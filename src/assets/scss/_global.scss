@@ -26,13 +26,6 @@ html {
   font-size: 62.5%;
 }
 
-.goog-te-banner-frame.skiptranslate {
-  display: none !important;
-}
-
-body {
-  top: 0px !important;
-}
 
 body {
   font-family: 'Reddit Sans', sans-serif;
@@ -277,6 +270,26 @@ body {
   /* Cuộn khi quá cao */
 }
 
+.ql-toolbar.ql-snow {
+  border-bottom: 1px solid #d9d9d9 !important;
+}
+
+.custom-quill-wrapper {
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+  height: 50vh;
+}
+
+.custom-quill-wrapper:hover {
+  border-color: #23275c;
+}
+
+.ql-editor {
+  min-height: 300px;
+}
+
+.ant-table-cell { white-space: nowrap; }
 .custom-quill .ql-editor {
   min-height: 150px;
 }
