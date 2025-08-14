@@ -100,7 +100,7 @@ export const BlogTable = () => {
   const columns: TableColumnsType<IBlog> = [
     {
       title: 'STT',
-      width: 30,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
@@ -126,13 +126,14 @@ export const BlogTable = () => {
       title: 'Tiêu đề bài viết',
       width: 150,
       dataIndex: 'title',
-       ellipsis: true, 
+      ellipsis: true,
 
-      render: (title: string) => (
+      render: (title: string) =>
+      (
         <span>
-          {title.length > 50 ? title.substring(0, 40) + '...' : title}
+          {title.length > 35 ? title.substring(0, 35).trim() + '...' : title}
         </span>
-      ),
+      )
     },
 
     {
@@ -140,15 +141,15 @@ export const BlogTable = () => {
       width: 100,
       dataIndex: 'views',
       align: 'center',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
       title: 'Ngày đăng',
-      width: 50,
+      width: 80,
       dataIndex: 'created_at',
       align: 'center',
-       ellipsis: true, 
+      ellipsis: true,
 
       render: (date: string) => {
         const d = new Date(date);
@@ -163,7 +164,7 @@ export const BlogTable = () => {
       width: 100,
       dataIndex: 'created_by_name',
       align: 'center',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     // {
@@ -187,7 +188,7 @@ export const BlogTable = () => {
     // },
     {
       title: 'Thao tác',
-      width: 80,
+      width: 100,
       align: 'center',
       render: (_, record) => (
         <Flex gap={8} justify="center">
@@ -255,7 +256,7 @@ export const BlogTable = () => {
         columns={columns}
         dataSource={listBlog}
         loading={false}
-        scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

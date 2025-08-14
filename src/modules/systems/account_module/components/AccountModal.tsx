@@ -170,10 +170,11 @@ export const AccountModal = ({
       }
 
       // Chỉ hiển thị notification cho các lỗi không phải 401
-      show({
-        result: 1,
-        messageError: errorMessage,
-      });
+      // show({
+      //   result: 1,
+      //   messageError: errorMessage,
+      // });
+      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
     }
   };
 
@@ -235,8 +236,10 @@ export const AccountModal = ({
               <Form.Item
                 name="username"
                 label="Tên đăng nhập"
-                rules={RULES_FORM.required}
-              >
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText50,
+                ]}>
                 <Input disabled={!isCreate} />
               </Form.Item>
 

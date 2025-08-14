@@ -14,7 +14,9 @@ interface keyValidator {
   required_max50?: any;
   Description_max50?: any;
   years_of_experience?: any;
-  noSpecialChars?: any;
+  validateText255?: any
+  validateText50?: any
+  validateDescription?: any
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -47,19 +49,59 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
   ],
 
-  noSpecialChars: [
+  validateText255: [
     // 1. Quy tắc kiểm tra độ dài tối đa
     {
       max: 255,
       message: 'Không được vượt quá 255 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự đặc biệt (chỉ cho phép thêm dấu :)
+    // 2. Quy tắc kiểm tra ký tự 
     {
-      pattern:
-        /^(?=.*[a-zA-ZÀ-ỹ])[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ:_.-]*$/,
-      message:
-        'Tên phải chứa ít nhất một chữ cái và không chỉ toàn số hoặc ký tự đặc biệt.',
+      pattern: /^(?=.*[a-zA-Z]).+$/,
+      message: 'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.',
     },
+  ],
+
+  validateText50: [
+    // 1. Quy tắc kiểm tra độ dài tối đa
+    {
+      max: 50,
+      message: 'Không được vượt quá 50 ký tự.',
+    },
+    // 2. Quy tắc kiểm tra ký tự 
+    {
+      pattern: /^(?=.*[a-zA-Z]).+$/,
+      message: 'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.',
+    },
+  ],
+
+  validateDescription: [
+    {
+      // `value` ở đây sẽ là chuỗi HTML từ ReactQuill, ví dụ: '<p>123 !@#</p>'
+      validator: (_, value) => {
+        if (!value || value === '<p><br></p>') {
+          // Nếu không có giá trị, hoặc giá trị là thẻ p rỗng mặc định, bỏ qua
+          // Quy tắc `required` (nếu có) sẽ xử lý việc bắt buộc nhập
+          return Promise.resolve();
+        }
+
+        // 1. Loại bỏ tất cả các thẻ HTML để lấy văn bản thuần túy
+        const textOnly = value.replace(/<[^>]*>/g, '');
+
+        // 2. Kiểm tra xem văn bản thuần túy có chứa ít nhất một chữ cái không
+        //    Regex /[a-zA-Zàá...Đ]/ kiểm tra sự tồn tại của một chữ cái bất kỳ
+        const hasLetter = /^(?=.*[a-zA-Z]).+$/.test(textOnly);
+
+        if (!hasLetter) {
+          // Nếu không tìm thấy chữ cái nào, báo lỗi
+          return Promise.reject(new Error('Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.'));
+        }
+
+        // Nếu tất cả kiểm tra đều qua, giá trị hợp lệ
+        return Promise.resolve();
+      },
+    },
+
   ],
 
   years_of_experience: [
@@ -84,11 +126,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
             new Error('Số năm kinh nghiệm không thể là số âm.')
           );
         }
-        if (numValue > 80) {
-          // Giới hạn hợp lý
-          return Promise.reject(
-            new Error('Số năm kinh nghiệm không thể lớn hơn 80.')
-          );
+        if (numValue > 50) {
+          return Promise.reject(new Error('Số năm kinh nghiệm không thể lớn hơn 50.'));
         }
         return Promise.resolve(); // Hợp lệ
       },

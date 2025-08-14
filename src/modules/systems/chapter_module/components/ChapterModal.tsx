@@ -156,10 +156,12 @@ export const ChapterModal = ({
       }
 
       // Chỉ hiển thị notification cho các lỗi không phải 401
-      show({
-        result: 1,
-        messageError: errorMessage,
-      });
+      // show({
+      //   result: 1,
+      //   messageError: errorMessage,
+      // });
+      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+
     }
   };
 
@@ -192,8 +194,10 @@ export const ChapterModal = ({
               <Form.Item
                 name="name"
                 label="Tên chương"
-                rules={[...RULES_FORM.required, ...RULES_FORM.noSpecialChars]}
-              >
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>

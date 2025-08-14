@@ -1,79 +1,109 @@
-import { Card, Flex, type TableColumnsType, Table, Input, Tag } from 'antd';
+'use client';
 
+import { Card, Flex, type TableColumnsType, Table, Input, Select } from 'antd';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import axios from 'axios';
+
 import { searchAccount } from '@/services/account.service';
 import { IAccount } from '@/types/account';
 import { AccountModal } from './AccountModal';
 import { AccountDelete } from './AccountDelete';
-import axios from 'axios';
+
 import { showSessionExpiredModal } from '@/utils/session-handler';
-import Image from 'next/image';
 import { getAccountLogin } from '@/env/getInfor_token';
 import env from '@/env';
+import { searchRole } from '@/services/role.service';
+import { IRole } from '@/types/role';
+import { IDecodedToken } from '@/types/decodedToken';
+import { useSearchParams } from 'next/navigation';
+
 
 export const AccountTable = () => {
+  const searchParams = useSearchParams();
+  const roleFromUrl = searchParams.get('role');
+
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [ordertype, setOrderType] = useState<string>('ASC');
+  const [orderType, setOrderType] = useState<string>('ASC');
   const [name, setName] = useState<string | null>(null);
   const [listAccount, setListAccount] = useState<IAccount[]>([]);
-  const [total, settotal] = useState<number>(10);
+  const [total, setTotal] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
 
-  //reset lại pageindex khi có dữ liệu tìm kiếm
+  // State mới cho việc lọc theo vai trò
+  const [roles, setRoles] = useState<IRole[]>([]);
+  const [selectedRole, setSelectedRole] = useState<string | null>(roleFromUrl);
+  const [loadingRoles, setLoadingRoles] = useState(false);
+
+  // Lấy danh sách Vai trò (chỉ một lần)
+  useEffect(() => {
+    const fetchRoles = async () => {
+      setLoadingRoles(true);
+      try {
+        const res = await searchRole({ page_index: 1, page_size: 1000 });
+        if (res.success) setRoles(res.data);
+      } catch (err) {
+        console.error('Lỗi khi tải danh sách vai trò:', err);
+      } finally {
+        setLoadingRoles(false);
+      }
+    };
+    fetchRoles();
+  }, []);
+
+  // Reset lại pageIndex khi có dữ liệu tìm kiếm hoặc lọc
   useEffect(() => {
     setPageIndex(1);
-  }, [name]);
-
-  useEffect(() => {
-    getAllAccount();
-  }, [pageIndex, pageSize, ordertype, name]);
+  }, [name, selectedRole]);
 
   const getAllAccount = async () => {
+    setLoading(true);
     try {
       const data: any = await searchAccount({
         page_index: pageIndex,
         page_size: pageSize,
-        order_type: ordertype,
+        order_type: orderType,
         search_content_1: name,
+        search_content_2: selectedRole,
       });
-      settotal(data.data[0]?.TotalRecords);
+      setTotal(data.data.length > 0 ? data.data[0].TotalRecords : 0);
       setListAccount(data.data || []);
     } catch (error) {
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
-
-      if (axios.isAxiosError(error)) {
-        const axiosError = error;  // TypeScript hiểu đây là AxiosError
-        const responseMessage = axiosError.response?.data?.message;
-
-        if (axiosError.response?.status === 401) {
-          showSessionExpiredModal();
-          return;
-        } else {
-          errorMessage = responseMessage || axiosError.message;
-        }
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        showSessionExpiredModal();
+      } else {
+        console.error('Failed to fetch Account list:', error);
+        setListAccount([]); // Xóa dữ liệu cũ khi có lỗi
+        setTotal(0);
       }
-      else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
+    } finally {
+      setLoading(false);
     }
   };
+  // useEffect chính để tải lại dữ liệu bảng
+  useEffect(() => {
+    getAllAccount();
+  }, [pageIndex, pageSize, orderType, name, selectedRole]);
 
-  const currentAccount = getAccountLogin();
+  useEffect(() => {
+    const account = getAccountLogin();
+    setCurrentAccount(account);
+  }, []);
 
   const columns: TableColumnsType<IAccount> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
-      render: (_, __, index) =>
-        (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
+      render: (_, __, index) => (pageIndex - 1) * pageSize + index + 1,
     },
     {
       title: 'Ảnh đại diện',
       width: 100,
       dataIndex: 'image',
       align: 'center',
-
       render: (imageUrl) => {
         const fullUrl = imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_user.jpg';
         return (
@@ -83,59 +113,72 @@ export const AccountTable = () => {
             src={fullUrl}
             alt="Avatar"
             style={{ objectFit: 'cover', borderRadius: '50%' }}
+            onError={(e) => { e.currentTarget.src = '/image/default_user.jpg'; }}
           />
         );
       },
-
     },
     {
       title: 'Tên tài khoản',
-      width: 100,
+      width: 120,
       dataIndex: 'username',
-       ellipsis: true, 
-
+      ellipsis: true,
     },
     {
       title: 'Tên người dùng',
-      width: 120,
+      width: 200,
       dataIndex: 'name',
-       ellipsis: true, 
-
+      ellipsis: true,
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      width: 120,
-       ellipsis: true, 
-
+      width: 200,
+      ellipsis: true,
     },
     {
       title: 'Quyền',
-      width: 70,
+      width: 120,
       dataIndex: 'role_name',
     },
     {
       title: 'Thao tác',
       width: 120,
       align: 'center',
+      fixed: 'right',
       render: (_, record) => (
         <Flex gap={8} justify="center">
           <AccountModal row={record} getAll={getAllAccount} />
-          {
-            currentAccount ? (<AccountDelete username={record.username} deleted_by={currentAccount?.username} getAllAccount={getAllAccount} />) : (null)
-          }
+          {currentAccount && <AccountDelete username={record.username} deleted_by={currentAccount.username} getAllAccount={getAllAccount} />}
         </Flex>
       ),
     },
   ];
 
   return (
-    <Card >
+    <Card>
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
+        <Select
+          placeholder="Lọc theo quyền"
+          style={{ width: 240 }}
+          onChange={(value) => setSelectedRole(value || null)}
+          allowClear
+          showSearch
+          optionFilterProp="children"
+          loading={loadingRoles}
+          value={selectedRole}
+        >
+          {roles.map(role => (
+            <Select.Option key={role.id} value={role.name}>
+              {role.name}
+            </Select.Option>
+          ))}
+        </Select>
+
         <Input
-          placeholder="Nhập người dùng để tìm kiếm..."
+          placeholder="Tìm kiếm theo tên người dùng..."
           value={name ?? ''}
-          onChange={(e) => setName(e.target.value.replace(/^\s+/, ''))}
+          onChange={(e) => setName(e.target.value)}
           allowClear
         />
         <AccountModal isCreate getAll={getAllAccount} />
@@ -145,8 +188,8 @@ export const AccountTable = () => {
         bordered
         columns={columns}
         dataSource={listAccount}
-        loading={false}
-        scroll={{ x: 800, y: 380 }}
+        loading={loading}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="username"
         pagination={{
           current: pageIndex,

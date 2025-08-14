@@ -229,8 +229,10 @@ export const SubjectModal = ({
               <Form.Item
                 name="name"
                 label="Tên môn học"
-                rules={[...RULES_FORM.required, ...RULES_FORM.noSpecialChars]}
-              >
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
 

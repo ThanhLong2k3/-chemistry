@@ -210,8 +210,10 @@ export const BlogModal = ({
               <Form.Item
                 name="title"
                 label="Tiêu đề bài viết"
-                rules={RULES_FORM.required}
-              >
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>

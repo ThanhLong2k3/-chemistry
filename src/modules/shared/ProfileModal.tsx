@@ -241,25 +241,25 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                 rules={
                   isChangingPassword
                     ? [
-                        // Nếu đang đổi mật khẩu, áp dụng các quy tắc này
-                        {
-                          required: true,
-                          message: 'Vui lòng xác nhận mật khẩu mới!',
+                      // Nếu đang đổi mật khẩu, áp dụng các quy tắc này
+                      {
+                        required: true,
+                        message: 'Vui lòng xác nhận mật khẩu mới!',
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (
+                            !value ||
+                            getFieldValue('newPassword') === value
+                          ) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error('Mật khẩu xác nhận không khớp!')
+                          );
                         },
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (
-                              !value ||
-                              getFieldValue('newPassword') === value
-                            ) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              new Error('Mật khẩu xác nhận không khớp!')
-                            );
-                          },
-                        }),
-                      ]
+                      }),
+                    ]
                     : [] // Nếu không đổi mật khẩu, không áp dụng quy tắc nào
                 }
               >
