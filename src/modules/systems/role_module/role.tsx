@@ -72,7 +72,7 @@ export const ManageRole = () => {
         <div>
           <Row gutter={24}>
             {/* CỘT TRÁI: PHÂN QUYỀN */}
-            <Col xs={24} md={8}>
+            <Col xs={24} md={10}>
               <PermissionAssignment
                 allRoles={allRoles}
                 isLoadingRoles={isLoadingRoles}
@@ -82,8 +82,8 @@ export const ManageRole = () => {
             </Col>
 
             {/* CỘT PHẢI: QUẢN LÝ DANH SÁCH NHÓM QUYỀN */}
-            <Col xs={24} md={16}>
-              <RoleTable get_All_Role={fetchAllRoles}  />
+            <Col xs={24} md={14}>
+              <RoleTable get_All_Role={fetchAllRoles} />
             </Col>
           </Row>
         </div>

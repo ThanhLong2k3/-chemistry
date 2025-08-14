@@ -130,16 +130,22 @@ export const LessonTable = () => {
   const columns: TableColumnsType<ILesson> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
     },
     {
       title: 'Tên bài học',
-      width: 150,
+      width: 180,
       dataIndex: 'name',
-       ellipsis: true, 
+      ellipsis: true,
+      render: (name: string) =>
+      (
+        <span style={{ marginRight: '10px' }}>
+          {name.length > 70 ? name.substring(0, 70).trim() + '...' : name}
+        </span>
+      )
     },
     {
       title: 'Ảnh đại diện',
@@ -160,7 +166,14 @@ export const LessonTable = () => {
       title: 'Tên chương',
       width: 200,
       dataIndex: 'chapter_name',
-       ellipsis: true, 
+      ellipsis: true,
+      render: (chapter_name: string) =>
+      (
+        <span style={{ marginRight: '10px' }}>
+          {chapter_name.length > 60 ? chapter_name.substring(0, 60).trim() + '...' : chapter_name}
+        </span>
+      )
+
     },
     // {
     //   title: 'Mô tả',
@@ -253,9 +266,9 @@ export const LessonTable = () => {
         columns={columns}
         dataSource={listLesson}
         loading={false}
-       scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="id"
-          tableLayout="fixed" 
+        tableLayout="fixed"
         pagination={{
           current: pageIndex,
           pageSize: pageSize,

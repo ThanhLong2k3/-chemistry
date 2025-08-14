@@ -11,7 +11,7 @@ import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import env from '@/env';
 
-export const RoleTable = ({get_All_Role}:{get_All_Role:()=>void}) => {
+export const RoleTable = ({ get_All_Role }: { get_All_Role: () => void }) => {
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [ordertype, setOrderType] = useState<string>('ASC');
@@ -68,7 +68,7 @@ export const RoleTable = ({get_All_Role}:{get_All_Role:()=>void}) => {
   const columns: TableColumnsType<IRole> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
@@ -77,7 +77,7 @@ export const RoleTable = ({get_All_Role}:{get_All_Role:()=>void}) => {
       title: 'Tên nhóm quyền',
       width: 200,
       dataIndex: 'name',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     // {
@@ -143,7 +143,7 @@ export const RoleTable = ({get_All_Role}:{get_All_Role:()=>void}) => {
         columns={columns}
         dataSource={listRole}
         loading={false}
-       scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

@@ -119,23 +119,23 @@ export const ExamTable = () => {
   const columns: TableColumnsType<IExam> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
     },
     {
       title: 'Tên bài kiểm tra',
-      width: 150,
+      width: 200,
       dataIndex: 'name',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
       title: 'Tên môn học',
       width: 150,
       dataIndex: 'subject_name',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
@@ -221,7 +221,7 @@ export const ExamTable = () => {
         columns={columns}
         dataSource={listExam}
         loading={false}
-       scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,
