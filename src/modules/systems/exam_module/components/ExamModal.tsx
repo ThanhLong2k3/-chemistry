@@ -138,7 +138,7 @@ export const ExamModal = ({
         showSessionExpiredModal();
         return;
       }
-            show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
 
     }
   };
@@ -207,7 +207,11 @@ export const ExamModal = ({
             </Upload>
           </Form.Item>
 
-          <Form.Item name="description" label="Mô tả">
+          <Form.Item
+            name="description"
+            label="Mô tả"
+            rules={RULES_FORM.validateDescription}
+          >
             <ReactQuill
               className="custom-quill"
               theme="snow"

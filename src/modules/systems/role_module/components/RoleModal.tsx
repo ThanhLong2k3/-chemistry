@@ -20,13 +20,13 @@ interface Props {
   isCreate?: boolean;
   row?: IRole;
   getAll: () => void;
-  get_All_Role:()=>void;
+  get_All_Role: () => void;
 }
 
 export const RoleModal = ({
   isCreate = false,
   row,
-  getAll,get_All_Role,
+  getAll, get_All_Role,
 }: Props): JSX.Element => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
@@ -177,7 +177,11 @@ export const RoleModal = ({
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả">
+          <Form.Item
+            name="description"
+            label="Mô tả"
+            rules={RULES_FORM.validateDescription}
+          >
             <ReactQuill
               className="custom-quill"
               theme="snow"
