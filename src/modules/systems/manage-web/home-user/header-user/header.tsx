@@ -74,7 +74,7 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
         <div className={styles.headerContent}>
           <div className={styles.logo}>
             <Image
-              src="https://file.unica.vn/storage/37c75fa5c5064eaf537629a6373082628b69b224/395374478-648703620778409-6977458858086740057-n-01-01-1.png"
+              src="/Logo.png"
               alt="Diễn đàn Hóa học"
               className={styles.logoImage}
               preview={false}

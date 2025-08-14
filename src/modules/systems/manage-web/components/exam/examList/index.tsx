@@ -14,6 +14,7 @@ const ExamListPageClient = ({ id }: Props) => {
 
   useEffect(() => {
     if (id) {
+      document.title='Danh sách đề thi';
       GetExamtBy_IdSubject(id);
     }
   }, [id]);

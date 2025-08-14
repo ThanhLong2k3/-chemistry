@@ -5,17 +5,20 @@ import { createBlog, updateBlog } from '@/services/blog.service';
 import { IBlog } from '@/types/blog';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  FileAddOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
-import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { getAccountLogin } from '@/env/getInfor_token';
 import { UpLoadImage } from '@/services/upload.service';
 import env from '@/env';
+import QuillEditor from '@/modules/shared/QuillEditor';
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface Props {
   isCreate?: boolean;
@@ -23,7 +26,11 @@ interface Props {
   getAll: () => void;
 }
 
-export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element => {
+export const BlogModal = ({
+  isCreate = false,
+  row,
+  getAll,
+}: Props): JSX.Element => {
   const { isOpen, open, close } = useDisclosure();
   const [form] = Form.useForm();
   const { show } = useNotification();
@@ -63,13 +70,18 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
     try {
       const currentAccount = getAccountLogin();
       if (!currentAccount) {
-        show({ result: 1, messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.' });
+        show({
+          result: 1,
+          messageError: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+        });
         return;
       }
 
       const values = await form.validateFields();
 
-      const extractImageUrl = async (fileList: UploadFile[] | undefined): Promise<string | null> => {
+      const extractImageUrl = async (
+        fileList: UploadFile[] | undefined
+      ): Promise<string | null> => {
         if (!fileList || fileList.length === 0) return null;
         const file = fileList[0];
         if (file.originFileObj) {
@@ -106,8 +118,14 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
 
       show({
         result: responseData.success ? 0 : 1,
-        messageDone: isCreate ? 'Thêm bài viết thành công!' : 'Cập nhật bài viết thành công!',
-        messageError: responseData.message || (isCreate ? 'Thêm bài viết thất bại.' : 'Cập nhật bài viết thất bại.'),
+        messageDone: isCreate
+          ? 'Thêm bài viết thành công!'
+          : 'Cập nhật bài viết thành công!',
+        messageError:
+          responseData.message ||
+          (isCreate
+            ? 'Thêm bài viết thất bại.'
+            : 'Cập nhật bài viết thất bại.'),
       });
 
       getAll();
@@ -128,17 +146,25 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
         errorMessage = error.message;
       }
 
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
     }
   };
 
   return (
     <>
-      <Button type={isCreate ? 'primary' : 'default'} onClick={open} icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}>
+      <Button
+        type={isCreate ? 'primary' : 'default'}
+        onClick={open}
+        icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}
+      >
         {isCreate ? 'Thêm bài viết' : 'Sửa'}
       </Button>
       <Modal
-        title={<div style={{ fontSize: '20px', paddingBottom: '8px' }}>{isCreate ? 'Thêm bài viết' : 'Sửa bài viết'}</div>}
+        title={
+          <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
+            {isCreate ? 'Thêm bài viết' : 'Sửa bài viết'}
+          </div>
+        }
         open={isOpen}
         onOk={handleOk}
         onCancel={close}
@@ -172,27 +198,30 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
                   }}
                   accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
-                  <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}>
+                  <Button
+                    icon={<UploadOutlined />}
+                    style={hasImage ? { marginBottom: '12px' } : {}}
+                  >
                     Chọn ảnh
                   </Button>
                 </Upload>
               </Form.Item>
 
-              <Form.Item name="title" label="Tiêu đề bài viết" rules={RULES_FORM.required}>
+              <Form.Item
+                name="title"
+                label="Tiêu đề bài viết"
+                rules={RULES_FORM.required}
+              >
                 <Input />
               </Form.Item>
             </Col>
           </Row>
 
           <Form.Item name="description" label="Mô tả">
-            <ReactQuill
-              className="custom-quill"
-              theme="snow"
+            <QuillEditor
               value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
+              onChange={setDescription}
+              placeholder="Nhập nội dung bài viết..."
             />
           </Form.Item>
         </Form>

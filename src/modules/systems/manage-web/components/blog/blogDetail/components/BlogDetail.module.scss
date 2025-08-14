@@ -11,7 +11,14 @@
     flex-direction: column;
   }
 }
-
+.commentContent {
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+}
 .leftContent {
   flex: 3.5; // 80%
   text-align: justify;

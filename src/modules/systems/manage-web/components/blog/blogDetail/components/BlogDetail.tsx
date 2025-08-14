@@ -22,6 +22,7 @@ import { createComment, deleteComment } from '@/services/comment.service';
 import { getAccountLogin } from '@/env/getInfor_token';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { v4 as uuidv4 } from 'uuid';
+import parse from 'html-react-parser';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -50,17 +51,22 @@ export default function BlogDetail({
   const [newComment, setNewComment] = useState('');
   const { show } = useNotification();
   const [currentAccount, setAurrentAccount] = useState<any>(null);
+  
+  // Kiểm tra có comment không
+  const hasComments = comments && comments.length > 0;
+  
   const handleDetailBlog = (id: string) => {
     router.push(`${BLOG_DETAIL_PATH}/?id=${id}`);
   };
+  
   useEffect(() => {
     const currentAccount = getAccountLogin();
     setAurrentAccount(currentAccount);
   }, []);
+  
   const handlePageChange = (page: number, pageSize: number) => {
     setCurrentPage(page);
     if (onPageChange) onPageChange(page, pageSize);
-
   };
 
   const handleAddComment = async () => {
@@ -162,12 +168,9 @@ export default function BlogDetail({
               </span>
             </span>
           </div>
-          <div
-            className={styles.blogDescription}
-            dangerouslySetInnerHTML={{
-              __html: blog?.description || 'Không có mô tả',
-            }}
-          />
+          <div className={styles.blogDescription}>
+            {parse(blog?.description || 'Không có mô tả')}
+          </div>
         </Card>
 
         {/* Comment Section */}
@@ -191,74 +194,99 @@ export default function BlogDetail({
             </Button>
           </div>
 
-          {/* Danh sách comment */}
-          <List
-            itemLayout="horizontal"
-            dataSource={comments}
-            renderItem={(item, index) => {
-              const isAuthorComment = currentAccount?.username === item.created_by;
-              const isAuthorBlog = currentAccount?.username === blog?.updated_by;
-              const isNameAuthorBlog = currentAccount?.name === blog?.created_by_name;
+          {/* Danh sách comment - chỉ hiển thị khi có comment */}
+          {hasComments && (
+            <List
+              itemLayout="horizontal"
+              dataSource={comments}
+              renderItem={(item, index) => {
+                const isAuthorComment =
+                  currentAccount?.username === item.created_by;
+                const isAuthorBlog =
+                  currentAccount?.username === blog?.updated_by;
+                const isNameAuthorBlog =
+                  currentAccount?.name === blog?.created_by_name;
 
-              const canDelete = currentAccount && (isAuthorComment || isAuthorBlog || isNameAuthorBlog);
+                const canDelete =
+                  currentAccount &&
+                  (isAuthorComment || isAuthorBlog || isNameAuthorBlog);
 
-              return (
-                <List.Item
-                  actions={
-                    canDelete
-                      ? [
-                          <Popconfirm
-                            key={index}
-                            title="Xóa bình luận này?"
-                            onConfirm={() => handleDeleteComment(item.id)}
-                            okText="Xóa"
-                            cancelText="Hủy"
-                          >
-                            <a>Xóa</a>
-                          </Popconfirm>,
-                        ]
-                      : []
-                  }
-                >
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        src={
-                          item.author_image
-                            ? `${env.BASE_URL}${item.author_image}`
-                            : '/default-avatar.png'
-                        }
-                        alt="Avatar"
-                      />
+                return (
+                  <List.Item
+                    actions={
+                      canDelete
+                        ? [
+                            <Popconfirm
+                              key={index}
+                              title="Xóa bình luận này?"
+                              onConfirm={() => handleDeleteComment(item.id)}
+                              okText="Xóa"
+                              cancelText="Hủy"
+                            >
+                              <a>Xóa</a>
+                            </Popconfirm>,
+                          ]
+                        : []
                     }
-                    title={
-                      <div>
-                        <strong style={{ fontSize: '15px' }}>
-                          {item.author_name}
-                        </strong>{' '}
-                        <span style={{ color: '#888', fontSize: 12 }}>
-                          {formatDateVN(item.created_at)}
-                        </span>
-                      </div>
-                    }
-                    description={item.content}
-                  />
-                </List.Item>
-              );
-            }}
-          />
+                  >
+                    <List.Item.Meta
+                      avatar={
+                        <Avatar
+                          src={
+                            item.author_image
+                              ? `${env.BASE_URL}${item.author_image}`
+                              : '/default-avatar.png'
+                          }
+                          alt="Avatar"
+                        />
+                      }
+                      title={
+                        <div>
+                          <strong style={{ fontSize: '15px' }}>
+                            {item.author_name}
+                          </strong>{' '}
+                          <span style={{ color: '#888', fontSize: 12 }}>
+                            {formatDateVN(item.created_at)}
+                          </span>
+                        </div>
+                      }
+                      description={
+                        <div className={styles.commentContent}>
+                          {item.content}
+                        </div>
+                      }
+                    />
+                  </List.Item>
+                );
+              }}
+            />
+          )}
+
+          {/* Hiển thị thông báo khi chưa có comment */}
+          {!hasComments && (
+            <div style={{ 
+              textAlign: 'center', 
+              color: '#888', 
+              fontSize: '14px',
+              padding: '20px 0' 
+            }}>
+              Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+            </div>
+          )}
         </Card>
 
-        {/* Pagination Control */}
-        <div className={styles.paginationWrapper}>
-          <Pagination
-            current={currentPage}
-            total={TotalRecords}
-            pageSize={pageSize}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-          />
-        </div>
+        {/* Pagination Control - chỉ hiển thị khi có comment và có nhiều hơn 1 trang */}
+        {hasComments && TotalRecords > pageSize && (
+          <div className={styles.paginationWrapper}>
+            <Pagination
+              current={currentPage}
+              total={TotalRecords}
+              pageSize={pageSize}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+            />
+          </div>
+        )}
       </div>
 
       <div className={styles.rightSidebar}>
