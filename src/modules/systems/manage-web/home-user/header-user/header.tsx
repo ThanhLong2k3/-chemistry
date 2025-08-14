@@ -50,7 +50,6 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
     refreshPermissions();
     show.show({ result: 0, messageDone: 'Đăng xuất thành công' });
     setCurrentAccount(null);
-    router.push(LOGIN_PATH);
   };
 
   const userMenu = {
@@ -100,6 +99,7 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
                   alignItems: 'center',
                   cursor: 'pointer',
                   gap: 8,
+                  marginLeft:'10px'
                 }}
               >
                 <Avatar

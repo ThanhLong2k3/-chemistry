@@ -100,11 +100,15 @@ export const ChapterTable = () => {
       title: 'Tên chương',
       width: 200,
       dataIndex: 'name',
+       ellipsis: true, 
+
     },
     {
       title: 'Tên môn học',
       width: 80,
       dataIndex: 'subject_name',
+       ellipsis: true, 
+
     },
     // {
     //   title: 'Mô tả',
@@ -179,7 +183,7 @@ export const ChapterTable = () => {
         columns={columns}
         dataSource={listChapter}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+       scroll={{ x: 800, y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

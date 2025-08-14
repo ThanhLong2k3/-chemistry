@@ -1,4 +1,12 @@
-import { Card, Flex, type TableColumnsType, Table, Input, Tag, Select } from 'antd';
+import {
+  Card,
+  Flex,
+  type TableColumnsType,
+  Table,
+  Input,
+  Tag,
+  Select,
+} from 'antd';
 
 import { useEffect, useState } from 'react';
 import { getBlogAuthors, searchBlog } from '@/services/blog.service';
@@ -21,11 +29,12 @@ export const BlogTable = () => {
   const [titleBlog, setTitleBlog] = useState<string | null>(null);
   const [listBlog, setListBlog] = useState<IBlog[]>([]);
   const [total, settotal] = useState<number>(10);
-  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(
+    null
+  );
   const [authors, setAuthors] = useState<IAccount[]>([]);
   const [selectedAuthor, setSelectedAuthor] = useState<string | null>(null);
   const [loadingAuthors, setLoadingAuthors] = useState(false);
-
 
   // Lấy danh sách tác giả (tài khoản) một lần khi component mount
   useEffect(() => {
@@ -70,10 +79,10 @@ export const BlogTable = () => {
       settotal(data.data[0]?.TotalRecords);
       setListBlog(data.data || []);
     } catch (error) {
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
 
       if (axios.isAxiosError(error)) {
-        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const axiosError = error; // TypeScript hiểu đây là AxiosError
         const responseMessage = axiosError.response?.data?.message;
 
         if (axiosError.response?.status === 401) {
@@ -82,13 +91,11 @@ export const BlogTable = () => {
         } else {
           errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
     }
   };
-
 
   const columns: TableColumnsType<IBlog> = [
     {
@@ -107,7 +114,9 @@ export const BlogTable = () => {
         <Image
           width={70}
           height={70}
-          src={imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_blog.png'}
+          src={
+            imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_blog.png'
+          }
           alt="Avatar"
           style={{ height: '70px', width: 'auto' }}
         />
@@ -115,33 +124,47 @@ export const BlogTable = () => {
     },
     {
       title: 'Tiêu đề bài viết',
-      width: 120,
+      width: 150,
       dataIndex: 'title',
+       ellipsis: true, 
+
+      render: (title: string) => (
+        <span>
+          {title.length > 50 ? title.substring(0, 40) + '...' : title}
+        </span>
+      ),
     },
+
     {
       title: 'Lượt xem',
-      width: 50,
+      width: 100,
       dataIndex: 'views',
-      align: 'center'
+      align: 'center',
+       ellipsis: true, 
+
     },
     {
       title: 'Ngày đăng',
       width: 50,
       dataIndex: 'created_at',
       align: 'center',
+       ellipsis: true, 
+
       render: (date: string) => {
         const d = new Date(date);
         const day = d.getDate().toString().padStart(2, '0');
         const month = (d.getMonth() + 1).toString().padStart(2, '0'); // tháng bắt đầu từ 0
         const year = d.getFullYear();
         return `${day}/${month}/${year}`;
-      }
+      },
     },
     {
       title: 'Người đăng',
       width: 100,
       dataIndex: 'created_by_name',
-      align: 'center'
+      align: 'center',
+       ellipsis: true, 
+
     },
     // {
     //   title: 'Mô tả',
@@ -169,14 +192,20 @@ export const BlogTable = () => {
       render: (_, record) => (
         <Flex gap={8} justify="center">
           <BlogModal row={record} getAll={getAllBlog} />
-          {currentAccount ? (<BlogDelete id={record.id} deleted_by={currentAccount?.username} getAllBlog={getAllBlog} />) : (null)}
+          {currentAccount ? (
+            <BlogDelete
+              id={record.id}
+              deleted_by={currentAccount?.username}
+              getAllBlog={getAllBlog}
+            />
+          ) : null}
         </Flex>
       ),
     },
   ];
 
   return (
-    <Card >
+    <Card>
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         {/* === SẮP XẾP === */}
         <Select
@@ -205,10 +234,10 @@ export const BlogTable = () => {
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
           }
           // Truyền dữ liệu vào đây
-          options={authors.map(author => ({
+          options={authors.map((author) => ({
             value: author.name, // Giá trị khi được chọn
             label: author.name, // Tên hiển thị và để tìm kiếm
-            key: author.username // key duy nhất
+            key: author.username, // key duy nhất
           }))}
         />
 
@@ -226,7 +255,7 @@ export const BlogTable = () => {
         columns={columns}
         dataSource={listBlog}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+        scroll={{ x: 800, y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

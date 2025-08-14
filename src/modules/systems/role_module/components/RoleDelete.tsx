@@ -14,9 +14,10 @@ interface Props {
   id: string;
   deleted_by: string;
   getAllRole: () => void;
+  get_All_Role:()=>void;
 }
 
-export const RoleDelete = ({ id, getAllRole }: Props) => {
+export const RoleDelete = ({ id, getAllRole,get_All_Role }: Props) => {
   const { isOpen, open, close } = useDisclosure();
   const { show } = useNotification();
 
@@ -30,6 +31,7 @@ export const RoleDelete = ({ id, getAllRole }: Props) => {
           messageDone: 'Xóa nhóm quyền thành công!',
         });
         getAllRole();
+        get_All_Role();
       }
       else {
         show({

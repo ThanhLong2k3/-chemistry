@@ -78,6 +78,8 @@ export const AdvisoryMemberTable = () => {
       title: 'Tên giáo viên',
       width: 110,
       dataIndex: 'teacher_name',
+       ellipsis: true, 
+
     },
     {
       title: 'Ảnh đại diện',
@@ -98,6 +100,8 @@ export const AdvisoryMemberTable = () => {
       title: 'Trình độ',
       width: 70,
       dataIndex: 'qualification',
+       ellipsis: true, 
+
     },
     // {
     //   title: 'Bộ môn',
@@ -113,10 +117,12 @@ export const AdvisoryMemberTable = () => {
       title: 'Nơi công tác',
       width: 130,
       dataIndex: 'workplace',
+       ellipsis: true, 
+
     },
     {
       title: 'Số năm kinh nghiệm',
-      width: 90,
+      width: 120,
       align: 'center',
       dataIndex: 'years_of_experience',
       render: (years) => {
@@ -156,7 +162,7 @@ export const AdvisoryMemberTable = () => {
         columns={columns}
         dataSource={listAdvisoryMember}
         loading={false}
-        scroll={{ x: 0, y: 380 }}
+       scroll={{ x: 800, y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,
