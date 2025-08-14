@@ -55,10 +55,10 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       max: 255,
       message: 'Không được vượt quá 255 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự (cấm chỉ chứa ký tự đặc biệt, cho phép có ký tự chữ)
+    // 2. Quy tắc kiểm tra ký tự 
     {
-      pattern: /^(?![^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$)(?![\W_]+$)/,
-      message: 'Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).',
+      pattern: /^(?=.*[a-zA-Z]).+$/,
+      message: 'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.',
     },
   ],
 
@@ -68,10 +68,10 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       max: 50,
       message: 'Không được vượt quá 50 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự (cấm chỉ chứa ký tự đặc biệt, cho phép có ký tự chữ)
+    // 2. Quy tắc kiểm tra ký tự 
     {
-      pattern: /^(?![^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$)(?![\W_]+$)/,
-      message: 'Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).',
+      pattern: /^(?=.*[a-zA-Z]).+$/,
+      message: 'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.',
     },
   ],
 
@@ -90,11 +90,11 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
 
         // 2. Kiểm tra xem văn bản thuần túy có chứa ít nhất một chữ cái không
         //    Regex /[a-zA-Zàá...Đ]/ kiểm tra sự tồn tại của một chữ cái bất kỳ
-        const hasLetter = /[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]/.test(textOnly);
+        const hasLetter = /^(?=.*[a-zA-Z]).+$/.test(textOnly);
 
         if (!hasLetter) {
           // Nếu không tìm thấy chữ cái nào, báo lỗi
-          return Promise.reject(new Error('Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).'));
+          return Promise.reject(new Error('Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.'));
         }
 
         // Nếu tất cả kiểm tra đều qua, giá trị hợp lệ
