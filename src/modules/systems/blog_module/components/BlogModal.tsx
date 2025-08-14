@@ -178,7 +178,13 @@ export const BlogModal = ({ isCreate = false, row, getAll }: Props): JSX.Element
                 </Upload>
               </Form.Item>
 
-              <Form.Item name="title" label="Tiêu đề bài viết" rules={RULES_FORM.required}>
+              <Form.Item
+                name="title"
+                label="Tiêu đề bài viết"
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>

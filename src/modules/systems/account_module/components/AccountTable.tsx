@@ -63,7 +63,7 @@ export const AccountTable = () => {
   const columns: TableColumnsType<IAccount> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
@@ -90,23 +90,24 @@ export const AccountTable = () => {
     },
     {
       title: 'Tên tài khoản',
-      width: 100,
+      width: 120,
+      minWidth: 100,
       dataIndex: 'username',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
       title: 'Tên người dùng',
-      width: 120,
+      width: 200,
       dataIndex: 'name',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
       title: 'Email',
       dataIndex: 'email',
       width: 120,
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
@@ -146,7 +147,7 @@ export const AccountTable = () => {
         columns={columns}
         dataSource={listAccount}
         loading={false}
-        scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="username"
         pagination={{
           current: pageIndex,

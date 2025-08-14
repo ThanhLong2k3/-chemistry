@@ -141,7 +141,10 @@ export default function LoginPage() {
           >
             <Form.Item
               name="username"
-              rules={RULES_FORM.required}
+              rules={[
+                ...RULES_FORM.required,
+                ...RULES_FORM.validateText50,
+              ]}
               className={styles.formItem}
             >
               <div className={styles.inputContainer}>

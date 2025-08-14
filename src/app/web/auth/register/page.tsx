@@ -220,31 +220,55 @@ export default function RegisterPage() {
                                     </Upload>
                                 </Form.Item>
                                 <Form.Item
-                                    name="name" rules={RULES_FORM.required}
-                                    className={styles.formItem}>
+                                    name="name"
+                                    className={styles.formItem}
+                                    rules={[
+                                        ...RULES_FORM.required,
+                                        ...RULES_FORM.validateText255,
+                                    ]}>
                                     <div className={styles.inputContainer}>
                                         <label className={styles.inputLabel}>Họ và Tên</label>
-                                        <Input prefix={<SmileOutlined className={styles.inputIcon} />} placeholder="Ví dụ: Nguyễn Văn A" className={styles.input} size="large" />
+                                        <Input
+                                            prefix={<SmileOutlined className={styles.inputIcon} />}
+                                            placeholder="Ví dụ: Nguyễn Văn A"
+                                            className={styles.input} size="large"
+                                        />
                                     </div>
                                 </Form.Item>
-                                <Form.Item name="username" rules={RULES_FORM.required} className={styles.formItem}>
+                                <Form.Item
+                                    name="username"
+                                    rules={[
+                                        ...RULES_FORM.required,
+                                        ...RULES_FORM.validateText50,
+                                    ]}
+                                    className={styles.formItem}>
                                     <div className={styles.inputContainer}>
                                         <label className={styles.inputLabel}>Tên đăng nhập</label>
                                         <Input prefix={<UserOutlined className={styles.inputIcon} />} placeholder="Nhập tên đăng nhập" className={styles.input} size="large" />
                                     </div>
                                 </Form.Item>
-                                <Form.Item name="email" rules={RULES_FORM.email} className={styles.formItem}>
+                                <Form.Item name="email"
+                                    rules={RULES_FORM.email}
+                                    className={styles.formItem}>
                                     <div className={styles.inputContainer}>
                                         <label className={styles.inputLabel}>Email</label>
                                         <Input prefix={<MailOutlined className={styles.inputIcon} />} placeholder="Nhập địa chỉ email" className={styles.input} size="large" type="email" />
                                     </div>
                                 </Form.Item>
-                                <Form.Item name="password" rules={RULES_FORM.password} className={styles.formItem}><div className={styles.inputContainer}>
-                                    <label className={styles.inputLabel}>Mật khẩu</label>
-                                    <Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Nhập mật khẩu" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} />
-                                </div>
+                                <Form.Item
+                                    name="password"
+                                    rules={RULES_FORM.password}
+                                    className={styles.formItem}>
+                                    <div className={styles.inputContainer}>
+                                        <label className={styles.inputLabel}>Mật khẩu</label>
+                                        <Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Nhập mật khẩu" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} />
+                                    </div>
                                 </Form.Item>
-                                <Form.Item name="confirmPassword" dependencies={['password']} hasFeedback rules={[{ required: true, message: 'Vui lòng xác nhận mật khẩu!' }, ({ getFieldValue }) => ({ validator(_, value) { if (!value || getFieldValue('password') === value) { return Promise.resolve(); } return Promise.reject(new Error('Mật khẩu không khớp!')); }, }),]}>
+                                <Form.Item
+                                    name="confirmPassword"
+                                    dependencies={['password']}
+                                    hasFeedback
+                                    rules={[{ required: true, message: 'Vui lòng xác nhận mật khẩu!' }, ({ getFieldValue }) => ({ validator(_, value) { if (!value || getFieldValue('password') === value) { return Promise.resolve(); } return Promise.reject(new Error('Mật khẩu không khớp!')); }, }),]}>
                                     <div className={styles.inputContainer}>
                                         <label className={styles.inputLabel}>Nhập lại Mật khẩu</label>
                                         <Input.Password prefix={<LockOutlined className={styles.inputIcon} />} placeholder="Nhập lại mật khẩu" size="large" className={styles.input} iconRender={(visible) => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />} />
@@ -253,13 +277,26 @@ export default function RegisterPage() {
                             </>
                         )}
                         {step === 1 && (
-                            <Form.Item name="otp" label="Mã OTP" rules={RULES_FORM.required} className={styles.formItem}>
-                                <Input prefix={<KeyOutlined className={styles.inputIcon} />} placeholder="Nhập 6 chữ số OTP" size="large" className={styles.input} />
+                            <Form.Item
+                                name="otp"
+                                label="Mã OTP"
+                                rules={RULES_FORM.required}
+                                className={styles.formItem}>
+                                <Input
+                                    prefix={<KeyOutlined className={styles.inputIcon} />}
+                                    placeholder="Nhập 6 chữ số OTP"
+                                    size="large" className={styles.input} />
                             </Form.Item>
                         )}
                         <Form.Item>
                             <Space direction="vertical" style={{ width: '100%' }}>
-                                <Button type="primary" htmlType="submit" size="large" loading={loading} className={styles.loginButton} block>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    size="large"
+                                    loading={loading}
+                                    className={styles.loginButton}
+                                    block>
                                     {step === 0 ? 'Gửi mã OTP' : 'Xác nhận & Đăng ký'}
                                 </Button>
                                 {step === 1 && (
@@ -272,7 +309,13 @@ export default function RegisterPage() {
                     </Form>
 
                     <div className={styles.registerSection}>
-                        <Text className={styles.registerText}>Đã có tài khoản?{' '}<Link href={LOGIN_PATH} className={styles.registerLink}>Đăng nhập tại đây</Link></Text>
+                        <Text className={styles.registerText}>Đã có tài khoản?{' '}
+                            <Link
+                                href={LOGIN_PATH}
+                                className={styles.registerLink}>
+                                Đăng nhập tại đây
+                            </Link>
+                        </Text>
                     </div>
                 </div>
             </div>

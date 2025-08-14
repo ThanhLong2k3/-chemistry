@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card, Col, Row, Statistic, Skeleton, Typography } from 'antd';
-import { UserOutlined, ReadOutlined, BookOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { UserOutlined, ReadOutlined, BookOutlined, AppstoreOutlined, EditOutlined, ProjectOutlined } from '@ant-design/icons';
 import React from 'react';
 import { getDashboardStats } from '@/services/dashboard.service';
 import { IDashboardStats } from '@/types/dashboard';
@@ -78,21 +78,21 @@ export const StatsCards = () => {
         {
             title: "Bài viết",
             value: stats.blogCount,
-            icon: <UserOutlined />,
+            icon: <EditOutlined />,
             color: "linear-gradient(135deg, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%)",
             path: ADMIN_MANAGE_BLOG_PATH
         },
         {
             title: "Bài học",
             value: stats.lessonCount,
-            icon: <UserOutlined />,
+            icon: <ReadOutlined />,
             color: "linear-gradient(135deg, #21D4FD 0%, #B721FF 100%)",
             path: ADMIN_MANAGE_LESSON_PATH
         },
         {
             title: "Môn học",
             value: stats.subjectCount,
-            icon: <UserOutlined />,
+            icon: <ProjectOutlined />,
             color: "linear-gradient(135deg, #2AF598 0%, #009EFD 100%)",
             path: ADMIN_MANAGE_SUBJECT_PATH
         },

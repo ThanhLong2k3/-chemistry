@@ -91,23 +91,23 @@ export const ChapterTable = () => {
   const columns: TableColumnsType<IChapter> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
     },
     {
       title: 'Tên chương',
-      width: 200,
+      width: 150,
       dataIndex: 'name',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     {
       title: 'Tên môn học',
-      width: 80,
+      width: 120,
       dataIndex: 'subject_name',
-       ellipsis: true, 
+      ellipsis: true,
 
     },
     // {
@@ -131,7 +131,7 @@ export const ChapterTable = () => {
     // },
     {
       title: 'Sắp xếp',
-      width: 50,
+      width: 80,
       dataIndex: 'sort_order',
       align: 'center',
     },
@@ -183,7 +183,7 @@ export const ChapterTable = () => {
         columns={columns}
         dataSource={listChapter}
         loading={false}
-       scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

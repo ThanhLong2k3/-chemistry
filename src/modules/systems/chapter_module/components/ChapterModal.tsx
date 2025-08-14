@@ -186,9 +186,8 @@ export const ChapterModal = ({
                 label="Tên chương"
                 rules={[
                   ...RULES_FORM.required,
-                  ...RULES_FORM.noSpecialChars,
-                ]}
-              >
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>

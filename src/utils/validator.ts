@@ -14,7 +14,8 @@ interface keyValidator {
   required_max50?: any;
   Description_max50?: any;
   years_of_experience?: any;
-  noSpecialChars?: any;
+  validateText255?: any
+  validateText50?: any
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -47,18 +48,29 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
   ],
 
-  noSpecialChars: [
+  validateText255: [
     // 1. Quy tắc kiểm tra độ dài tối đa
     {
       max: 255,
       message: 'Không được vượt quá 255 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự đặc biệt (chỉ cho phép thêm dấu :)
+    // 2. Quy tắc kiểm tra ký tự (cấm chỉ chứa ký tự đặc biệt, cho phép có ký tự chữ)
     {
-      pattern:
-        /^(?=.*[a-zA-ZÀ-ỹ])[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ:_.-]*$/,
-      message:
-        'Tên phải chứa ít nhất một chữ cái và không chỉ toàn số hoặc ký tự đặc biệt.',
+      pattern: /^(?![^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$)(?![\W_]+$)/,
+      message: 'Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).',
+    },
+  ],
+
+  validateText50: [
+    // 1. Quy tắc kiểm tra độ dài tối đa
+    {
+      max: 50,
+      message: 'Không được vượt quá 50 ký tự.',
+    },
+    // 2. Quy tắc kiểm tra ký tự (cấm chỉ chứa ký tự đặc biệt, cho phép có ký tự chữ)
+    {
+      pattern: /^(?![^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$)(?![\W_]+$)/,
+      message: 'Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).',
     },
   ],
 
@@ -84,11 +96,8 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
             new Error('Số năm kinh nghiệm không thể là số âm.')
           );
         }
-        if (numValue > 80) {
-          // Giới hạn hợp lý
-          return Promise.reject(
-            new Error('Số năm kinh nghiệm không thể lớn hơn 80.')
-          );
+        if (numValue > 50) {
+          return Promise.reject(new Error('Số năm kinh nghiệm không thể lớn hơn 50.'));
         }
         return Promise.resolve(); // Hợp lệ
       },

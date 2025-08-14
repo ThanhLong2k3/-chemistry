@@ -69,21 +69,20 @@ export const AdvisoryMemberTable = () => {
   const columns: TableColumnsType<IAdvisoryMember> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
     },
     {
       title: 'Tên giáo viên',
-      width: 110,
+      width: 160,
       dataIndex: 'teacher_name',
-       ellipsis: true, 
-
+      ellipsis: true,
     },
     {
       title: 'Ảnh đại diện',
-      width: 70,
+      width: 100,
       dataIndex: 'image',
       align: 'center',
       render: (imageUrl) => (
@@ -98,31 +97,20 @@ export const AdvisoryMemberTable = () => {
     },
     {
       title: 'Trình độ',
-      width: 70,
+      width: 100,
       dataIndex: 'qualification',
-       ellipsis: true, 
-
+      ellipsis: true,
+      align: 'center',
     },
-    // {
-    //   title: 'Bộ môn',
-    //   width: 100,
-    //   dataIndex: 'subject_name',
-    // },
-    // {
-    //   title: 'Phụ trách',
-    //   width: 100,
-    //   dataIndex: 'in_charge',
-    // },
     {
       title: 'Nơi công tác',
-      width: 130,
+      width: 160,
       dataIndex: 'workplace',
-       ellipsis: true, 
-
+      ellipsis: true,
     },
     {
       title: 'Số năm kinh nghiệm',
-      width: 120,
+      width: 160,
       align: 'center',
       dataIndex: 'years_of_experience',
       render: (years) => {
@@ -134,16 +122,24 @@ export const AdvisoryMemberTable = () => {
     },
     {
       title: 'Thao tác',
-      width: 110,
+      width: 160,
+      minWidth: 160,
       align: 'center',
       render: (_, record) => (
         <Flex gap={8} justify="center">
           <AdvisoryMemberModal row={record} getAll={getAllAdvisoryMember} />
-          {currentAccount ? (<AdvisoryMemberDelete id={record.id} deleted_by={currentAccount?.username} getAllAdvisoryMember={getAllAdvisoryMember} />) : null}
+          {currentAccount ? (
+            <AdvisoryMemberDelete
+              id={record.id}
+              deleted_by={currentAccount?.username}
+              getAllAdvisoryMember={getAllAdvisoryMember}
+            />
+          ) : null}
         </Flex>
       ),
     },
   ];
+
 
   return (
     <Card >
@@ -162,7 +158,7 @@ export const AdvisoryMemberTable = () => {
         columns={columns}
         dataSource={listAdvisoryMember}
         loading={false}
-       scroll={{ x: 800, y: 380 }}
+        scroll={{ x: 'max-content', y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,
