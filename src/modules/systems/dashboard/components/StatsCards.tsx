@@ -73,7 +73,7 @@ export const StatsCards = () => {
             value: stats.studentCount,
             icon: <UserOutlined />,
             color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            path: ADMIN_MANAGE_ACCOUNT_PATH
+            path: `/web/admin/manage_account?role=${encodeURIComponent('Học sinh')}`
         },
         {
             title: "Bài viết",

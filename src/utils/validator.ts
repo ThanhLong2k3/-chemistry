@@ -16,6 +16,7 @@ interface keyValidator {
   years_of_experience?: any;
   validateText255?: any
   validateText50?: any
+  validateDescription?: any
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -72,6 +73,35 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       pattern: /^(?![^a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$)(?![\W_]+$)/,
       message: 'Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).',
     },
+  ],
+
+  validateDescription: [
+    {
+      // `value` ở đây sẽ là chuỗi HTML từ ReactQuill, ví dụ: '<p>123 !@#</p>'
+      validator: (_, value) => {
+        if (!value || value === '<p><br></p>') {
+          // Nếu không có giá trị, hoặc giá trị là thẻ p rỗng mặc định, bỏ qua
+          // Quy tắc `required` (nếu có) sẽ xử lý việc bắt buộc nhập
+          return Promise.resolve();
+        }
+
+        // 1. Loại bỏ tất cả các thẻ HTML để lấy văn bản thuần túy
+        const textOnly = value.replace(/<[^>]*>/g, '');
+
+        // 2. Kiểm tra xem văn bản thuần túy có chứa ít nhất một chữ cái không
+        //    Regex /[a-zA-Zàá...Đ]/ kiểm tra sự tồn tại của một chữ cái bất kỳ
+        const hasLetter = /[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]/.test(textOnly);
+
+        if (!hasLetter) {
+          // Nếu không tìm thấy chữ cái nào, báo lỗi
+          return Promise.reject(new Error('Không được chứa chỉ ký tự đặc biệt (phải có ít nhất một chữ).'));
+        }
+
+        // Nếu tất cả kiểm tra đều qua, giá trị hợp lệ
+        return Promise.resolve();
+      },
+    },
+
   ],
 
   years_of_experience: [

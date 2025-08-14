@@ -217,7 +217,11 @@ export const ChapterModal = ({
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả">
+          <Form.Item
+            name="description"
+            label="Mô tả"
+            rules={RULES_FORM.validateDescription}
+          >
             <ReactQuill
               className="custom-quill"
               theme="snow"
