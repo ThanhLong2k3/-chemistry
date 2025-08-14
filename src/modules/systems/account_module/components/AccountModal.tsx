@@ -235,8 +235,10 @@ export const AccountModal = ({
               <Form.Item
                 name="username"
                 label="Tên đăng nhập"
-                rules={RULES_FORM.required}
-              >
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText50,
+                ]}>
                 <Input disabled={!isCreate} />
               </Form.Item>
 

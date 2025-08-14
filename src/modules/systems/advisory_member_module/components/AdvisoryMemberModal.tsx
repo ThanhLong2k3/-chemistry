@@ -190,7 +190,12 @@ export const AdvisoryMemberModal = ({
                 </Upload>
               </Form.Item>
 
-              <Form.Item name="subject" label="Môn học phụ trách" rules={RULES_FORM.required}>
+              <Form.Item
+                name="subject" label="Môn học phụ trách"
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
 
@@ -205,7 +210,7 @@ export const AdvisoryMemberModal = ({
                 label="Tên thành viên"
                 rules={[
                   ...RULES_FORM.required,
-                  ...RULES_FORM.noSpecialChars,
+                  ...RULES_FORM.validateText255,
                 ]}>
                 <Input />
               </Form.Item>
@@ -230,7 +235,13 @@ export const AdvisoryMemberModal = ({
                 </Select>
               </Form.Item>
 
-              <Form.Item name="workplace" label="Nơi công tác" rules={RULES_FORM.noSpecialChars}>
+              <Form.Item
+                name="workplace"
+                label="Nơi công tác"
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>

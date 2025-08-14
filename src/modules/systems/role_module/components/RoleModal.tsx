@@ -166,8 +166,10 @@ export const RoleModal = ({
               <Form.Item
                 name="name"
                 label="Tên nhóm quyền"
-                rules={RULES_FORM.required}
-              >
+                rules={[
+                  ...RULES_FORM.required,
+                  ...RULES_FORM.validateText255,
+                ]}>
                 <Input />
               </Form.Item>
             </Col>
