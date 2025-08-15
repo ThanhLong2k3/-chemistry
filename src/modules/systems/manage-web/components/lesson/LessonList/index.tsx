@@ -13,6 +13,7 @@ const LessonListPageClient = ({ id }: Props) => {
 
   useEffect(() => {
     if (id) {
+      document.title='Danh sách bài học';
       GetChapterSubjectById(id);
     }
   }, [id]);

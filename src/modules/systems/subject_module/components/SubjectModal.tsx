@@ -6,7 +6,12 @@ import { createSubject, updateSubject } from '@/services/subject.service';
 import { ISubject } from '@/types/subject';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined, FileAddOutlined, PaperClipOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  FileAddOutlined,
+  PaperClipOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
@@ -16,7 +21,7 @@ import { getAccountLogin } from '@/env/getInfor_token';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { UpLoadImage } from '@/services/upload.service';
 import env from '@/env';
-
+import QuillEditor from '@/modules/shared/QuillEditor';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -45,14 +50,19 @@ export const SubjectModal = ({
         form.resetFields();
         setDescription('');
       } else if (row) {
-        const convertFile = (url: string | null, name = 'file.pdf'): UploadFile[] => {
+        const convertFile = (
+          url: string | null,
+          name = 'file.pdf'
+        ): UploadFile[] => {
           if (!url) return [];
-          return [{
-            uid: '-1',
-            name,
-            status: 'done',
-            url: `${env.BASE_URL}${url}`,
-          }];
+          return [
+            {
+              uid: '-1',
+              name,
+              status: 'done',
+              url: `${env.BASE_URL}${url}`,
+            },
+          ];
         };
 
         form.setFieldsValue({
@@ -80,7 +90,9 @@ export const SubjectModal = ({
 
       const values = await form.validateFields();
 
-      const extractUrl = async (fileList: UploadFile[] | undefined): Promise<string | null> => {
+      const extractUrl = async (
+        fileList: UploadFile[] | undefined
+      ): Promise<string | null> => {
         if (!fileList || fileList.length === 0) return null;
         const file = fileList[0];
         if (file.originFileObj) {
@@ -158,11 +170,19 @@ export const SubjectModal = ({
 
   return (
     <>
-      <Button type={isCreate ? 'primary' : 'default'} onClick={open} icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}>
+      <Button
+        type={isCreate ? 'primary' : 'default'}
+        onClick={open}
+        icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}
+      >
         {isCreate ? 'Thêm môn học' : 'Sửa'}
       </Button>
       <Modal
-        title={<div style={{ fontSize: '20px', paddingBottom: '8px' }}>{isCreate ? 'Thêm môn học' : 'Sửa môn học'}</div>}
+        title={
+          <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
+            {isCreate ? 'Thêm môn học' : 'Sửa môn học'}
+          </div>
+        }
         open={isOpen}
         onOk={handleOk}
         onCancel={close}
@@ -197,7 +217,10 @@ export const SubjectModal = ({
                   }}
                   accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
-                  <Button icon={<UploadOutlined />} style={hasImage ? { marginBottom: '12px' } : {}}>
+                  <Button
+                    icon={<UploadOutlined />}
+                    style={hasImage ? { marginBottom: '12px' } : {}}
+                  >
                     Chọn ảnh
                   </Button>
                 </Upload>
@@ -206,27 +229,49 @@ export const SubjectModal = ({
               <Form.Item
                 name="name"
                 label="Tên môn học"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
 
-              <Form.Item name="sort_order" label="Sắp xếp" rules={RULES_FORM.required}>
+              <Form.Item
+                name="sort_order"
+                label="Sắp xếp"
+                rules={RULES_FORM.required}
+              >
                 <Input type="number" min={1} />
               </Form.Item>
             </Col>
             <Col span={1}></Col>
             <Col span={6}>
-              <Form.Item name="textbook" label="Sách giáo khoa (PDF)" valuePropName="fileList" getValueFromEvent={(e) => e?.fileList}>
-                <Upload name="textbook" maxCount={1} beforeUpload={() => false} accept=".pdf">
+              <Form.Item
+                name="textbook"
+                label="Sách giáo khoa (PDF)"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e?.fileList}
+              >
+                <Upload
+                  name="textbook"
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  accept=".pdf"
+                >
                   <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
                 </Upload>
               </Form.Item>
 
-              <Form.Item name="workbook" label="Sách bài tập (PDF)" valuePropName="fileList" getValueFromEvent={(e) => e?.fileList}>
-                <Upload name="workbook" maxCount={1} beforeUpload={() => false} accept=".pdf">
+              <Form.Item
+                name="workbook"
+                label="Sách bài tập (PDF)"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e?.fileList}
+              >
+                <Upload
+                  name="workbook"
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  accept=".pdf"
+                >
                   <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
                 </Upload>
               </Form.Item>
@@ -237,7 +282,12 @@ export const SubjectModal = ({
                 valuePropName="fileList"
                 getValueFromEvent={(e) => e?.fileList}
               >
-                <Upload name="exercise_book" maxCount={1} beforeUpload={() => false} accept=".pdf">
+                <Upload
+                  name="exercise_book"
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  accept=".pdf"
+                >
                   <Button icon={<PaperClipOutlined />}>Chọn file PDF</Button>
                 </Upload>
               </Form.Item>
@@ -262,17 +312,14 @@ export const SubjectModal = ({
             label="Mô tả"
             rules={RULES_FORM.validateDescription}
           >
-            <ReactQuill
-              className="custom-quill"
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-            />
+            <div className="custom-quill">
+              <QuillEditor
+                value={description}
+                onChange={setDescription}
+                placeholder="Nhập mô tả môn học..."
+              />
+            </div>
           </Form.Item>
-
         </Form>
       </Modal>
     </>

@@ -37,64 +37,6 @@ interface AdvisoryMember {
   avatar?: string;
 }
 
-// Dữ liệu mẫu
-const advisoryMembers: AdvisoryMember[] = [
-  {
-    id: 1,
-    name: 'PGS.TS. Nguyễn Văn An',
-    degree: 'Phó Giáo sư, Tiến sĩ',
-    department: 'Khoa Công nghệ Thông tin',
-    classesInCharge: ['CNTT-01', 'CNTT-02', 'CNTT-03'],
-    workplace: 'Trường Đại học Bách khoa Hà Nội',
-    yearsOfExperience: 15,
-  },
-  {
-    id: 2,
-    name: 'TS. Trần Thị Bình',
-    degree: 'Tiến sĩ',
-    department: 'Khoa Kinh tế',
-    classesInCharge: ['KT-01', 'KT-02'],
-    workplace: 'Trường Đại học Kinh tế Quốc dân',
-    yearsOfExperience: 12,
-  },
-  {
-    id: 3,
-    name: 'ThS. Lê Minh Cường',
-    degree: 'Thạc sĩ',
-    department: 'Khoa Ngoại ngữ',
-    classesInCharge: ['NN-01', 'NN-02', 'NN-03', 'NN-04'],
-    workplace: 'Trường Đại học Ngoại ngữ - ĐHQGHN',
-    yearsOfExperience: 8,
-  },
-  {
-    id: 4,
-    name: 'PGS.TS. Phạm Thị Dung',
-    degree: 'Phó Giáo sư, Tiến sĩ',
-    department: 'Khoa Y học',
-    classesInCharge: ['Y-01', 'Y-02'],
-    workplace: 'Trường Đại học Y Hà Nội',
-    yearsOfExperience: 20,
-  },
-  {
-    id: 5,
-    name: 'TS. Hoàng Văn Em',
-    degree: 'Tiến sĩ',
-    department: 'Khoa Kỹ thuật',
-    classesInCharge: ['KT-01', 'KT-02', 'KT-03'],
-    workplace: 'Trường Đại học Công nghiệp',
-    yearsOfExperience: 18,
-  },
-  {
-    id: 6,
-    name: 'ThS. Ngô Thị Phương',
-    degree: 'Thạc sĩ',
-    department: 'Khoa Luật',
-    classesInCharge: ['L-01', 'L-02'],
-    workplace: 'Trường Đại học Luật Hà Nội',
-    yearsOfExperience: 10,
-  },
-];
-
 const AdvisoryBoard: React.FC = () => {
   const [advisoryMembers, setadvisoryMembers] = useState<IAdvisoryMember[]>([]);
   const [currentPage, setCurrentPage] = useState(1);

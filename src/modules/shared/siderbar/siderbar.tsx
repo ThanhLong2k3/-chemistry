@@ -28,7 +28,7 @@ import {
   ADMIN_MANAGE_LESSON_PATH,
   ADMIN_MANAGE_ROLE_PATH,
   ADMIN_MANAGE_SUBJECT_PATH,
-  ADMIN_DASHBOARD_PATH
+  ADMIN_DASHBOARD_PATH,
 } from '@/path';
 import { usePermissions } from '@/contexts/PermissionContext';
 
@@ -39,26 +39,26 @@ interface SiderBarProps {
 
 // Map giữa key của menu và đường dẫn
 const routeMap: Record<string, string> = {
-  'sub1': ADMIN_DASHBOARD_PATH,
+  sub1: ADMIN_DASHBOARD_PATH,
   '1': ADMIN_MANAGE_SUBJECT_PATH,
   '2': ADMIN_MANAGE_CHAPTER_PATH,
   '3': ADMIN_MANAGE_LESSON_PATH,
   '4': ADMIN_MANAGE_EXAM_PATH,
-  'sub3': ADMIN_MANAGE_ADVISORY_MEMBER_PATH,
-  'sub4': ADMIN_MANAGE_BLOG_PATH,
+  sub3: ADMIN_MANAGE_ADVISORY_MEMBER_PATH,
+  sub4: ADMIN_MANAGE_BLOG_PATH,
   '5': ADMIN_MANAGE_ROLE_PATH,
   '6': ADMIN_MANAGE_ACCOUNT_PATH,
 };
 
 // Map giữa key của menu và permission_code tương ứng
 const menuPermissionMap: Record<string, string> = {
-  'sub1': 'DASHBOARD_VIEW',
+  sub1: 'DASHBOARD_VIEW',
   '1': 'SUBJECT_MANAGE',
   '2': 'CHAPTER_MANAGE',
   '3': 'LESSON_MANAGE',
   '4': 'EXAM_MANAGE',
-  'sub3': 'ADVISORY_MANAGE',
-  'sub4': 'BLOG_MANAGE',
+  sub3: 'ADVISORY_MANAGE',
+  sub4: 'BLOG_MANAGE',
   '5': 'ROLE_MANAGE',
   '6': 'ACCOUNT_MANAGE',
 };
@@ -71,7 +71,7 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
 
   const getCurrentKey = useCallback(() => {
     const entry = Object.entries(routeMap).find(
-      ([, path]) => path === pathname,
+      ([, path]) => path === pathname
     );
     return entry ? entry[0] : 'sub1'; // Mặc định về dashboard
   }, [pathname]);
@@ -137,7 +137,6 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
     };
 
     return filterMenu(allItems);
-
   }, [hasPermission]); // Chỉ tính toán lại khi hàm `hasPermission` thay đổi
 
   const sidebarBg = themeColor?.token?.colorPrimary || 'rgb(13,68,138)';
@@ -153,7 +152,7 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
         style={{ backgroundColor: sidebarBg, color: textColor }}
       >
         <Image
-          src={collapsed ? '/image/logotrangnho.png' : '/image/logotrang.png'}
+          src={collapsed ? '/Logo1trang.png' : '/Logotrang.png'}
           alt="Logo"
           width={collapsed ? 50 : 150}
           height={60}
@@ -181,7 +180,7 @@ const SiderBar: React.FC<SiderBarProps> = ({ collapsed }) => {
           style={{ backgroundColor: sidebarBg, color: textColor }}
         />
       </ConfigProvider>
-    </div >
+    </div>
   );
 };
 

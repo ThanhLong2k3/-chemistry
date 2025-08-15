@@ -5,7 +5,11 @@ import { createChapter, updateChapter } from '@/services/chapter.service';
 import { IChapter } from '@/types/chapter';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  FileAddOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
@@ -14,7 +18,7 @@ import { searchSubject } from '@/services/subject.service';
 import axios from 'axios';
 import { showSessionExpiredModal } from '@/utils/session-handler';
 import { getAccountLogin } from '@/env/getInfor_token';
-
+import QuillEditor from '@/modules/shared/QuillEditor';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -70,9 +74,7 @@ export const ChapterModal = ({
     }
   }, [isOpen]);
 
-
-  useEffect(() => {
-  }, [isOpen]);
+  useEffect(() => {}, [isOpen]);
 
   const handleOk = async () => {
     try {
@@ -94,7 +96,6 @@ export const ChapterModal = ({
           id: uuidv4(),
           ...values,
           created_by: currentAccount.username,
-
         });
 
         if (responseData.success) {
@@ -109,7 +110,11 @@ export const ChapterModal = ({
           });
         }
       } else if (row?.id) {
-        const responseData: any = await updateChapter({ ...values, id: row.id, updated_by: currentAccount.username });
+        const responseData: any = await updateChapter({
+          ...values,
+          id: row.id,
+          updated_by: currentAccount.username,
+        });
         if (responseData.success) {
           show({
             result: 0,
@@ -134,7 +139,7 @@ export const ChapterModal = ({
         return;
       }
 
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
 
       if (axios.isAxiosError(error)) {
         const axiosError = error; // TypeScript hiểu đây là AxiosError
@@ -146,8 +151,7 @@ export const ChapterModal = ({
         } else {
           errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
 
@@ -156,14 +160,17 @@ export const ChapterModal = ({
       //   result: 1,
       //   messageError: errorMessage,
       // });
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
-
+      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
     }
   };
 
   return (
     <>
-      <Button type={isCreate ? 'primary' : 'default'} onClick={open} icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}>
+      <Button
+        type={isCreate ? 'primary' : 'default'}
+        onClick={open}
+        icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}
+      >
         {isCreate ? 'Thêm chương' : 'Sửa'}
       </Button>
       <Modal
@@ -186,10 +193,8 @@ export const ChapterModal = ({
               <Form.Item
                 name="name"
                 label="Tên chương"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
             </Col>
@@ -199,7 +204,12 @@ export const ChapterModal = ({
                 label="Môn học"
                 rules={RULES_FORM.required}
               >
-                <Select placeholder="Chọn môn học" allowClear showSearch optionFilterProp="children">
+                <Select
+                  placeholder="Chọn môn học"
+                  allowClear
+                  showSearch
+                  optionFilterProp="children"
+                >
                   {subjects.map((subject) => (
                     <Select.Option key={subject.id} value={subject.id}>
                       {subject.name}
@@ -219,20 +229,16 @@ export const ChapterModal = ({
             </Col>
           </Row>
 
-          <Form.Item
-            name="description"
-            label="Mô tả"
+          <Form.Item name="description" label="Mô tả" 
             rules={RULES_FORM.validateDescription}
           >
-            <ReactQuill
-              className="custom-quill"
-              theme="snow"
-              value={description}
-              onChange={(value) => {
-                setDescription(value);
-                form.setFieldsValue({ description: value });
-              }}
-            />
+            <div className="custom-quill">
+              <QuillEditor
+                value={description}
+                onChange={setDescription}
+                placeholder="Nhập mô tả chương..."
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

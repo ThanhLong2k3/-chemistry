@@ -145,7 +145,6 @@ export const AccountTable = () => {
       title: 'Thao tác',
       width: 120,
       align: 'center',
-      fixed: 'right',
       render: (_, record) => (
         <Flex gap={8} justify="center">
           <AccountModal row={record} getAll={getAllAccount} />

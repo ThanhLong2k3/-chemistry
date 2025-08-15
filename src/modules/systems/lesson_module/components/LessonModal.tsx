@@ -1,11 +1,26 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
-import { Button, Col, Form, Input, Modal, Row, Select, Spin, Upload, UploadFile } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Spin,
+  Upload,
+  UploadFile,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { createLesson, updateLesson } from '@/services/lesson.service';
 import { ILesson } from '@/types/lesson';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  FileAddOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-quill/dist/quill.snow.css';
 import dynamic from 'next/dynamic';
@@ -19,7 +34,7 @@ import { ISubject } from '@/types/subject';
 import { searchSubject } from '@/services/subject.service';
 import { UpLoadImage } from '@/services/upload.service';
 import env from '@/env';
-
+import QuillEditor from '@/modules/shared/QuillEditor';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -44,7 +59,9 @@ export const LessonModal = ({
   const [chapters, setChapters] = useState<IChapter[]>([]);
   const [loadingSubjects, setLoadingSubjects] = useState(false);
   const [loadingChapters, setLoadingChapters] = useState(false);
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(
+    null
+  );
   // 1. Sử dụng Form.useWatch để theo dõi giá trị của trường 'image'
   const imageFileList = Form.useWatch('image', form);
 
@@ -64,9 +81,14 @@ export const LessonModal = ({
           // 2. Nếu là SỬA, tìm môn học tương ứng với chương của bài học
           if (!isCreate && row) {
             // Cần tải tất cả chương một lần để tìm ra môn học của chương đó
-            const allChaptersRes = await searchChapter({ page_index: 1, page_size: 1000 });
+            const allChaptersRes = await searchChapter({
+              page_index: 1,
+              page_size: 1000,
+            });
             if (allChaptersRes.success) {
-              const chapterOfRow = allChaptersRes.data.find((c: IChapter) => c.id === row.chapter_id);
+              const chapterOfRow = allChaptersRes.data.find(
+                (c: IChapter) => c.id === row.chapter_id
+              );
               if (chapterOfRow) {
                 setSelectedSubjectId(chapterOfRow.subject_id);
               }
@@ -89,22 +111,22 @@ export const LessonModal = ({
         setChapters([]);
       } else if (row) {
         // Set giá trị ban đầu cho form SỬA
-        const imageFileList: UploadFile[] = row.image ? [
-          {
-            uid: '-1',
-            name: 'avatar.png',
-            status: 'done',
-            url: `${env.BASE_URL}${row.image}`,
-          }
-        ] : [];
+        const imageFileList: UploadFile[] = row.image
+          ? [
+              {
+                uid: '-1',
+                name: 'avatar.png',
+                status: 'done',
+                url: `${env.BASE_URL}${row.image}`,
+              },
+            ]
+          : [];
         form.setFieldsValue({ ...row, image: imageFileList });
         setDescription(row.description || '');
       }
       fetchInitialData();
     }
   }, [isOpen, isCreate, row, form]);
-
-
 
   //tải lại danh sách Chương khi Môn học được chọn thay đổi
   useEffect(() => {
@@ -114,8 +136,9 @@ export const LessonModal = ({
       setLoadingChapters(true);
       setChapters([]); // Reset danh sách chương cũ
       try {
-        // Tìm tên môn học từ ID để gửi lên API 
-        const subjectName = subjects.find(s => s.id === selectedSubjectId)?.name || null;
+        // Tìm tên môn học từ ID để gửi lên API
+        const subjectName =
+          subjects.find((s) => s.id === selectedSubjectId)?.name || null;
 
         const res = await searchChapter({
           page_index: 1,
@@ -134,7 +157,6 @@ export const LessonModal = ({
 
     fetchChapters();
   }, [selectedSubjectId, isOpen, subjects]);
-
 
   // Hàm xử lý khi đổi Môn học
   const handleSubjectChange = (subjectId: string | undefined) => {
@@ -178,7 +200,7 @@ export const LessonModal = ({
           id: uuidv4(),
           ...values,
           created_by: currentAccount.username,
-          image: imageUrl
+          image: imageUrl,
         });
 
         if (responseData.success) {
@@ -193,7 +215,12 @@ export const LessonModal = ({
           });
         }
       } else if (row?.id) {
-        const responseData: any = await updateLesson({ ...values, id: row.id, updated_by: currentAccount.username, image: imageUrl });
+        const responseData: any = await updateLesson({
+          ...values,
+          id: row.id,
+          updated_by: currentAccount.username,
+          image: imageUrl,
+        });
         if (responseData.success) {
           show({
             result: 0,
@@ -218,7 +245,7 @@ export const LessonModal = ({
         return;
       }
 
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
 
       if (axios.isAxiosError(error)) {
         const axiosError = error; // TypeScript hiểu đây là AxiosError
@@ -230,8 +257,7 @@ export const LessonModal = ({
         } else {
           errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
 
@@ -240,15 +266,19 @@ export const LessonModal = ({
       //   result: 1,
       //   messageError: errorMessage,
       // });
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
     }
   };
 
   return (
     <>
-      <Button type={isCreate ? 'primary' : 'default'} onClick={open} icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}>
+      <Button
+        type={isCreate ? 'primary' : 'default'}
+        onClick={open}
+        icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}
+      >
         {isCreate ? 'Thêm bài học' : 'Sửa'}
-      </Button >
+      </Button>
       <Modal
         title={
           <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
@@ -294,7 +324,10 @@ export const LessonModal = ({
                 >
                   <Button
                     style={hasImage ? { marginBottom: '12px' } : {}}
-                    icon={<UploadOutlined />}>Chọn ảnh</Button>
+                    icon={<UploadOutlined />}
+                  >
+                    Chọn ảnh
+                  </Button>
                 </Upload>
               </Form.Item>
 
@@ -303,17 +336,15 @@ export const LessonModal = ({
                 label="Sắp xếp"
                 rules={RULES_FORM.required}
               >
-                <Input type='number' min={1} />
+                <Input type="number" min={1} />
               </Form.Item>
             </Col>
             <Col span={16}>
               <Form.Item
                 name="name"
                 label="Tên bài học"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
 
@@ -328,7 +359,9 @@ export const LessonModal = ({
                   onChange={handleSubjectChange}
                   // Lọc dựa trên thuộc tính `label` của `options`
                   filterOption={(input, option) =>
-                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    (option?.label ?? '')
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
                   }
                   // Cung cấp dữ liệu qua prop `options`
                   options={subjects.map((subject) => ({
@@ -340,14 +373,20 @@ export const LessonModal = ({
               </Form.Item>
 
               {/* === SELECT CHƯƠNG === */}
-              <Form.Item name="chapter_id" label="Tên chương" rules={RULES_FORM.required}>
+              <Form.Item
+                name="chapter_id"
+                label="Tên chương"
+                rules={RULES_FORM.required}
+              >
                 <Select
                   placeholder="Chọn chương"
                   allowClear
                   showSearch
                   optionFilterProp="children"
                   loading={loadingChapters}
-                  notFoundContent={loadingChapters ? <Spin size="small" /> : null}
+                  notFoundContent={
+                    loadingChapters ? <Spin size="small" /> : null
+                  }
                 >
                   {chapters.map((chapter) => (
                     <Select.Option key={chapter.id} value={chapter.id}>
@@ -361,20 +400,17 @@ export const LessonModal = ({
 
           <Row gutter={24}>
             <Col span={24}>
-              <Form.Item
-                name="description"
-                label="Mô tả"
-                rules={RULES_FORM.validateDescription}
+              <Form.Item name="description" label="Mô tả"
+            rules={RULES_FORM.validateDescription}
+              
               >
-                <ReactQuill
-                  className="custom-quill"
-                  theme="snow"
-                  value={description}
-                  onChange={(value) => {
-                    setDescription(value);
-                    form.setFieldsValue({ description: value });
-                  }}
-                />
+                <div className="custom-quill">
+                  <QuillEditor
+                    value={description}
+                    onChange={setDescription}
+                    placeholder="Nhập nội dung bài học..."
+                  />
+                </div>
               </Form.Item>
             </Col>
           </Row>

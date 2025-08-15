@@ -1,7 +1,11 @@
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import { Image } from 'antd';
 
 const PeriodicTable: React.FC = () => {
+  useEffect(()=>{
+    document.title='Bảng tuần hoàn';
+  })
   return (
     <Image
       preview={false}

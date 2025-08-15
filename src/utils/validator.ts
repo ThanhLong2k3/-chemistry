@@ -14,9 +14,9 @@ interface keyValidator {
   required_max50?: any;
   Description_max50?: any;
   years_of_experience?: any;
-  validateText255?: any
-  validateText50?: any
-  validateDescription?: any
+  validateText255?: any;
+  validateText50?: any;
+  validateDescription?: any;
 }
 
 export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
@@ -50,15 +50,15 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
   ],
 
   validateText255: [
-    // 1. Quy tắc kiểm tra độ dài tối đa
     {
       max: 255,
       message: 'Không được vượt quá 255 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự 
     {
-      pattern: /^(?=.*[a-zA-Z]).+$/,
-      message: 'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.',
+      // Có ít nhất 1 chữ cái, không chỉ toàn số, không chỉ toàn ký tự đặc biệt (bỏ qua khoảng trắng khi kiểm tra)
+      pattern: /^(?=.*\p{L})(?!^\d+$)(?!^[\p{P}\s]+$)[\p{L}\p{N}\p{P}\s]+$/u,
+      message:
+        'Phải có ít nhất một chữ cái, không được chỉ toàn số, không được chỉ toàn ký tự đặc biệt.',
     },
   ],
 
@@ -68,10 +68,12 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       max: 50,
       message: 'Không được vượt quá 50 ký tự.',
     },
-    // 2. Quy tắc kiểm tra ký tự 
+    // 2. Quy tắc kiểm tra ký tự
     {
-      pattern: /^(?=.*[a-zA-Z]).+$/,
-      message: 'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.',
+      // Có ít nhất 1 chữ cái, không chỉ toàn số, không chỉ toàn ký tự đặc biệt (bỏ qua khoảng trắng khi kiểm tra)
+      pattern: /^(?=.*\p{L})(?!^\d+$)(?!^[\p{P}\s]+$)[\p{L}\p{N}\p{P}\s]+$/u,
+      message:
+        'Phải có ít nhất một chữ cái, không được chỉ toàn số, không được chỉ toàn ký tự đặc biệt.',
     },
   ],
 
@@ -94,14 +96,17 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
 
         if (!hasLetter) {
           // Nếu không tìm thấy chữ cái nào, báo lỗi
-          return Promise.reject(new Error('Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.'));
+          return Promise.reject(
+            new Error(
+              'Phải có ít nhất một chữ cái và có thể chứa số hoặc ký tự đặc biệt, không chỉ chứa số hoặc ký tự đặc biệt.'
+            )
+          );
         }
 
         // Nếu tất cả kiểm tra đều qua, giá trị hợp lệ
         return Promise.resolve();
       },
     },
-
   ],
 
   years_of_experience: [
@@ -127,7 +132,9 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
           );
         }
         if (numValue > 50) {
-          return Promise.reject(new Error('Số năm kinh nghiệm không thể lớn hơn 50.'));
+          return Promise.reject(
+            new Error('Số năm kinh nghiệm không thể lớn hơn 50.')
+          );
         }
         return Promise.resolve(); // Hợp lệ
       },

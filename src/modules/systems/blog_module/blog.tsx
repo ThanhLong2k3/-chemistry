@@ -10,7 +10,8 @@ import { useEffect } from "react";
 export const ManageBlog = () => {
     const { hasPermission } = usePermissions();
     useEffect(() => {
-        document.title = "Quản lý bài viết";
+        if(typeof window !== "undefined")
+            window.document.title = "Quản lý bài viết";
     }, []);
 
     return (

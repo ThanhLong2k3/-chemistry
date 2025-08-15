@@ -6,10 +6,10 @@ import { CalendarOutlined, UserOutlined } from '@ant-design/icons';
 import styles from './BlogList.module.scss';
 import HeaderTitle from '@/modules/systems/manage-web/components/header_title/header_title';
 import { IBlog } from '@/types/blog';
-import parse from 'html-react-parser';
 import { BLOG_DETAIL_PATH } from '@/path';
 import { useRouter } from 'next/navigation';
 import env from '@/env';
+import { AddTrackView } from '@/services/blog.service';
 
 const { Title, Text } = Typography;
 
@@ -36,7 +36,6 @@ const BlogList: React.FC<BlogListProps> = ({
     return diffDays <= 7;
   };
 
-
   const formatDate = (dateString: Date) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('vi-VN', {
@@ -51,7 +50,9 @@ const BlogList: React.FC<BlogListProps> = ({
     if (onPageChange) onPageChange(page, pageSize);
   };
 
-  const handleBlogClick = (id: string) => {
+  const handleBlogClick = async (id: string) => {
+    await AddTrackView(id);
+
     router.push(`${BLOG_DETAIL_PATH}/?id=${id}`);
   };
   return (
