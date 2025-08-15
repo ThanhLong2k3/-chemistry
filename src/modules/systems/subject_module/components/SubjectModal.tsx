@@ -229,10 +229,8 @@ export const SubjectModal = ({
               <Form.Item
                 name="name"
                 label="Tên môn học"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
 
@@ -309,12 +307,18 @@ export const SubjectModal = ({
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả">
-            <QuillEditor
-              value={description}
-              onChange={setDescription}
-              placeholder="Nhập mô tả môn học..."
-            />
+          <Form.Item
+            name="description"
+            label="Mô tả"
+            rules={RULES_FORM.validateDescription}
+          >
+            <div className="custom-quill">
+              <QuillEditor
+                value={description}
+                onChange={setDescription}
+                placeholder="Nhập mô tả môn học..."
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

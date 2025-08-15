@@ -15,6 +15,7 @@ const LessonDetailPageClient = ({ id }: Props) => {
 
   useEffect(() => {
     if (id) {
+      document.title='Chi tiết bài học';
       GetLessonDetailById(id);
     }
   }, [id]);
@@ -24,7 +25,6 @@ const LessonDetailPageClient = ({ id }: Props) => {
     const detail = lessonDetailData?.data?.data?.[0];
     if (detail) {
       setLessonDetail(detail);
-      console.log('Lesson Detail:', detail);
       getLessonByChapter(detail.chapter_name);
     }
   };

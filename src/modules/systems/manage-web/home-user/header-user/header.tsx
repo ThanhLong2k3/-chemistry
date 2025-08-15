@@ -140,7 +140,7 @@ const Header_User = ({ menuItems }: { menuItems: any[] }) => {
           placement="right"
           onClose={() => setDrawerVisible(false)}
           open={drawerVisible}
-          style={{ padding: 0, backgroundColor: 'white', color: 'black' }}
+          style={{ padding: 0 }}
         >
           <Menu
             mode="inline"

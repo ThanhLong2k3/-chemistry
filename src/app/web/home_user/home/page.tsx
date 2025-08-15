@@ -26,7 +26,7 @@ const ScienceForumHomepage: React.FC = () => {
   const [blogData, setBlogData] = useState<IBlog[]>([]);
 
   useEffect(() => {
-    document.title = 'Chemistry Forum - Trang chủ';
+    document.title = 'Trang chủ';
     GetSubjectsWithLessons();
     GetBlog();
   }, []);

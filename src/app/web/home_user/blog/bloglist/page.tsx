@@ -14,7 +14,7 @@ const BlogListPage = () => {
   };
 
   useEffect(() => {
-    document.title = 'Chemistry Forum - Danh sách bài viết';
+    document.title = 'Danh sách bài viết';
     GetBlog();
   }, []);
 

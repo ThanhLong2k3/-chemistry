@@ -266,7 +266,7 @@ export const LessonModal = ({
       //   result: 1,
       //   messageError: errorMessage,
       // });
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
     }
   };
 
@@ -343,10 +343,8 @@ export const LessonModal = ({
               <Form.Item
                 name="name"
                 label="Tên bài học"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
 
@@ -402,12 +400,17 @@ export const LessonModal = ({
 
           <Row gutter={24}>
             <Col span={24}>
-              <Form.Item name="description" label="Mô tả">
-                <QuillEditor
-                  value={description}
-                  onChange={setDescription}
-                  placeholder="Nhập nội dung bài học..."
-                />
+              <Form.Item name="description" label="Mô tả"
+            rules={RULES_FORM.validateDescription}
+              
+              >
+                <div className="custom-quill">
+                  <QuillEditor
+                    value={description}
+                    onChange={setDescription}
+                    placeholder="Nhập nội dung bài học..."
+                  />
+                </div>
               </Form.Item>
             </Col>
           </Row>

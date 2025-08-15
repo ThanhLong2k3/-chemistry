@@ -137,6 +137,7 @@ const ExamList: React.FC<ExamListProps> = ({ exams }) => {
                         handleDownload(exam.file, exam.name);
                       }}
                       className={styles.actionBtn}
+                      style={{marginLeft:'20px'}}
                     >
                       Tải về
                     </Button>

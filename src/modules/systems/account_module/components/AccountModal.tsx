@@ -1,11 +1,25 @@
 import { useDisclosure } from '@/components/hooks/useDisclosure';
-import { Button, Col, Form, Input, Modal, Row, Select, Upload, UploadFile } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Upload,
+  UploadFile,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { createAccount, updateAccount } from '@/services/account.service';
 import { IAccount } from '@/types/account';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { RULES_FORM } from '@/utils/validator';
-import { EditOutlined, FileAddOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  FileAddOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import { encrypt } from '@/libs/access';
 import { IRole } from '@/types/role';
 import { searchRole } from '@/services/role.service';
@@ -40,35 +54,35 @@ export const AccountModal = ({
 
   useEffect(() => {
     if (isOpen) {
-
       //mới thêm
       const fetchRoles = async () => {
         try {
           // Gọi API lấy tất cả các vai trò, không phân trang
-          const response: any = await searchRole({ page_index: 1, page_size: 1000 });
+          const response: any = await searchRole({
+            page_index: 1,
+            page_size: 1000,
+          });
           setRoles(response.data || []);
         } catch (error) {
-          console.error("Lỗi khi lấy danh sách vai trò:", error);
+          console.error('Lỗi khi lấy danh sách vai trò:', error);
         }
       };
 
       fetchRoles();
-
 
       if (isCreate) {
         form.resetFields();
       } else if (row) {
         const imageFileList: UploadFile[] = row.image
           ? [
-            {
-              uid: '-1',
-              name: 'avatar.png',
-              status: 'done',
-              url: `${env.BASE_URL}${row.image}`,
-            },
-          ]
+              {
+                uid: '-1',
+                name: 'avatar.png',
+                status: 'done',
+                url: `${env.BASE_URL}${row.image}`,
+              },
+            ]
           : [];
-
 
         form.setFieldsValue({
           username: row.username,
@@ -111,7 +125,6 @@ export const AccountModal = ({
         imageUrl = null;
       }
 
-
       if (values.password) {
         values.password = encrypt(values.password);
       } else {
@@ -124,7 +137,10 @@ export const AccountModal = ({
       };
 
       if (isCreate) {
-        const data: any = await createAccount({ ...dataToSubmit, created_by: currentAccount.username });
+        const data: any = await createAccount({
+          ...dataToSubmit,
+          created_by: currentAccount.username,
+        });
 
         show({
           result: data.data.result,
@@ -133,7 +149,10 @@ export const AccountModal = ({
           messageErrorOfRighs: 'Tài khoản hoặc Email đã tồn tại !',
         });
       } else if (row?.username) {
-        const result: any = await updateAccount({ ...dataToSubmit, updated_by: currentAccount.username });
+        const result: any = await updateAccount({
+          ...dataToSubmit,
+          updated_by: currentAccount.username,
+        });
         show({
           result: result.data.result,
           messageDone: 'Cập nhập người dùng thành công',
@@ -152,7 +171,7 @@ export const AccountModal = ({
         return;
       }
 
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
 
       if (axios.isAxiosError(error)) {
         const axiosError = error; // TypeScript hiểu đây là AxiosError
@@ -164,8 +183,7 @@ export const AccountModal = ({
         } else {
           errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
 
@@ -174,19 +192,21 @@ export const AccountModal = ({
       //   result: 1,
       //   messageError: errorMessage,
       // });
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
     }
   };
 
-
   return (
     <>
-      <Button type={isCreate ? 'primary' : 'default'} onClick={open} icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}>
+      <Button
+        type={isCreate ? 'primary' : 'default'}
+        onClick={open}
+        icon={isCreate ? <FileAddOutlined /> : <EditOutlined />}
+      >
         {isCreate ? 'Thêm người dùng' : 'Sửa'}
       </Button>
       <Modal
-        title=
-        {
+        title={
           <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
             {isCreate ? 'Thêm người dùng' : 'Sửa người dùng'}
           </div>
@@ -227,32 +247,33 @@ export const AccountModal = ({
                   }}
                   accept=".jpg,.jpeg,.png,.gif,.webp"
                 >
-                  <Button icon={<UploadOutlined />}
+                  <Button
+                    icon={<UploadOutlined />}
                     style={hasImage ? { marginBottom: '12px' } : {}}
-                  >Chọn ảnh</Button>
+                  >
+                    Chọn ảnh
+                  </Button>
                 </Upload>
               </Form.Item>
 
               <Form.Item
                 name="username"
                 label="Tên đăng nhập"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText50,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText50]}
+              >
                 <Input disabled={!isCreate} />
               </Form.Item>
 
               {/*đang k có ảnh*/}
-              {hasImage ? null :
-                (<Form.Item
+              {hasImage ? null : (
+                <Form.Item
                   name="name"
                   label="Tên người dùng"
-                  rules={RULES_FORM.required}
+                  rules={[...RULES_FORM.required, ...RULES_FORM.validateText50]}
                 >
                   <Input />
-                </Form.Item>)
-              }
+                </Form.Item>
+              )}
             </Col>
             <Col span={12}>
               <Form.Item
@@ -261,7 +282,7 @@ export const AccountModal = ({
                 rules={RULES_FORM.required}
               >
                 <Select placeholder="Chọn quyền">
-                  {roles.map(role => (
+                  {roles.map((role) => (
                     <Select.Option key={role.id} value={role.id}>
                       {role.name}
                     </Select.Option>
@@ -269,11 +290,7 @@ export const AccountModal = ({
                 </Select>
               </Form.Item>
 
-              <Form.Item
-                name="email"
-                label="Email"
-                rules={RULES_FORM.email}
-              >
+              <Form.Item name="email" label="Email" rules={RULES_FORM.email}>
                 <Input />
               </Form.Item>
 
@@ -286,20 +303,19 @@ export const AccountModal = ({
                   <Input.Password />
                 </Form.Item>
               ) : null}
-              {hasImage && !isCreate ?
-                (<Form.Item
+              {hasImage && !isCreate ? (
+                <Form.Item
                   name="name"
                   label="Tên người dùng"
                   rules={RULES_FORM.required}
                 >
                   <Input />
                 </Form.Item>
-                ) :
-                null}
+              ) : null}
             </Col>
             {/* đang ở dialog tạo và có ảnh */}
-            {hasImage && isCreate ?
-              (<Form.Item
+            {hasImage && isCreate ? (
+              <Form.Item
                 name="name"
                 label="Tên người dùng"
                 style={{ width: '100%', padding: '0px 12px' }}
@@ -307,11 +323,10 @@ export const AccountModal = ({
               >
                 <Input />
               </Form.Item>
-              ) :
-              null}
+            ) : null}
           </Row>
         </Form>
-      </Modal >
+      </Modal>
     </>
   );
 };

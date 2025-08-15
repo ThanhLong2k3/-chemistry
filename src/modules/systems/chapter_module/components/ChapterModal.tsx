@@ -160,8 +160,7 @@ export const ChapterModal = ({
       //   result: 1,
       //   messageError: errorMessage,
       // });
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
-
+      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
     }
   };
 
@@ -194,10 +193,8 @@ export const ChapterModal = ({
               <Form.Item
                 name="name"
                 label="Tên chương"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
             </Col>
@@ -232,12 +229,16 @@ export const ChapterModal = ({
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả">
-            <QuillEditor
-              value={description}
-              onChange={setDescription}
-              placeholder="Nhập mô tả chương..."
-            />
+          <Form.Item name="description" label="Mô tả" 
+            rules={RULES_FORM.validateDescription}
+          >
+            <div className="custom-quill">
+              <QuillEditor
+                value={description}
+                onChange={setDescription}
+                placeholder="Nhập mô tả chương..."
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>

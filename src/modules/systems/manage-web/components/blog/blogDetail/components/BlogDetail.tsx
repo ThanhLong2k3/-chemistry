@@ -23,6 +23,7 @@ import { getAccountLogin } from '@/env/getInfor_token';
 import { useNotification } from '@/components/UI_shared/Notification';
 import { v4 as uuidv4 } from 'uuid';
 import parse from 'html-react-parser';
+import { AddTrackView } from '@/services/blog.service';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -51,19 +52,20 @@ export default function BlogDetail({
   const [newComment, setNewComment] = useState('');
   const { show } = useNotification();
   const [currentAccount, setAurrentAccount] = useState<any>(null);
-  
+
   // Kiểm tra có comment không
   const hasComments = comments && comments.length > 0;
-  
-  const handleDetailBlog = (id: string) => {
+
+  const handleDetailBlog = async (id: string) => {
+     await AddTrackView(id);
     router.push(`${BLOG_DETAIL_PATH}/?id=${id}`);
   };
-  
+
   useEffect(() => {
     const currentAccount = getAccountLogin();
     setAurrentAccount(currentAccount);
   }, []);
-  
+
   const handlePageChange = (page: number, pageSize: number) => {
     setCurrentPage(page);
     if (onPageChange) onPageChange(page, pageSize);
@@ -264,12 +266,14 @@ export default function BlogDetail({
 
           {/* Hiển thị thông báo khi chưa có comment */}
           {!hasComments && (
-            <div style={{ 
-              textAlign: 'center', 
-              color: '#888', 
-              fontSize: '14px',
-              padding: '20px 0' 
-            }}>
+            <div
+              style={{
+                textAlign: 'center',
+                color: '#888',
+                fontSize: '14px',
+                padding: '20px 0',
+              }}
+            >
               Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
             </div>
           )}

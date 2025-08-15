@@ -1,3 +1,4 @@
+'use client';
 import { Card, Flex, type TableColumnsType, Table, Input, Tag } from 'antd';
 
 import { useEffect, useState } from 'react';
@@ -19,7 +20,9 @@ export const SubjectTable = () => {
   const [nameSubject, setNameSubject] = useState<string | null>(null);
   const [listSubject, setListSubject] = useState<ISubject[]>([]);
   const [total, settotal] = useState<number>(10);
-  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(
+    null
+  );
 
   //reset lại pageindex khi có dữ liệu tìm kiếm
   useEffect(() => {
@@ -46,10 +49,10 @@ export const SubjectTable = () => {
       settotal(data.data[0]?.TotalRecords);
       setListSubject(data.data || []);
     } catch (error) {
-      let errorMessage = "Đã có lỗi không xác định xảy ra.";
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
 
       if (axios.isAxiosError(error)) {
-        const axiosError = error;  // TypeScript hiểu đây là AxiosError
+        const axiosError = error; // TypeScript hiểu đây là AxiosError
         const responseMessage = axiosError.response?.data?.message;
 
         if (axiosError.response?.status === 401) {
@@ -58,35 +61,34 @@ export const SubjectTable = () => {
         } else {
           errorMessage = responseMessage || axiosError.message;
         }
-      }
-      else if (error instanceof Error) {
+      } else if (error instanceof Error) {
         errorMessage = error.message;
       }
     }
   };
 
-
   const columns: TableColumnsType<ISubject> = [
     {
       title: 'STT',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (_, __, index) =>
         (Number(pageIndex) - 1) * Number(pageSize) + index + 1,
     },
     {
       title: 'Tên môn học',
-      width: 100,
+      width: 120,
       dataIndex: 'name',
-       ellipsis: true, 
-
+      ellipsis: true,
     },
     {
       title: 'Ảnh đại diện',
       width: 80,
       dataIndex: 'image',
       render: (imageUrl) => {
-        const fullUrl = imageUrl ? `${env.BASE_URL}${imageUrl}` : '/image/default_book.png';
+        const fullUrl = imageUrl
+          ? `${env.BASE_URL}${imageUrl}`
+          : '/image/default_book.png';
         return (
           <Image
             width={45}
@@ -100,11 +102,15 @@ export const SubjectTable = () => {
     },
     {
       title: 'Sách giáo khoa',
-      width: 90,
+      width: 110,
       dataIndex: 'textbook',
       render: (url) =>
         url ? (
-          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+          <a
+            href={`${env.BASE_URL}${url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Link
           </a>
         ) : (
@@ -113,11 +119,15 @@ export const SubjectTable = () => {
     },
     {
       title: 'Sách bài tập',
-      width: 90,
+      width: 110,
       dataIndex: 'workbook',
       render: (url) =>
         url ? (
-          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+          <a
+            href={`${env.BASE_URL}${url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Link
           </a>
         ) : (
@@ -126,11 +136,15 @@ export const SubjectTable = () => {
     },
     {
       title: 'Vở bài tập',
-      width: 90,
+      width: 110,
       dataIndex: 'exercise_book',
       render: (url) =>
         url ? (
-          <a href={`${env.BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+          <a
+            href={`${env.BASE_URL}${url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Link
           </a>
         ) : (
@@ -141,10 +155,14 @@ export const SubjectTable = () => {
       title: 'Đề kiểm tra',
       width: 70,
       render: (_, record) => (
-        <a href={`/web/admin/manage_exam?subject=${encodeURIComponent(record.name)}`}>
+        <a
+          href={`/web/admin/manage_exam?subject=${encodeURIComponent(
+            record.name
+          )}`}
+        >
           Xem ngay
         </a>
-      )
+      ),
     },
     {
       title: 'Sắp xếp',
@@ -159,14 +177,20 @@ export const SubjectTable = () => {
       render: (_, record) => (
         <Flex gap={8} justify="center">
           <SubjectModal row={record} getAll={getAllSubject} />
-          {currentAccount ? (<SubjectDelete id={record.id} deleted_by={currentAccount?.username} getAllSubject={getAllSubject} />) : (null)}
+          {currentAccount ? (
+            <SubjectDelete
+              id={record.id}
+              deleted_by={currentAccount?.username}
+              getAllSubject={getAllSubject}
+            />
+          ) : null}
         </Flex>
       ),
     },
   ];
 
   return (
-    <Card >
+    <Card>
       <Flex justify="flex-end" gap={8} style={{ marginBottom: 16 }}>
         <Input
           placeholder="Nhập tên môn học để tìm kiếm..."
@@ -182,8 +206,8 @@ export const SubjectTable = () => {
         columns={columns}
         dataSource={listSubject}
         loading={false}
-         tableLayout="fixed" 
-       scroll={{ x: 800, y: 380 }}
+        tableLayout="fixed"
+        scroll={{ x:  'max-content', y: 380 }}
         rowKey="id"
         pagination={{
           current: pageIndex,

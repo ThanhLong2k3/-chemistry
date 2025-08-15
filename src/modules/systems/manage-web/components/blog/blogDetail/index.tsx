@@ -1,6 +1,6 @@
 'use client';
 import BlogDetail from '@/modules/systems/manage-web/components/blog/blogDetail/components/BlogDetail';
-import { AddTrackView, searchBlog } from '@/services/blog.service';
+import {  searchBlog } from '@/services/blog.service';
 import { searchComment } from '@/services/comment.service';
 import { Home_Api } from '@/services/home.service';
 import { IBlog_Get } from '@/types/blog';
@@ -23,7 +23,6 @@ const BlogDetailPageClient = ({ id }: Props) => {
     if (id) {
       GetBlogDetailById(id);
       SearchComment();
-      AddTrackView(id);
     }
   }, [id]);
 

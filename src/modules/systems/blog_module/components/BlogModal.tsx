@@ -19,7 +19,6 @@ import { UpLoadImage } from '@/services/upload.service';
 import env from '@/env';
 import QuillEditor from '@/modules/shared/QuillEditor';
 
-
 interface Props {
   isCreate?: boolean;
   row?: IBlog;
@@ -210,21 +209,23 @@ export const BlogModal = ({
               <Form.Item
                 name="title"
                 label="Tiêu đề bài viết"
-                rules={[
-                  ...RULES_FORM.required,
-                  ...RULES_FORM.validateText255,
-                ]}>
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+              >
                 <Input />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả">
-            <QuillEditor
-              value={description}
-              onChange={setDescription}
-              placeholder="Nhập nội dung bài viết..."
-            />
+          <Form.Item name="description" label="Mô tả"  
+            rules={RULES_FORM.validateDescription}
+          >
+            <div className="custom-quill">
+              <QuillEditor
+                value={description}
+                onChange={setDescription}
+                placeholder="Nhập nội dung bài viết..."
+              />
+            </div>
           </Form.Item>
         </Form>
       </Modal>
