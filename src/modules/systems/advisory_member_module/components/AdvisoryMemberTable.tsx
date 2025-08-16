@@ -78,6 +78,7 @@ export const AdvisoryMemberTable = () => {
       title: 'Tên giáo viên',
       width: 160,
       dataIndex: 'teacher_name',
+      align: 'center',
       ellipsis: true,
     },
     {
