@@ -113,13 +113,13 @@ export const LessonModal = ({
         // Set giá trị ban đầu cho form SỬA
         const imageFileList: UploadFile[] = row.image
           ? [
-              {
-                uid: '-1',
-                name: 'avatar.png',
-                status: 'done',
-                url: `${env.BASE_URL}${row.image}`,
-              },
-            ]
+            {
+              uid: '-1',
+              name: 'avatar.png',
+              status: 'done',
+              url: `${env.BASE_URL}${row.image}`,
+            },
+          ]
           : [];
         form.setFieldsValue({ ...row, image: imageFileList });
         setDescription(row.description || '');
@@ -280,6 +280,11 @@ export const LessonModal = ({
         {isCreate ? 'Thêm bài học' : 'Sửa'}
       </Button>
       <Modal
+        bodyStyle={{
+          maxHeight: '60vh', // chỉ định chiều cao tối đa
+          overflowY: 'auto', // bật scroll
+          overflowX: 'hidden'
+        }}
         title={
           <div style={{ fontSize: '20px', paddingBottom: '8px' }}>
             {isCreate ? 'Thêm bài học' : 'Sửa bài học'}
@@ -294,7 +299,7 @@ export const LessonModal = ({
         style={{ top: 30 }}
         styles={{ body: { height: '93vh' } }}
       >
-        <Form layout="vertical" form={form}>
+        <Form layout="vertical" form={form} >
           <Row gutter={24}>
             <Col span={8}>
               <Form.Item
@@ -401,8 +406,8 @@ export const LessonModal = ({
           <Row gutter={24}>
             <Col span={24}>
               <Form.Item name="description" label="Mô tả"
-            rules={RULES_FORM.validateDescription}
-              
+                rules={RULES_FORM.validateDescription}
+
               >
                 <div className="custom-quill">
                   <QuillEditor

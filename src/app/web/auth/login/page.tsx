@@ -28,6 +28,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     document.title = "Đăng nhập";
+    if (localStorage.getItem("logout") === "true") {
+      localStorage.clear();
+    }
   }, []);
 
   const onFinish = async (values: any) => {

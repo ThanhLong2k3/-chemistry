@@ -178,9 +178,11 @@ export const authAPI = {
 
 
   logout: () => {
-    localStorage.clear();
+    // localStorage.clear();
+    localStorage.setItem("logout", "true");
     window.location.href = '/web/auth/login';
   },
+
 
   registerOTP: async (email: string, username: string): Promise<{ success: boolean; message: string; otpToken?: string }> => {
     try {
