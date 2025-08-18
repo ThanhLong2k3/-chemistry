@@ -130,9 +130,9 @@ export const BlogTable = () => {
 
       render: (title: string) =>
       (
-        <span>
+        <p>
           {title.length > 35 ? title.substring(0, 35).trim() + '...' : title}
-        </span>
+        </p>
       )
     },
 
