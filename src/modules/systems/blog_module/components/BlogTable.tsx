@@ -165,7 +165,6 @@ export const BlogTable = () => {
       dataIndex: 'created_by_name',
       align: 'center',
       ellipsis: true,
-
     },
     // {
     //   title: 'Mô tả',

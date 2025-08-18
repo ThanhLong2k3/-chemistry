@@ -1,12 +1,11 @@
 import { DeleteOutlined, FrownOutlined } from '@ant-design/icons';
 import { Button, Flex, Tooltip, Typography, theme } from 'antd';
-import { ModalConfirm } from '@/components/UI_shared/modal';
 import { useDisclosure } from '@/components/hooks/useDisclosure';
 import { deleteAccount } from '@/services/account.service';
 import { useNotification } from '@/components/UI_shared/Notification';
-import { result } from 'lodash';
 import ModalConfirmDelete from '@/components/UI_shared/DeleteComfilm';
 import axios from 'axios';
+import ModalConfirmChangeStatus from '@/components/UI_shared/ModalConfirmChangeStatus';
 
 const { Text } = Typography;
 
@@ -14,9 +13,10 @@ interface Props {
   username: string;
   deleted_by: string;
   getAllAccount: () => void;
+  deleted: boolean;
 }
 
-export const AccountDelete = ({ username, deleted_by, getAllAccount }: Props) => {
+export const AccountDelete = ({ username, deleted_by, getAllAccount, deleted }: Props) => {
   const { isOpen, open, close } = useDisclosure();
   const { show } = useNotification();
   const handleSubmit = async () => {
@@ -24,8 +24,8 @@ export const AccountDelete = ({ username, deleted_by, getAllAccount }: Props) =>
       const data = await deleteAccount({ username, deleted_by });
       show({
         result: data,
-        messageDone: 'Xóa người dùng thành công !',
-        messageError: 'Có lỗi sảy ra !',
+        messageDone: 'Thay đổi trạng thái người dùng thành công !',
+        messageError: 'Có lỗi xảy ra !',
       });
       getAllAccount();
     } catch (error) {
@@ -62,17 +62,23 @@ export const AccountDelete = ({ username, deleted_by, getAllAccount }: Props) =>
 
   return (
     <>
-      <Tooltip title={'Bạn có chắc chắn muốn xóa ?'}>
+      <Tooltip title={'Bạn có chắc chắn muốn thay đổi trạng thái ?'}>
         <Button
-          danger
-          icon={<DeleteOutlined />}
-          onClick={open}
+          danger={!deleted}
           type="default"
-          style={{ borderRadius: '1px solid black' }}
-        >Xóa</Button>
+          onClick={open}
+          style={{
+            borderRadius: '1px solid black',
+            color: deleted ? '#52c41a' : undefined,
+            borderColor: deleted ? '#52c41a' : undefined,
+          }}
+        >
+          {deleted ? 'Kích hoạt' : 'Huỷ kích hoạt'}
+        </Button>
+
       </Tooltip>
 
-      <ModalConfirmDelete isOpen={isOpen} handleCancel={handleCancel} handleSubmit={handleSubmit} />
+      <ModalConfirmChangeStatus isOpen={isOpen} isActive={!deleted} handleCancel={handleCancel} handleSubmit={handleSubmit} />
     </>
   );
 };

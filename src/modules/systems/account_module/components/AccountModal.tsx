@@ -7,6 +7,7 @@ import {
   Modal,
   Row,
   Select,
+  Switch,
   Upload,
   UploadFile,
 } from 'antd';
@@ -75,13 +76,13 @@ export const AccountModal = ({
       } else if (row) {
         const imageFileList: UploadFile[] = row.image
           ? [
-              {
-                uid: '-1',
-                name: 'avatar.png',
-                status: 'done',
-                url: `${env.BASE_URL}${row.image}`,
-              },
-            ]
+            {
+              uid: '-1',
+              name: 'avatar.png',
+              status: 'done',
+              url: `${env.BASE_URL}${row.image}`,
+            },
+          ]
           : [];
 
         form.setFieldsValue({
@@ -90,7 +91,8 @@ export const AccountModal = ({
           email: row.email,
           role_id: row.role_id,
           password: '',
-          image: imageFileList, // Set giá trị đã được chuyển đổi chính xác
+          image: imageFileList,
+          deleted: !row.deleted, // ép kiểu về boolean (dữ liệu lấy từ csdl là 0 -> true (đã kích hoạt) và ngược lại)
         });
       }
     }
@@ -134,6 +136,7 @@ export const AccountModal = ({
       const dataToSubmit = {
         ...values,
         image: imageUrl,
+        deleted: values.deleted ? 0 : 1,
       };
 
       if (isCreate) {
@@ -264,16 +267,13 @@ export const AccountModal = ({
                 <Input disabled={!isCreate} />
               </Form.Item>
 
-              {/*đang k có ảnh*/}
-              {hasImage ? null : (
-                <Form.Item
-                  name="name"
-                  label="Tên người dùng"
-                  rules={[...RULES_FORM.required, ...RULES_FORM.validateText50]}
-                >
-                  <Input />
-                </Form.Item>
-              )}
+              <Form.Item
+                name="name"
+                label="Tên người dùng"
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateNoLetterOrNumber]}
+              >
+                <Input />
+              </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
@@ -303,27 +303,15 @@ export const AccountModal = ({
                   <Input.Password />
                 </Form.Item>
               ) : null}
-              {hasImage && !isCreate ? (
-                <Form.Item
-                  name="name"
-                  label="Tên người dùng"
-                  rules={RULES_FORM.required}
-                >
-                  <Input />
-                </Form.Item>
-              ) : null}
-            </Col>
-            {/* đang ở dialog tạo và có ảnh */}
-            {hasImage && isCreate ? (
+
               <Form.Item
-                name="name"
-                label="Tên người dùng"
-                style={{ width: '100%', padding: '0px 12px' }}
-                rules={RULES_FORM.required}
+                name="deleted"
+                label="Trạng thái tài khoản"
+                valuePropName="checked"
               >
-                <Input />
+                <Switch checkedChildren="Kích hoạt" unCheckedChildren="Huỷ kích hoạt" />
               </Form.Item>
-            ) : null}
+            </Col>
           </Row>
         </Form>
       </Modal>

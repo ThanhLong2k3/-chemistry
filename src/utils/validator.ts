@@ -76,7 +76,7 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
     },
     {
       pattern: /^[\p{L}\s]+$/u,
-      message: 'Không được chứa chữ cái hoặc chữ số.',
+      message: 'Không được chứa ký tự đặc biệt hoặc chữ số.',
     },
   ],
 
