@@ -17,6 +17,7 @@ interface keyValidator {
   validateText255?: any;
   validateText50?: any;
   validateDescription?: any;
+  validateNoLetterOrNumber?: any;
 }
 // Hàm decode HTML entity (ví dụ: &amp; -> &)
 const decodeHtml = (html: any) => {
@@ -65,6 +66,17 @@ export const RULES_FORM: Record<keyof keyValidator, FormRule[]> = {
       pattern: /^(?=.*\p{L})(?!^\d+$)(?!^[\p{S}\p{P}\s]+$)[\p{L}\p{N}\p{P}\p{S}\s]+$/u,
       message:
         'Phải có ít nhất một chữ cái, không được chỉ toàn số, không được chỉ toàn ký tự đặc biệt.',
+    },
+  ],
+
+  validateNoLetterOrNumber: [
+    {
+      max: 255,
+      message: 'Không được vượt quá 255 ký tự.',
+    },
+    {
+      pattern: /^[\p{L}\s]+$/u,
+      message: 'Không được chứa chữ cái hoặc chữ số.',
     },
   ],
 

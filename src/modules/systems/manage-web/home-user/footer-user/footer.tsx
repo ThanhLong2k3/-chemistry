@@ -8,6 +8,7 @@ import {
   MailOutlined,
   EnvironmentOutlined,
   GlobalOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 
@@ -18,8 +19,8 @@ const Footer_User = ({ menuItems }: { menuItems: any[] }) => {
   const router = useRouter();
 
   const handleClick = (key: string) => {
-   
-      router.push(key);
+
+    router.push(key);
   };
 
   return (
@@ -34,7 +35,13 @@ const Footer_User = ({ menuItems }: { menuItems: any[] }) => {
               <Space align="start">
                 <EnvironmentOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
                 <Text style={{ color: '#9ca3af', lineHeight: '1.6' }}>
-                  Xã Liên Nghĩa, huyện Văn Giang, tỉnh Hưng Yên
+                  thôn Đan Kim, xã Văn Giang, tỉnh Hưng Yên
+                </Text>
+              </Space>
+              <Space align="start">
+                <HomeOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
+                <Text style={{ color: '#9ca3af', lineHeight: '1.6' }}>
+                  Trường THPT Dương Quảng Hàm
                 </Text>
               </Space>
               <Space>

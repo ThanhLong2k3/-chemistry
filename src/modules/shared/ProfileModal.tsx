@@ -56,8 +56,8 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   const previewImageUrl = imageFileList?.[0]?.url?.startsWith('blob:')
     ? imageFileList?.[0]?.url
     : imageFileList?.[0]?.url
-    ? `${env.BASE_URL}${imageFileList?.[0]?.url}`
-    : imageFileList?.[0]?.thumbUrl;
+      ? `${env.BASE_URL}${imageFileList?.[0]?.url}`
+      : imageFileList?.[0]?.thumbUrl;
 
   // useEffect để điền dữ liệu vào form khi Modal được mở
   useEffect(() => {
@@ -67,13 +67,13 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
         setCurrentUser(account);
         const initialImage: UploadFile[] = account.image
           ? [
-              {
-                uid: '-1',
-                name: 'avatar.png',
-                status: 'done',
-                url: account.image,
-              },
-            ]
+            {
+              uid: '-1',
+              name: 'avatar.png',
+              status: 'done',
+              url: account.image,
+            },
+          ]
           : [];
         form.setFieldsValue({
           ...account,
@@ -251,7 +251,7 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
               <Form.Item
                 label="Họ và Tên"
                 name="name"
-                rules={[...RULES_FORM.required, ...RULES_FORM.validateText255]}
+                rules={[...RULES_FORM.required, ...RULES_FORM.validateNoLetterOrNumber]}
               >
                 <Input
                   prefix={<SmileOutlined />}
@@ -307,25 +307,25 @@ export const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
                 rules={
                   isChangingPassword
                     ? [
-                        // Nếu đang đổi mật khẩu, áp dụng các quy tắc này
-                        {
-                          required: true,
-                          message: 'Vui lòng xác nhận mật khẩu mới!',
+                      // Nếu đang đổi mật khẩu, áp dụng các quy tắc này
+                      {
+                        required: true,
+                        message: 'Vui lòng xác nhận mật khẩu mới!',
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (
+                            !value ||
+                            getFieldValue('newPassword') === value
+                          ) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error('Mật khẩu xác nhận không khớp!')
+                          );
                         },
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            if (
-                              !value ||
-                              getFieldValue('newPassword') === value
-                            ) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              new Error('Mật khẩu xác nhận không khớp!')
-                            );
-                          },
-                        }),
-                      ]
+                      }),
+                    ]
                     : [] // Nếu không đổi mật khẩu, không áp dụng quy tắc nào
                 }
               >
