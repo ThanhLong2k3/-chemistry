@@ -130,9 +130,9 @@ export const BlogTable = () => {
 
       render: (title: string) =>
       (
-        <span>
+        <p>
           {title.length > 35 ? title.substring(0, 35).trim() + '...' : title}
-        </span>
+        </p>
       )
     },
 
@@ -165,7 +165,6 @@ export const BlogTable = () => {
       dataIndex: 'created_by_name',
       align: 'center',
       ellipsis: true,
-
     },
     // {
     //   title: 'Mô tả',
@@ -245,7 +244,7 @@ export const BlogTable = () => {
         <Input
           placeholder="Nhập tiêu đề bài viết để tìm kiếm..."
           value={titleBlog ?? ''}
-          onChange={(e) => setTitleBlog(e.target.value.replace(/^\s+/,''))}
+          onChange={(e) => setTitleBlog(e.target.value.replace(/^\s+/, ''))}
           allowClear
         />
         <BlogModal isCreate getAll={getAllBlog} />

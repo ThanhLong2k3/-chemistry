@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Flex, type TableColumnsType, Table, Input, Select } from 'antd';
+import { Card, Flex, type TableColumnsType, Table, Input, Select, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
@@ -37,6 +37,8 @@ export const AccountTable = () => {
   const [selectedRole, setSelectedRole] = useState<string | null>(roleFromUrl);
   const [loadingRoles, setLoadingRoles] = useState(false);
 
+  const [status, setStatus] = useState<string | null>(null);
+
   // Lấy danh sách Vai trò (chỉ một lần)
   useEffect(() => {
     const fetchRoles = async () => {
@@ -56,7 +58,7 @@ export const AccountTable = () => {
   // Reset lại pageIndex khi có dữ liệu tìm kiếm hoặc lọc
   useEffect(() => {
     setPageIndex(1);
-  }, [name, selectedRole]);
+  }, [name, selectedRole, status]);
 
   const getAllAccount = async () => {
     setLoading(true);
@@ -67,6 +69,7 @@ export const AccountTable = () => {
         order_type: orderType,
         search_content_1: name,
         search_content_2: selectedRole,
+        search_content_3: status
       });
       setTotal(data.data.length > 0 ? data.data[0].TotalRecords : 0);
       setListAccount(data.data || []);
@@ -85,7 +88,7 @@ export const AccountTable = () => {
   // useEffect chính để tải lại dữ liệu bảng
   useEffect(() => {
     getAllAccount();
-  }, [pageIndex, pageSize, orderType, name, selectedRole]);
+  }, [pageIndex, pageSize, orderType, name, selectedRole, status]);
 
   useEffect(() => {
     const account = getAccountLogin();
@@ -101,7 +104,7 @@ export const AccountTable = () => {
     },
     {
       title: 'Ảnh đại diện',
-      width: 100,
+      width: 110,
       dataIndex: 'image',
       align: 'center',
       render: (imageUrl) => {
@@ -142,13 +145,25 @@ export const AccountTable = () => {
       dataIndex: 'role_name',
     },
     {
+      title: 'Trạng thái',
+      width: 120,
+      dataIndex: 'deleted',
+      align: 'center',
+      render: (deleted: number) =>
+        deleted === 0 ? (
+          <Tag color="green">Đã kích hoạt</Tag>
+        ) : (
+          <Tag color="red">Chưa kích hoạt</Tag>
+        ),
+    },
+    {
       title: 'Thao tác',
       width: 120,
       align: 'center',
       render: (_, record) => (
         <Flex gap={8} justify="center">
           <AccountModal row={record} getAll={getAllAccount} />
-          {currentAccount && <AccountDelete username={record.username} deleted_by={currentAccount.username} getAllAccount={getAllAccount} />}
+          {currentAccount && <AccountDelete username={record.username} deleted_by={currentAccount.username} getAllAccount={getAllAccount} deleted={record.deleted} />}
         </Flex>
       ),
     },
@@ -172,6 +187,17 @@ export const AccountTable = () => {
               {role.name}
             </Select.Option>
           ))}
+        </Select>
+
+        <Select
+          placeholder="Lọc theo trạng thái"
+          style={{ width: 300 }}
+          onChange={(value) => setStatus(value ?? null)}
+          allowClear
+          value={status}
+        >
+          <Select.Option value={"0"}>Đã kích hoạt</Select.Option>
+          <Select.Option value={"1"}>Chưa kích hoạt</Select.Option>
         </Select>
 
         <Input

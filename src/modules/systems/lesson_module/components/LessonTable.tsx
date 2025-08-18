@@ -142,9 +142,9 @@ export const LessonTable = () => {
       ellipsis: true,
       render: (name: string) =>
       (
-        <span style={{ marginRight: '10px' }}>
+        <p style={{ marginRight: '10px' }}>
           {name.length > 70 ? name.substring(0, 70).trim() + '...' : name}
-        </span>
+        </p>
       )
     },
     {
@@ -169,9 +169,9 @@ export const LessonTable = () => {
       ellipsis: true,
       render: (chapter_name: string) =>
       (
-        <span style={{ marginRight: '10px' }}>
+        <p style={{ marginRight: '10px' }}>
           {chapter_name.length > 60 ? chapter_name.substring(0, 60).trim() + '...' : chapter_name}
-        </span>
+        </p>
       )
 
     },
