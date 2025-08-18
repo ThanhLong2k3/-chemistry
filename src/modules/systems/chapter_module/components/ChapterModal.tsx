@@ -155,12 +155,13 @@ export const ChapterModal = ({
         errorMessage = error.message;
       }
 
-      // Chỉ hiển thị notification cho các lỗi không phải 401
-      // show({
-      //   result: 1,
-      //   messageError: errorMessage,
-      // });
-      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
+      show({
+        result: 1,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
+      });
     }
   };
 

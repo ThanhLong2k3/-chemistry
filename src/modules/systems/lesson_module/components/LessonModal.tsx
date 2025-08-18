@@ -260,13 +260,13 @@ export const LessonModal = ({
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
-
-      // Chỉ hiển thị notification cho các lỗi không phải 401
-      // show({
-      //   result: 1,
-      //   messageError: errorMessage,
-      // });
-      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
+      show({
+        result: 1,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
+      });
     }
   };
 
@@ -400,9 +400,10 @@ export const LessonModal = ({
 
           <Row gutter={24}>
             <Col span={24}>
-              <Form.Item name="description" label="Mô tả"
-            rules={RULES_FORM.validateDescription}
-              
+              <Form.Item
+                name="description"
+                label="Mô tả"
+                rules={RULES_FORM.validateDescription}
               >
                 <div className="custom-quill">
                   <QuillEditor

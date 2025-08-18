@@ -135,12 +135,19 @@ export const AdvisoryMemberModal = ({
 
     } catch (error: any) {
       if (error?.errorFields) return; // Bỏ qua lỗi validation của Antd
+      let errorMessage=error.message;
 
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         showSessionExpiredModal();
         return;
       }
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
+      show({
+        result: 1,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
+      });
     }
   };
 

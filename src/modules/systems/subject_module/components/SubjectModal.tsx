@@ -163,7 +163,10 @@ export const SubjectModal = ({
 
       show({
         result: 1,
-        messageError: errorMessage,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
       });
     }
   };

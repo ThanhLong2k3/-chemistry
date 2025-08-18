@@ -30,7 +30,7 @@ const BlogDetailPageClient = ({ id }: Props) => {
     const comment: any = await searchComment({
       page_index:page_index?page_index: 1,
       page_size: page_size?page_size:10,
-      order_type: 'ASC',
+      order_type: 'DESC',
       search_content_1: id,
     });
     setComments(comment.data || []);
