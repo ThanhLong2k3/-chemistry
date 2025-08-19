@@ -162,7 +162,7 @@ export const AccountModal = ({
           messageError: 'Cập nhập người dùng thất bại',
         });
 
-        // 🔥 Nếu user đang login tự disable account của chính mình
+        // Nếu tài khoản đang đăng nhập tự disable account của chính mình
         if (
           row.username === currentAccount.username &&
           dataToSubmit.deleted === 1 // tức là bị huỷ kích hoạt
