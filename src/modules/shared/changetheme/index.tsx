@@ -64,7 +64,7 @@ const ThemeChanger = () => {
   const handleMenuClick = (e: { key: string }) => {
     if (e.key === 'logout') {
       authAPI.logout();
-      refreshPermissions();
+      // refreshPermissions();
 
       //điều hướng về trang login
       push('/web/auth/login');

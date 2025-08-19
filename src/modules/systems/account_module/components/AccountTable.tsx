@@ -162,8 +162,19 @@ export const AccountTable = () => {
       align: 'center',
       render: (_, record) => (
         <Flex gap={8} justify="center">
-          <AccountModal row={record} getAll={getAllAccount} />
-          {currentAccount && <AccountDelete username={record.username} deleted_by={currentAccount.username} getAllAccount={getAllAccount} deleted={record.deleted} />}
+          <AccountModal
+            row={record}
+            getAll={getAllAccount}
+          />
+          {
+            currentAccount &&
+            <AccountDelete
+              username={record.username}
+              deleted_by={currentAccount.username}
+              getAllAccount={getAllAccount}
+              deleted={record.deleted}
+            />
+          }
         </Flex>
       ),
     },

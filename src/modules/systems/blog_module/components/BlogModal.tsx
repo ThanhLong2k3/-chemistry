@@ -145,7 +145,13 @@ export const BlogModal = ({
         errorMessage = error.message;
       }
 
-      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
+      show({
+        result: 1,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
+      });
     }
   };
 
@@ -216,7 +222,7 @@ export const BlogModal = ({
             </Col>
           </Row>
 
-          <Form.Item name="description" label="Mô tả"  
+          <Form.Item name="description" label="Mô tả"
             rules={RULES_FORM.validateDescription}
           >
             <div className="custom-quill">

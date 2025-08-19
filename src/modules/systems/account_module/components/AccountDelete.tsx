@@ -6,6 +6,12 @@ import { useNotification } from '@/components/UI_shared/Notification';
 import ModalConfirmDelete from '@/components/UI_shared/DeleteComfilm';
 import axios from 'axios';
 import ModalConfirmChangeStatus from '@/components/UI_shared/ModalConfirmChangeStatus';
+import { useEffect, useState } from 'react';
+import { getAccountLogin } from '@/env/getInfor_token';
+import { IDecodedToken } from '@/types/decodedToken';
+import { authAPI } from '@/services/auth.service';
+import { usePermissions } from '@/contexts/PermissionContext';
+import { showSessionExpiredModal } from '@/utils/session-handler';
 
 const { Text } = Typography;
 
@@ -17,6 +23,14 @@ interface Props {
 }
 
 export const AccountDelete = ({ username, deleted_by, getAllAccount, deleted }: Props) => {
+  const [currentAccount, setCurrentAccount] = useState<IDecodedToken | null>(null);
+
+  //lấy tài khoản đang đăng nhập ra 
+  useEffect(() => {
+    const account = getAccountLogin();
+    setCurrentAccount(account);
+  }, []);
+
   const { isOpen, open, close } = useDisclosure();
   const { show } = useNotification();
   const handleSubmit = async () => {
@@ -27,6 +41,12 @@ export const AccountDelete = ({ username, deleted_by, getAllAccount, deleted }: 
         messageDone: 'Thay đổi trạng thái người dùng thành công !',
         messageError: 'Có lỗi xảy ra !',
       });
+
+      if (username === currentAccount?.username) {
+        // Nếu đúng, gọi thông báo phiên đã hết hạn và điều hướng ra đăng nhập đồng thời xoá token 
+        showSessionExpiredModal();
+      }
+
       getAllAccount();
     } catch (error) {
       let errorMessage = 'Đã có lỗi không xác định xảy ra.';
@@ -82,3 +102,4 @@ export const AccountDelete = ({ username, deleted_by, getAllAccount, deleted }: 
     </>
   );
 };
+

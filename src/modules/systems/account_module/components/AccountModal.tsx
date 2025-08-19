@@ -161,6 +161,15 @@ export const AccountModal = ({
           messageDone: 'Cập nhập người dùng thành công',
           messageError: 'Cập nhập người dùng thất bại',
         });
+
+        // Nếu tài khoản đang đăng nhập tự disable account của chính mình
+        if (
+          row.username === currentAccount.username &&
+          dataToSubmit.deleted === 1 // tức là bị huỷ kích hoạt
+        ) {
+          showSessionExpiredModal();
+          return; // dừng luôn, không cần getAll/close modal
+        }
       }
       getAll();
       setTimeout(() => {
@@ -190,12 +199,13 @@ export const AccountModal = ({
         errorMessage = error.message;
       }
 
-      // Chỉ hiển thị notification cho các lỗi không phải 401
-      // show({
-      //   result: 1,
-      //   messageError: errorMessage,
-      // });
-      show({ result: 1, messageError: 'Lỗi kết nối đến máy chủ.' });
+      show({
+        result: 1,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
+      });
     }
   };
 

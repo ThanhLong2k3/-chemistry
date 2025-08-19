@@ -133,13 +133,36 @@ export const ExamModal = ({
       }
 
     } catch (error: any) {
-      if (error?.errorFields) return;
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        showSessionExpiredModal();
+      //lỗi validation của Antd Form có thuộc tính `errorFields`, nếu là lỗi validation thì không cần hiển thị thông báo lỗi.
+      // Antd sẽ tự động hiển thị lỗi trên form.
+      if (error && error.errorFields) {
+        console.log('Validation Failed:', error.errorFields[0].errors[0]);
         return;
       }
-      show({ result: 1, messageError: "Lỗi kết nối đến máy chủ." });
 
+      let errorMessage = 'Đã có lỗi không xác định xảy ra.';
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error; // TypeScript hiểu đây là AxiosError
+        const responseMessage = axiosError.response?.data?.message;
+
+        if (axiosError.response?.status === 401) {
+          showSessionExpiredModal();
+          return;
+        } else {
+          errorMessage = responseMessage || axiosError.message;
+        }
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      show({
+        result: 1,
+        messageError:
+          errorMessage === 'Network Error'
+            ? 'Lỗi kết nối đến máy chủ.'
+            : errorMessage,
+      });
     }
   };
 
