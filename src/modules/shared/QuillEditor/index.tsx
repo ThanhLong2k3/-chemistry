@@ -1,5 +1,4 @@
 'use client';
-
 import dynamic from 'next/dynamic';
 import React, { useMemo } from 'react';
 import 'react-quill/dist/quill.snow.css';
@@ -8,7 +7,7 @@ import { UpLoadImage } from '@/services/upload.service';
 
 const ReactQuill: any = dynamic(() => import('react-quill'), { ssr: false });
 
-export default function QuillEditor({ value, onChange, placeholder }:{value:any, onChange:any, placeholder:any }) {
+export default function QuillEditor({ value, onChange, placeholder }: { value: any, onChange: any, placeholder: any }) {
   const modules = useMemo(
     () => ({
       toolbar: {
@@ -40,7 +39,18 @@ export default function QuillEditor({ value, onChange, placeholder }:{value:any,
                 if (!uploaded?.length) throw new Error('Upload thất bại');
 
                 const imageUrl = uploaded[0];
-                const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `${env.BASE_URL}${imageUrl}`;
+
+                const normalizePath = (path: string) => {
+                  if (!path) return path;
+                  return path.replace(/^\/api/, ''); // bỏ /api nếu có ở đầu
+                };
+
+                const fullImageUrl = imageUrl.startsWith('http')
+                  ? imageUrl
+                  : `${env.BASE_URL}${normalizePath(imageUrl)}`;
+                console.log(fullImageUrl, 'fullImageUrl');
+
+
 
                 quill.deleteText(range.index, loadingText.length);
                 quill.insertEmbed(range.index, 'image', fullImageUrl);

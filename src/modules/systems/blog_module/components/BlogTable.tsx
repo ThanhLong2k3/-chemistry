@@ -56,7 +56,7 @@ export const BlogTable = () => {
   //reset lại pageindex khi có dữ liệu tìm kiếm
   useEffect(() => {
     setPageIndex(1);
-  }, [titleBlog, selectedAuthor]);
+  }, [titleBlog, selectedAuthor, ordertype]);
 
   useEffect(() => {
     getAllBlog();
