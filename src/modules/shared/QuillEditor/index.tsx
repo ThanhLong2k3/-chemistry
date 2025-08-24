@@ -40,15 +40,17 @@ export default function QuillEditor({ value, onChange, placeholder }: { value: a
 
                 const imageUrl = uploaded[0];
 
-                const normalizePath = (path: string) => {
-                  if (!path) return path;
-                  return path.replace(/^\/api/, ''); // bỏ /api nếu có ở đầu
-                };
+                // const normalizePath = (path: string) => {
+                //   if (!path) return path;
+                //   return path.replace(/^\/api/, ''); // bỏ /api nếu có ở đầu
+                // };
 
-                const fullImageUrl = imageUrl.startsWith('http')
-                  ? imageUrl
-                  : `${env.BASE_URL}${normalizePath(imageUrl)}`;
-                console.log(fullImageUrl, 'fullImageUrl');
+                // const fullImageUrl = imageUrl.startsWith('http')
+                //   ? imageUrl
+                //   : `${env.BASE_URL}${normalizePath(imageUrl)}`;
+                // console.log(fullImageUrl, 'fullImageUrl');
+
+                const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `${env.BASE_URL}${imageUrl}`;
 
 
 
