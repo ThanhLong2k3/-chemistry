@@ -35,7 +35,7 @@ const Footer_User = ({ menuItems }: { menuItems: any[] }) => {
               <Space align="start">
                 <EnvironmentOutlined style={{ color: '#1890ff', fontSize: '16px' }} />
                 <Text style={{ color: '#9ca3af', lineHeight: '1.6' }}>
-                  thôn Đan Kim, xã Văn Giang, tỉnh Hưng Yên
+                  Thôn Đan Kim, Xã Văn Giang, Tỉnh Hưng Yên
                 </Text>
               </Space>
               <Space align="start">
