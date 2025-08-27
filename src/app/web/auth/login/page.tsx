@@ -204,7 +204,7 @@ export default function LoginPage() {
             </Form.Item>
           </Form>
 
-          <div className={styles.divider}>
+          {/* <div className={styles.divider}>
             <span className={styles.dividerText}>hoặc</span>
           </div>
 
@@ -216,14 +216,14 @@ export default function LoginPage() {
             >
               Đăng nhập với Google
             </Button>
-            {/* <Button
+            <Button
               icon={<FacebookOutlined />}
               className={styles.socialButton}
               size="large"
             >
               Đăng nhập với Facebook
-            </Button> */}
-          </div>
+            </Button>
+          </div> */}
 
           <div className={styles.registerSection}>
             <Text className={styles.registerText}>
